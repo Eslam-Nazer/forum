@@ -41,7 +41,6 @@ class ThreadController extends Controller
     {
         $thread = Thread::find($id);
         return view('forum::threads.show', compact('thread'));
-//        return Inertia::render('Thread/Show');
     }
 
     /**

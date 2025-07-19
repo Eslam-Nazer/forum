@@ -59,4 +59,13 @@ class Thread extends Model
      {
          return $this->belongsTo(User::class, "user_id");
      }
+
+    /**
+     * @param array $reply
+     * @return void
+     */
+     public function addReply(array $reply): void
+     {
+         $this->replies()->create($reply);
+     }
 }

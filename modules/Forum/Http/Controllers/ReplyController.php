@@ -3,10 +3,26 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
+use Modules\Forum\Application\UseCases\Reply\UserAddReplyInThreadUseCase;
+use Modules\Forum\Domain\Models\Thread;
+use Modules\Forum\Http\Requests\Reply\UserAddReplyInThreadRequest;
 
-class ReplyController extends Controller
+class ReplyController extends Controller implements HasMiddleware
 {
+    /**
+     * @return string[]
+     */
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -26,7 +42,13 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(UserAddReplyInThreadRequest $request, Thread $thread, UserAddReplyInThreadUseCase $case): RedirectResponse
+    {
+        $data = new UserAddReplyInThreadDto($thread, auth()->id(), $request->validated('body'));
+
+        $case->execute($data);
+        return redirect()->route('threads.index', $thread);
+    }
 
     /**
      * Show the specified resource.

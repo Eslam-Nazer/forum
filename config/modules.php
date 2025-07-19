@@ -146,7 +146,7 @@ return [
             'observer' => ['path' => 'app/Observers', 'generate' => false],
             'policies' => ['path' => 'app/Policies', 'generate' => false],
             'provider' => ['path' => 'Providers', 'generate' => true], // changed
-            'repository' => ['path' => '/Infrastructure/Repositories', 'generate' => false], // changed
+            'repository' => ['path' => 'Infrastructure/Repositories', 'generate' => false], // changed
             'resource' => ['path' => 'Http/Transformers', 'generate' => false], // changed
             'route-provider' => ['path' => 'Providers', 'generate' => true], // changed
             'rules' => ['path' => 'app/Rules', 'generate' => false],

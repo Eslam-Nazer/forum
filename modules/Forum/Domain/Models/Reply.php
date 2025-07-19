@@ -13,7 +13,13 @@ class Reply extends Model
     use HasFactory;
 
     /**
+     * @var string
+     */
+    protected $table = 'replies';
+
+    /**
      * The attributes that are mass assignable.
+     * @var list<string>
      */
     protected $fillable = [
         'user_id',

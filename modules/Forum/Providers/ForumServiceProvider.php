@@ -4,6 +4,8 @@ namespace Modules\Forum\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadInterface;
+use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThread;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -36,6 +38,7 @@ class ForumServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(UserAddReplyInThreadInterface::class, UserAddReplyInThread::class);
     }
 
     /**
