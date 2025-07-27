@@ -5,7 +5,9 @@ namespace Modules\Forum\Providers;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadInterface;
+use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThread;
+use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -39,6 +41,7 @@ class ForumServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
         $this->app->bind(UserAddReplyInThreadInterface::class, UserAddReplyInThread::class);
+        $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
     }
 
     /**

@@ -141,7 +141,7 @@ return [
             'helpers' => ['path' => 'app/Helpers', 'generate' => false],
             'interfaces' => ['path' => 'app/Interfaces', 'generate' => false],
             'listener' => ['path' => 'app/Listeners', 'generate' => false],
-            'model' => ['path' => '/Domain/Models', 'generate' => false], // changed
+            'model' => ['path' => 'Domain/Models', 'generate' => false], // changed
             'notifications' => ['path' => 'app/Notifications', 'generate' => false],
             'observer' => ['path' => 'app/Observers', 'generate' => false],
             'policies' => ['path' => 'app/Policies', 'generate' => false],

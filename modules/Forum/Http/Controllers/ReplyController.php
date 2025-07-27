@@ -42,7 +42,7 @@ class ReplyController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserAddReplyInThreadRequest $request, Thread $thread, UserAddReplyInThreadUseCase $case): RedirectResponse
+    public function store(UserAddReplyInThreadRequest $request, string $channel, Thread $thread, UserAddReplyInThreadUseCase $case): RedirectResponse
     {
         $data = new UserAddReplyInThreadDto($thread, auth()->id(), $request->validated('body'));
 
@@ -69,10 +69,14 @@ class ReplyController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id)
+    {
+    }
 }

@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ThreadFactory;
 
 
+/**
+ * @property mixed $id
+ */
 class Thread extends Model
 {
     use HasFactory;
@@ -24,6 +27,7 @@ class Thread extends Model
      */
     protected $fillable = [
         'user_id',
+        'channel_id',
         'title',
         'body',
     ];
@@ -41,7 +45,7 @@ class Thread extends Model
      */
      public function path(): string
      {
-         return '/threads/' . $this->id;
+         return "/threads/{$this->channel->slug}/{$this->id}";
      }
 
     /**
@@ -67,5 +71,10 @@ class Thread extends Model
      public function addReply(array $reply): void
      {
          $this->replies()->create($reply);
+     }
+
+     public function channel(): BelongsTo
+     {
+         return $this->belongsTo(Channel::class);
      }
 }

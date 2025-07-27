@@ -6,12 +6,24 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
+use Modules\Forum\Application\UseCases\Thread\CreateThreadUseCase;
 use Modules\Forum\Domain\Models\Thread;
+use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 
-class ThreadController extends Controller
+class ThreadController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth', except: ['index', 'show']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -26,18 +38,28 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        return view('forum::create');
+        return view('forum::threads.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(CreateThreadRequest $request, CreateThreadUseCase $case)
+    {
+        $data = new CreateThreadDto(
+            userId: auth()->id(),
+            channelId: $request->validated('channel_id'),
+            title: $request->validated('title'),
+            body: $request->validated('body')
+        );
+        $thread = $case->execute($data);
+        return redirect($thread->path());
+    }
 
     /**
      * Show the specified resource.
      */
-    public function show(string $id): Response | View
+    public function show($channelId,string $id): Response|View
     {
         $thread = Thread::find($id);
         return view('forum::threads.show', compact('thread'));
@@ -54,10 +76,14 @@ class ThreadController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy($id)
+    {
+    }
 }

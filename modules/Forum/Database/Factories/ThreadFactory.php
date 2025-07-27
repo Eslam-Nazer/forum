@@ -4,6 +4,7 @@ namespace Modules\Forum\Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Forum\Domain\Models\Channel;
 
 class ThreadFactory extends Factory
 {
@@ -19,6 +20,7 @@ class ThreadFactory extends Factory
     {
         return [
             'user_id' => User::factory()->create()->id,
+            'channel_id' => Channel::factory()->create()->id,
             'title' => $this->faker->sentence(),
             'body' => $this->faker->paragraph(),
         ];

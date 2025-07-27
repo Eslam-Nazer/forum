@@ -4,12 +4,14 @@ namespace Modules\Forum\Tests\Unit;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
     use DatabaseMigrations;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -34,5 +36,22 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    public function test_a_thread_belongs_to_a_channel(): void
+    {
+        $thread = create(Thread::class);
+
+        $this->assertInstanceOf(Channel::class, $thread->channel);
+    }
+
+    public function test_a_thread_can_make_a_string_path(): void
+    {
+        $thread = create(Thread::class);
+
+        $this->assertEquals(
+            "/threads/{$thread->channel->slug}/{$thread->id}",
+            $thread->path()
+        );
     }
 }

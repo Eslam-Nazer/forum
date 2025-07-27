@@ -14,6 +14,7 @@ class ForumDatabaseSeeder extends Seeder
          $this->call([
              ThreadSeeder::class,
              ReplySeeder::class,
+             ChannelSeeder::class,
          ]);
     }
 }
