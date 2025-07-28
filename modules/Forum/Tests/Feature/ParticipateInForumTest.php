@@ -37,4 +37,14 @@ class ParticipateInForumTest extends TestCase
         $this->post('threads/cat/1/replies', [])
             ->assertRedirect('/login');
     }
+
+    public function test_a_reply_requires_a_valid_reply(): void
+    {
+        $this->signIn();
+        $thread = create(Thread::class);
+        $reply = make(Reply::class, ['body' => null]);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+        ->assertSessionHasErrors('body');
+    }
 }
