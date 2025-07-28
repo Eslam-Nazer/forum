@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Response;
+use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
 use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\CreateThreadUseCase;
@@ -26,9 +27,10 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(AllThreadsUseCase $case): View
+    public function index(AllThreadsUseCase $case, ?string $channel = null): View
     {
-        $threads = $case->execute();
+        $dto = new AllThreadsFilteredDto(channel: $channel);
+        $threads = $case->execute($dto);
         return view('forum::threads.index', compact('threads'));
     }
 
@@ -52,14 +54,13 @@ class ThreadController extends Controller implements HasMiddleware
             body: $request->validated('body')
         );
         $thread = $case->execute($data);
-        logger($thread->path());
         return redirect($thread->path());
     }
 
     /**
      * Show the specified resource.
      */
-    public function show(string $channel ,string $id, FindThreadUseCase $case): Response|View
+    public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
     {
         $thread = $case->execute($id);
         return view('forum::threads.show', compact('thread'));

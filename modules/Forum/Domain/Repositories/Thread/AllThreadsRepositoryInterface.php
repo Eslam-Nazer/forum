@@ -7,5 +7,5 @@ use Modules\Forum\Domain\Models\Thread;
 
 interface AllThreadsRepositoryInterface
 {
-    public function handle(): Collection;
+    public function handle(string|null $channel = null): Collection;
 }

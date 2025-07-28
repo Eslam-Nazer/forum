@@ -3,6 +3,8 @@
 namespace Modules\Forum\Application\UseCases\Thread;
 
 use Illuminate\Support\Collection;
+use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
+use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 
 class AllThreadsUseCase
@@ -13,9 +15,18 @@ class AllThreadsUseCase
     {
     }
 
-    public function execute(): Collection
+    public function execute(AllThreadsFilteredDto $dto): Collection
     {
-        return $this->allThreadsRepository->handle();
+//        if (filled($dto->channel)) {
+            $channel = Channel::query()->where('slug', '=',$dto->channel)->firstOr(fn() => null);
+
+            if(filled($channel)) {
+                return $this->allThreadsRepository->handle($channel->id);
+            }
+            return $this->allThreadsRepository->handle($channel);
+//        }
+
+//        return $this->allThreadsRepository->handle();
     }
 
 }

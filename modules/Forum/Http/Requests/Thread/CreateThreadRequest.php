@@ -18,6 +18,14 @@ class CreateThreadRequest extends FormRequest
         ];
     }
 
+    public function messages(): array
+    {
+        return [
+            'channel_id.required' => 'Channel is required.',
+            'channel_id.integer' => 'Channel must a valid channel.',
+        ];
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */

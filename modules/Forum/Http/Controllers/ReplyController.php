@@ -47,7 +47,6 @@ class ReplyController extends Controller implements HasMiddleware
         $data = new UserAddReplyInThreadDto($threadId, auth()->id(), $request->validated('body'));
 
         $thread = $case->execute($data);
-//        dump($thread->path());
         return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id]);
     }
 

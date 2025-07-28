@@ -3,6 +3,7 @@
 namespace Modules\Forum\Tests\Feature;
 
 use App\Models\User;
+use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -41,6 +42,18 @@ class ReadThreadTest extends TestCase
         $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
         $this->get($this->thread->path())
             ->assertSee($reply->body)
+            ->assertStatus(200);
+    }
+
+    public function test_a_user_can_filter_threads_by_channel(): void
+    {
+        $channel = create(Channel::class);
+        $threadInChannel = create(Thread::class, ['channel_id' => $channel->id]);
+        $threadNotInChannel = create(Thread::class);
+
+        $this->get('/threads/' . $channel->slug)
+            ->assertSee($threadInChannel->title)
+            ->assertDontSee($threadNotInChannel->title)
             ->assertStatus(200);
     }
 }

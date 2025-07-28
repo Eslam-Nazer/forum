@@ -9,6 +9,7 @@ Route::controller(ThreadController::class)->group(function () {
     Route::get('threads/create', 'create')->name('threads.create');
     Route::post('threads', 'store')->name('threads.store');
     Route::get('threads/{channel}/{id}', 'show')->name('threads.show');
+    Route::get('threads/{channel?}', 'index')->name('threads.channel');
 });
 
 Route::controller(ReplyController::class)->group(function () {

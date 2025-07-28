@@ -8,8 +8,14 @@ use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 
 class AllThreadsRepository implements AllThreadsRepositoryInterface
 {
-    public function handle(): Collection
+    public function handle(string|null $channel = null): Collection
     {
-        return Thread::all();
+        $threads = Thread::query();
+
+        if (filled($channel)) {
+            $threads->where('channel_id', '=', $channel);
+        }
+
+        return $threads->latest()->get();
     }
 }
