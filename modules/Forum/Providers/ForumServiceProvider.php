@@ -4,10 +4,14 @@ namespace Modules\Forum\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadInterface;
+use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThread;
+use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThreadRepository;
+use Modules\Forum\Infrastructure\Repositories\Thread\AllThreadsRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
+use Modules\Forum\Infrastructure\Repositories\Thread\FindThreadRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -40,8 +44,10 @@ class ForumServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(UserAddReplyInThreadInterface::class, UserAddReplyInThread::class);
+        $this->app->bind(UserAddReplyInThreadRepositoryInterface::class, UserAddReplyInThreadRepository::class);
         $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
+        $this->app->bind(FindThreadRepositoryInterface::class, FindThreadRepository::class);
+        $this->app->bind(AllThreadsRepositoryInterface::class, AllThreadsRepository::class);
     }
 
     /**
@@ -68,7 +74,7 @@ class ForumServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -91,9 +97,9 @@ class ForumServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $config = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $config = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
                     $config_key = str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $config);
-                    $segments = explode('.', $this->nameLower.'.'.$config_key);
+                    $segments = explode('.', $this->nameLower . '.' . $config_key);
 
                     // Remove duplicated adjacent segments
                     $normalized = [];
@@ -128,30 +134,30 @@ class ForumServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::componentNamespace(config('modules.namespace') . '\\' . $this->name . '\\View\\Components', $this->nameLower);
     }
 
     /**
      * Get the services provided by the provider.
      */
-    public function provides(): array
-    {
-        return [];
-    }
+//    public function provides(): array
+//    {
+//        return [];
+//    }
 
     private function getPublishableViewPaths(): array
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

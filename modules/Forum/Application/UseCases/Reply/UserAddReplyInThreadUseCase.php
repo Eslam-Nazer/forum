@@ -3,15 +3,16 @@
 namespace Modules\Forum\Application\UseCases\Reply;
 
 use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
-use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadInterface;
+use Modules\Forum\Domain\Models\Thread;
+use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
 
 class UserAddReplyInThreadUseCase
 {
     public function __construct(
-        protected UserAddReplyInThreadInterface $userAddReplyInThread
+        protected UserAddReplyInThreadRepositoryInterface $userAddReplyInThread
     ){}
-    public function execute(UserAddReplyInThreadDto $dto): void
+    public function execute(UserAddReplyInThreadDto $dto): Thread
     {
-        $this->userAddReplyInThread->handle($dto->thread,$dto->userId,$dto->body);
+        return $this->userAddReplyInThread->handle($dto->threadId,$dto->userId,$dto->body);
     }
 }

@@ -2,13 +2,11 @@
 
 namespace Modules\Forum\Application\DTOs\Reply;
 
-use Modules\Forum\Domain\Models\Thread;
-
-class UserAddReplyInThreadDto
+readonly class UserAddReplyInThreadDto
 {
     public function __construct(
-        public readonly Thread $thread,
-        public readonly string $userId,
-        public readonly string $body,
+        public string $threadId,
+        public string $userId,
+        public string $body,
     ){}
 }

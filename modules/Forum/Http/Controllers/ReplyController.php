@@ -42,12 +42,13 @@ class ReplyController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserAddReplyInThreadRequest $request, string $channel, Thread $thread, UserAddReplyInThreadUseCase $case): RedirectResponse
+    public function store(string $channel, string $threadId, UserAddReplyInThreadRequest $request, UserAddReplyInThreadUseCase $case): RedirectResponse
     {
-        $data = new UserAddReplyInThreadDto($thread, auth()->id(), $request->validated('body'));
+        $data = new UserAddReplyInThreadDto($threadId, auth()->id(), $request->validated('body'));
 
-        $case->execute($data);
-        return redirect()->route('threads.index', $thread);
+        $thread = $case->execute($data);
+//        dump($thread->path());
+        return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id]);
     }
 
     /**

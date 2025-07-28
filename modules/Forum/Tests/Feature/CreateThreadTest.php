@@ -24,32 +24,22 @@ class CreateThreadTest extends TestCase
 
     public function test_an_authenticated_user_can_create_new_forum_threads(): void
     {
-//        $this->actingAs(User::factory()->create());
-//        $this->actingAs(create(User::class));
         $this->signIn();
-//        $thread = Thread::factory()->make(['user_id' => auth()->id()]);
-        $channel = create(Channel::class);
-        $thread = create(Thread::class, ['user_id' => auth()->id(), 'channel_id' => $channel->id]);
+        $thread = make(Thread::class, ['user_id' => auth()->id()]);
 
-        $this->post('/threads', $thread->toArray());
+        $response = $this->post('/threads', $thread->toArray());
 
-        $this->assertDatabaseHas('threads', $thread->toArray());
-
-        logger()->info($thread->path());
-        $this->get($thread->path())
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
     }
 
     // guest
-    public function test_a_guest_cannot_show_create_thread_page(): void
+    public function test_a_guest_may_not_create_new_thread(): void
     {
         $this->get('/threads/create')
             ->assertRedirect('/login');
-    }
 
-    public function test_a_guest_cannot_create_threads(): void
-    {
         $this->post('/threads', [])
             ->assertRedirect('/login');
     }

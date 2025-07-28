@@ -15,8 +15,9 @@ class ReadThreadTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->thread = Thread::factory()->create();
+        $this->thread = create(Thread::class);
     }
+
     /**
      * A basic test example.
      */
@@ -30,7 +31,6 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_view_a_single_thread(): void
     {
-
         $response = $this->get($this->thread->path());
         $response->assertSee($this->thread->title);
         $response->assertStatus(200);

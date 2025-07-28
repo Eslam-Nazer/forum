@@ -21,7 +21,7 @@
      </ul>
     @if(auth()->check())
     <div>
-        <form action="{{route('threads.replies.store', $thread->id)}}" method="POST">
+        <form action="{{route('threads.replies.store', ['threadId' => $thread->id, 'channel' => $thread->channel->slug])}}" method="POST">
         @csrf
             <div>
                 @if($errors->any())
