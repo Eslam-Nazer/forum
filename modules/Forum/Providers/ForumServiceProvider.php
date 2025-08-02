@@ -44,6 +44,7 @@ class ForumServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(ViewServiceProvider::class);
         $this->app->bind(UserAddReplyInThreadRepositoryInterface::class, UserAddReplyInThreadRepository::class);
         $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
         $this->app->bind(FindThreadRepositoryInterface::class, FindThreadRepository::class);

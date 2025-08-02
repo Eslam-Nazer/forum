@@ -7,7 +7,7 @@
         <textarea name="body">{{old('body')}}</textarea><br /><br />
         <select  name="channel_id">
             <option value="">select one...</option>
-            @foreach(\Modules\Forum\Domain\Models\Channel::all() as $channel)
+            @foreach($channels as $channel)
                     <option value="{{$channel->id}}" {{ old('channel_id') == $channel->id ? "selected" : "" }}>{{$channel->name}}</option>
             @endforeach
         </select>
