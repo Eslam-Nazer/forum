@@ -2,10 +2,10 @@
 
 namespace Modules\Forum\Domain\Repositories\Thread;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Modules\Forum\Domain\Models\Thread;
 
 interface AllThreadsRepositoryInterface
 {
-    public function handle(string|null $channel = null): Collection;
+    public function handle(Request $request, string|null $channel = null): Collection;
 }

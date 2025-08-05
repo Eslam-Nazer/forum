@@ -32,9 +32,9 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_view_a_single_thread(): void
     {
-        $response = $this->get($this->thread->path());
-        $response->assertSee($this->thread->title);
-        $response->assertStatus(200);
+        $this->get($this->thread->path())
+            ->assertSee($this->thread->title)
+            ->assertStatus(200);
     }
 
     public function test_a_user_can_see_replies_in_thread(): void
@@ -55,5 +55,17 @@ class ReadThreadTest extends TestCase
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title)
             ->assertStatus(200);
+    }
+
+    public function test_a_user_can_filter_threads_by_any_username(): void
+    {
+        $this->signIn(create(User::class, ['name' => 'EslamNazer']));
+
+        $threadInChannel = create(Thread::class, ['user_id' => auth()->id()]);
+        $threadNotInChannel = create(Thread::class);
+
+        $this->get('/threads?by=EslamNazer')
+            ->assertSee($threadInChannel->title)
+            ->assertDontSee($threadNotInChannel->title);
     }
 }

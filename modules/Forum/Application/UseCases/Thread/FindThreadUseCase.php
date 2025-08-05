@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Application\UseCases\Thread;
 
+use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 
@@ -13,8 +14,8 @@ class FindThreadUseCase
     {
     }
 
-    public function execute(string $thread_id): Thread|null
+    public function execute(string $thread_id, string $channel): Thread|null
     {
-        return $this->findThreadRepository->handle($thread_id);
+        return $this->findThreadRepository->handle($thread_id, $channel);
     }
 }

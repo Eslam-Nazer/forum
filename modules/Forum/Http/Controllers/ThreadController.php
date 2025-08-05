@@ -5,6 +5,7 @@ namespace Modules\Forum\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Inertia\Response;
@@ -27,10 +28,10 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(AllThreadsUseCase $case, ?string $channel = null): View
+    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
-        $threads = $case->execute($dto);
+        $threads = $case->execute($request, $dto);
         return view('forum::threads.index', compact('threads'));
     }
 
@@ -62,29 +63,7 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
     {
-        $thread = $case->execute($id);
+        $thread = $case->execute($id, $channel);
         return view('forum::threads.show', compact('thread'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-//    public function edit($id)
-//    {
-//        return view('forum::edit');
-//    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-//    public function update(Request $request, $id)
-//    {
-//    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-//    public function destroy($id)
-//    {
-//    }
 }

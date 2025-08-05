@@ -7,10 +7,12 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThreadRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\AllThreadsRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
+use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\FindThreadRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
@@ -49,6 +51,7 @@ class ForumServiceProvider extends ServiceProvider
         $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
         $this->app->bind(FindThreadRepositoryInterface::class, FindThreadRepository::class);
         $this->app->bind(AllThreadsRepositoryInterface::class, AllThreadsRepository::class);
+        $this->app->bind(FilterThreadsRepositoryInterface::class, FilterThreadsRepository::class);
     }
 
     /**
