@@ -1,13 +1,23 @@
 {{--@extends('layouts.app')--}}
 
 <div>
-    <a href="#">{{$thread->creator->name}}</a> posted: {{$thread->title}}
+    <div>
+        <a href="#">{{$thread->creator->name}}</a> <span>posted:</span>
+    </div>
+    <div>
+        {{$thread->title}}
+    </div>
     <div>
         {{$thread->body}}
     </div>
-    <ul>
+    <div style="display: flex; margin-top: 15px; margin-bottom: 10px;">
+        <div style=" padding: 10px; border: #0a0a0a 2px solid;">
+            this thread created by {{ $thread->creator->name }} and
+            have {{ $thread->replies_count }} {{Str::plural('comment', $thread->replies_count)}}
+        </div>
+    </div>
+    <ul style="padding: 0">
         @foreach($thread->replies as $reply)
-
             <listbox-content>
                 <div style="padding: 20px">
                     <a href="#">{{$reply->owner->name}}</a> {{$reply->created_at->diffForHumans()}}

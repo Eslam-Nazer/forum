@@ -14,6 +14,18 @@ class Thread extends Model
     use HasFactory;
 
     /**
+     * @return void
+     */
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::addGlobalScope('repliesCount', static function ($query) {
+            $query->withCount('replies');
+        });
+    }
+
+    /**
      * @var string
      */
     protected $table = 'threads';
@@ -44,7 +56,7 @@ class Thread extends Model
         if (!$this->id) {
             return '';
         }
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/" . $this->channel->slug . "/" . $this->id;
     }
 
     /**

@@ -12,35 +12,30 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class ReadThreadTest extends TestCase
 {
     use DatabaseMigrations;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->thread = create(Thread::class);
-    }
-
     /**
      * A basic test example.
      */
     public function test_a_user_can_view_all_threads(): void
     {
+        $threads = create(Thread::class);
         $response = $this->get('/threads');
-
-        $response->assertSee($this->thread->title);
+        $response->assertSee($threads->title);
         $response->assertStatus(200);
     }
 
     public function test_a_user_can_view_a_single_thread(): void
     {
-        $this->get($this->thread->path())
-            ->assertSee($this->thread->title)
+        $thread = create(Thread::class);
+        $this->get($thread->path())
+            ->assertSee($thread->title)
             ->assertStatus(200);
     }
 
     public function test_a_user_can_see_replies_in_thread(): void
     {
-        $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
-        $this->get($this->thread->path())
+        $thread = create(Thread::class);
+        $reply = Reply::factory()->create(['thread_id' => $thread->id]);
+        $this->get($thread->path())
             ->assertSee($reply->body)
             ->assertStatus(200);
     }
@@ -67,5 +62,20 @@ class ReadThreadTest extends TestCase
         $this->get('/threads?by=EslamNazer')
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
+    }
+
+    public function test_a_user_can_filter_threads_by_popularity(): void
+    {
+        $threadWithThreeReplies = create(Thread::class);
+        create(Reply::class, ['thread_id' => $threadWithThreeReplies->id], 3);
+
+        $threadWithTwoReplies = create(Thread::class);
+        create(Reply::class, ['thread_id' => $threadWithTwoReplies->id], 2);
+
+        $threadsWithNoReplies = create(Thread::class);
+
+        $response = $this->getJson('threads?popular')->json();
+
+        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
     }
 }

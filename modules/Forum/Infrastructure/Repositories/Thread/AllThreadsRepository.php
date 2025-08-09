@@ -23,7 +23,7 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
      */
     public function handle(Request $request, string|null $channel = null): Collection
     {
-        $threads = Thread::query();
+        $threads = Thread::query()->latest();
 
         if (filled($channel)) {
             $threads->where('channel_id', '=', $channel);
@@ -31,6 +31,6 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
 
         $threads = $this->filterThreadsRepository->apply($threads, $request);
 
-        return $threads->latest()->get();
+        return $threads->get();
     }
 }

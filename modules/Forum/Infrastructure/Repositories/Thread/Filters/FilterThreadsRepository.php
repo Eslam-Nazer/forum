@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Forum\Domain\Contracts\Thread\FilterStrategyInterface;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
+use Modules\Forum\Infrastructure\Filters\Thread\PopularFilterStrategy;
 use Modules\Forum\Infrastructure\Filters\Thread\UsernameFilterStrategy;
 
 class FilterThreadsRepository implements FilterThreadsRepositoryInterface
@@ -39,6 +40,7 @@ class FilterThreadsRepository implements FilterThreadsRepositoryInterface
     private function initializeFilters(): void
     {
         $this->setStrategy(new UsernameFilterStrategy());
+        $this->setStrategy(new PopularFilterStrategy());
     }
 
     /**

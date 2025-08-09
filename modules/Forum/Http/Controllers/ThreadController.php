@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Collection;
 use Inertia\Response;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
@@ -28,10 +29,15 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View
+    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
+
+        if ($request->wantsJson()) {
+            return $threads;
+        }
+
         return view('forum::threads.index', compact('threads'));
     }
 
