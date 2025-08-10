@@ -53,15 +53,15 @@ class Reply extends Model
     }
 
     /**
-     * @return Model
+     * @param string $userId
+     * @return Model|null
      */
-    public function favorite(): Model
+    public function favorite(string $userId): Model|null
     {
-        return $this->favorites()
-            ->create([
-                'user_id' => auth()->id(),
-                'favorite_id' => $this->id,
-                'favorite_type' => get_class($this)
-            ]);
+        $attributes = ['user_id' => $userId];
+        if (!$this->favorites()->where($attributes)->exists()) {
+            return $this->favorites()->create($attributes);
+        }
+        return null;
     }
 }

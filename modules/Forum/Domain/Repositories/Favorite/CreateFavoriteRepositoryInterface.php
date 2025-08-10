@@ -12,11 +12,4 @@ interface CreateFavoriteRepositoryInterface
      * @return void
      */
     public function handle(string $userId, string $id): void;
-
-    /**
-     * @param Reply $reply
-     * @param string $userId
-     * @return bool
-     */
-    public function favoriteReplyExists(Reply $reply, string $userId): bool;
 }

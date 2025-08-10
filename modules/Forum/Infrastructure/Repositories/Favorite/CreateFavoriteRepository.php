@@ -16,24 +16,8 @@ class CreateFavoriteRepository implements CreateFavoriteRepositoryInterface
     {
         $reply = Reply::find($id);
 
-        if ($reply->exists() && !$this->favoriteReplyExists($reply, $id)) {
-            $reply->favorite();
+        if ($reply->exists()) {
+            $reply->favorite($userId);
         }
-    }
-
-    /**
-     * @param Reply $reply
-     * @param string $userId
-     * @return bool
-     */
-    public function favoriteReplyExists(Reply $reply,string $userId): bool
-    {
-        return $reply->favorites()
-            ->where([
-                'user_id' => $userId,
-                'favorite_id' => $reply->id,
-                'favorite_type' => $reply->getMorphClass()
-            ])
-            ->exists();
     }
 }
