@@ -5,6 +5,7 @@ namespace Modules\Forum\Tests\Feature;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Testing\TestResponse;
 use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -60,7 +61,7 @@ class CreateThreadTest extends TestCase
         $this->publishThread(['channel_id' => 999])->assertSessionHasErrors('channel_id');
     }
 
-    public function publishThread(array $overrides = [])
+    public function publishThread(array $overrides = []): TestResponse
     {
         $this->signIn();
 

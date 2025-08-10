@@ -4,18 +4,6 @@ namespace Modules\Forum\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Favorite\CreateFavoriteRepository;
-use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThreadRepository;
-use Modules\Forum\Infrastructure\Repositories\Thread\AllThreadsRepository;
-use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
-use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
-use Modules\Forum\Infrastructure\Repositories\Thread\FindThreadRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

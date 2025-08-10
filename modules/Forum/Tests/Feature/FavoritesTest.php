@@ -35,7 +35,7 @@ class FavoritesTest extends TestCase
 
         try {
             $this->post('/replies/' . $reply->id . '/favorites')->assertStatus(200);
-//            $this->post('/replies/' . $reply->id . '/favorites')->assertStatus(200);
+            $this->post('/replies/' . $reply->id . '/favorites')->assertStatus(200);
         } catch (Exception $exception) {
             $this->fail($exception->getMessage());
         }

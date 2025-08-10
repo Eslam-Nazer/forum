@@ -17,8 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('favorite_id')->unique();
             $table->string('favorite_type', 50)->unique();
             $table->timestamps();
-
-//            $table->unique(['user_id', 'favorite_id','favorite_type']);
         });
     }
 

@@ -3,7 +3,6 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Forum\Application\UseCases\Favorite\CreateFavoriteUseCase;
 
@@ -41,13 +40,5 @@ class FavoriteController extends Controller implements HasMiddleware
     public function store(string $id, CreateFavoriteUseCase $case): void
     {
         $case->execute($id);
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('forum::show');
     }
 }

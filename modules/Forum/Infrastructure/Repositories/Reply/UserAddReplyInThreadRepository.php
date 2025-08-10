@@ -7,6 +7,12 @@ use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterf
 
 class UserAddReplyInThreadRepository implements UserAddReplyInThreadRepositoryInterface
 {
+    /**
+     * @param string $threadId
+     * @param string $userId
+     * @param string $body
+     * @return Thread
+     */
     public function handle(string $threadId, string $userId, string $body): Thread
     {
         $thread = Thread::query()
