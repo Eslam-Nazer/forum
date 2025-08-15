@@ -64,4 +64,14 @@ class Reply extends Model
         }
         return null;
     }
+
+    /**
+     * @return bool
+     */
+    public function isFavorite(): bool
+    {
+        return $this->favorites()
+            ->where('user_id', '=', auth()->id())
+            ->exists();
+    }
 }
