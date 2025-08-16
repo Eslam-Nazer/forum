@@ -23,7 +23,9 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
      */
     public function handle(Request $request, string|null $channel = null): Collection
     {
-        $threads = Thread::query()->latest();
+        $threads = Thread::query()
+            ->withCount('replies')
+            ->latest();
 
         if (filled($channel)) {
             $threads->where('channel_id', '=', $channel);

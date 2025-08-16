@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Providers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -12,8 +13,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        View::composer('forum::threads.create', static function ($view) {
-            $view->with('channels', \Modules\Forum\Domain\Models\Channel::all());
+        View::composer('*', static function ($view) {
+            $channels =Cache::rememberForever('forum.channels', static function () {
+                return \Modules\Forum\Domain\Models\Channel::all();
+            });
+            $view->with('channels', $channels);
         });
     }
 

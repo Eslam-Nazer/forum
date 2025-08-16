@@ -19,6 +19,11 @@ class Reply extends Model
     protected $table = 'replies';
 
     /**
+     * @var list<string>
+     */
+    protected $with = ['owner', 'favorites'];
+
+    /**
      * The attributes that are mass assignable.
      * @var list<string>
      */
@@ -70,8 +75,8 @@ class Reply extends Model
      */
     public function isFavorite(): bool
     {
-        return $this->favorites()
+        return (bool)$this->favorites
             ->where('user_id', '=', auth()->id())
-            ->exists();
+            ->count();
     }
 }

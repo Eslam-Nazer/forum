@@ -26,6 +26,14 @@
                     {{$reply->body}}
                 </div>
             </listbox-content>
+            <div>
+                <form method="POST" action="/replies/{{$reply->id}}/favorites">
+                    @csrf
+                    <button type="submit" {{$reply->isFavorite() ? 'disabled' : ''}}>
+                        {{$reply->favorites_count}} {{Str::plural('Favorite', $reply->favorites_count)}}
+                    </button>
+                </form>
+            </div>
         @endforeach
     </ul>
     @if(auth()->check())

@@ -69,6 +69,7 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
     {
+
         $thread = $case->execute($id, $channel);
         return view('forum::threads.show', compact('thread'));
     }

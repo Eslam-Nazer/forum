@@ -29,6 +29,12 @@ class Thread extends Model
      * @var string
      */
     protected $table = 'threads';
+
+    /**
+     * @var list<string>
+     */
+    protected $with = ['creator', 'channel'];
+
     /**
      * The attributes that are mass assignable.
      * @var list<string>
@@ -64,7 +70,9 @@ class Thread extends Model
      */
     public function replies(): HasMany
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)
+            ->withCount('favorites')
+            ->with('owner');
     }
 
     /**

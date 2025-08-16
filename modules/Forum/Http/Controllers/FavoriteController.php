@@ -3,6 +3,7 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Forum\Application\UseCases\Favorite\CreateFavoriteUseCase;
 
@@ -35,10 +36,11 @@ class FavoriteController extends Controller implements HasMiddleware
      * Store a newly created resource in storage.
      * @param string $id
      * @param CreateFavoriteUseCase $case
-     * @return void
+     * @return RedirectResponse
      */
-    public function store(string $id, CreateFavoriteUseCase $case): void
+    public function store(string $id, CreateFavoriteUseCase $case): RedirectResponse
     {
         $case->execute($id);
+        return redirect()->back();
     }
 }

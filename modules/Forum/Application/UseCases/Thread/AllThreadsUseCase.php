@@ -18,8 +18,12 @@ class AllThreadsUseCase
 
     public function execute(Request $request, AllThreadsFilteredDto $dto): Collection
     {
-        $channel = Channel::query()->where('slug', '=', $dto->channel)
+        $channel = '';
+        if (filled($dto->channel)) {
+         $channel = Channel::query()
+             ->where('slug', '=', $dto->channel)
             ->firstOr(fn() => null);
+        }
 
         if (filled($channel)) {
             return $this->allThreadsRepository->handle($request, $channel->id);
