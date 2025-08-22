@@ -20,3 +20,5 @@ Route::controller(ReplyController::class)->group(function () {
 Route::controller(FavoriteController::class)->group(function () {
     Route::post('replies/{id}/favorites', 'store')->name('favorite.store');
 });
+
+require __DIR__.'/settings.php';
