@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Testing\TestResponse;
 use Modules\Forum\Domain\Models\Channel;
+use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
 
@@ -33,6 +34,23 @@ class CreateThreadTest extends TestCase
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    public function test_a_user_can_remove_a_thread(): void
+    {
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+        $this->assertDatabaseHas('threads', $thread->getAttributes());
+        $this->assertDatabaseHas('replies', $reply->getAttributes());
+        $this->delete($thread->path());
+        $this->assertDatabaseMissing('replies', $reply->getAttributes());
+        $this->assertDatabaseMissing('threads', $thread->getAttributes());
+    }
+
+    public function test_a_thread_may_only_deleted_by_those_who_have_permission(): void
+    {
+        // TODO:
     }
 
     // guest
@@ -68,5 +86,12 @@ class CreateThreadTest extends TestCase
         $thread = make(Thread::class, $overrides);
 
         return $this->post('/threads', $thread->toArray());
+    }
+
+    public function test_guests_cannot_remove_threads(): void
+    {
+        $thread = create(Thread::class);
+
+        $this->delete($thread->path())->assertRedirect('/login');
     }
 }

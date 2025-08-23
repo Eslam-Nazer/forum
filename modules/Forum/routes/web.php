@@ -11,6 +11,7 @@ Route::controller(ThreadController::class)->group(function () {
     Route::post('threads', 'store')->name('threads.store');
     Route::get('threads/{channel}/{id}', 'show')->name('threads.show');
     Route::get('threads/{channel?}', 'index')->name('threads.channel');
+    Route::delete('threads/{channel}/{id}', 'destroy')->name('threads.destroy');
 });
 
 Route::controller(ReplyController::class)->group(function () {

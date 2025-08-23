@@ -16,12 +16,14 @@ class Thread extends Model
     /**
      * @return void
      */
-    public static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::addGlobalScope('repliesCount', static function ($query) {
             $query->withCount('replies');
+        });
+
+        static::deleting(static function (self $thread): void {
+            $thread->replies()->delete();
         });
     }
 

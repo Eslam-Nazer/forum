@@ -12,8 +12,10 @@ use Illuminate\Support\Collection;
 use Inertia\Response;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
+use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
 use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\CreateThreadUseCase;
+use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\FindThreadUseCase;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 
@@ -69,8 +71,14 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
     {
-
         $thread = $case->execute($id, $channel);
         return view('forum::threads.show', compact('thread'));
+    }
+
+    public function destroy(string $channel, string $id, DeleteThreadUseCase $case): RedirectResponse
+    {
+        $dto = new DeleteThreadDto($channel, $id);
+        $case->execute($dto);
+        return redirect()->route('threads.index');
     }
 }
