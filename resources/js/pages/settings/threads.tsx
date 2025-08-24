@@ -18,7 +18,7 @@ export default function Threads({ threads }: Props) {
             <SettingsLayout>
                 <div className="mt-2">
                     hi
-                    {threads.map((thread: any) => (
+                    {threads?.map((thread: any) => (
                         <div>
                             <div>{thread.title}</div>
                             <div>{thread.body}</div>

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
+use Inertia\Testing\AssertableInertia;
 
 class ProfileTest extends TestCase
 {
@@ -15,19 +16,23 @@ class ProfileTest extends TestCase
     {
         $this->signIn($user = User::factory()->create());
         $this->get("/settings/profile")
-        ->assertStatus(200)
-        ->assertSee($user->name)
-        ->assertSee($user->email);
+            ->assertStatus(200)
+            ->assertSee($user->name)
+            ->assertSee($user->email);
     }
 
     public function test_profiles_display_all_threads_created_by_the_associated_user(): void
     {
+        $this->withoutVite();
         $this->signIn($user = User::factory()->create());
         $thread = create(Thread::class, ['user_id' => $user->id]);
 
         $this->get("/settings/threads")
-        ->assertStatus(200)
-        ->assertSee($thread->title)
-        ->assertSee($thread->body);
+            ->assertOk()
+            ->assertInertia(fn(AssertableInertia $page) => $page->component('settings/threads')
+                ->has('threads', 1)
+                ->where('threads.0.title', $thread->title)
+                ->where('threads.0.body', $thread->body)
+            );
     }
 }

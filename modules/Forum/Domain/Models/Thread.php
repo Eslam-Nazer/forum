@@ -3,19 +3,19 @@
 namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ThreadFactory;
+use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
+#[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
     use HasFactory;
 
-    /**
-     * @return void
-     */
     protected static function booted(): void
     {
         static::addGlobalScope('repliesCount', static function ($query) {

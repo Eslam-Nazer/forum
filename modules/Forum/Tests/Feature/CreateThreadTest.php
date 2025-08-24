@@ -36,21 +36,18 @@ class CreateThreadTest extends TestCase
             ->assertSee($thread->body);
     }
 
-    public function test_a_user_can_remove_a_thread(): void
+    public function test_a_user_can_remove_an_own_thread(): void
     {
         $this->signIn();
         $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $threadNotOwnUser = create(Thread::class);
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
         $this->assertDatabaseHas('threads', $thread->getAttributes());
         $this->assertDatabaseHas('replies', $reply->getAttributes());
         $this->delete($thread->path());
         $this->assertDatabaseMissing('replies', $reply->getAttributes());
         $this->assertDatabaseMissing('threads', $thread->getAttributes());
-    }
-
-    public function test_a_thread_may_only_deleted_by_those_who_have_permission(): void
-    {
-        // TODO:
+        $this->delete($threadNotOwnUser->path())->assertStatus(403);
     }
 
     // guest
@@ -93,5 +90,13 @@ class CreateThreadTest extends TestCase
         $thread = create(Thread::class);
 
         $this->delete($thread->path())->assertRedirect('/login');
+    }
+
+    public function test_unauthorized_users_cannot_delete_threads(): void
+    {
+        $thread = create(Thread::class);
+        $this->delete($thread->path())->assertRedirect('/login');
+        $this->signIn();
+        $this->delete($thread->path())->assertStatus(403);
     }
 }

@@ -144,7 +144,7 @@ return [
             'model' => ['path' => 'Domain/Models', 'generate' => false], // changed
             'notifications' => ['path' => 'app/Notifications', 'generate' => false],
             'observer' => ['path' => 'app/Observers', 'generate' => false],
-            'policies' => ['path' => 'app/Policies', 'generate' => false],
+            'policies' => ['path' => 'Infrastructure/Policies', 'generate' => false],
             'provider' => ['path' => 'Providers', 'generate' => true], // changed
             'repository' => ['path' => 'Infrastructure/Repositories', 'generate' => false], // changed
             'resource' => ['path' => 'Http/Transformers', 'generate' => false], // changed

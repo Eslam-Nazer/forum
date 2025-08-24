@@ -31,6 +31,5 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(AllThreadsRepositoryInterface::class, AllThreadsRepository::class);
         $this->app->bind(FilterThreadsRepositoryInterface::class, FilterThreadsRepository::class);
         $this->app->bind(CreateFavoriteRepositoryInterface::class, CreateFavoriteRepository::class);
-        $this->app->bind(DeleteThreadRepositoryInterface::class, DeleteThreadRepository::class);
     }
 }
