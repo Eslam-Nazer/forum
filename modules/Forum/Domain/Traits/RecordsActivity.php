@@ -4,6 +4,7 @@ namespace Modules\Forum\Domain\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Forum\Domain\Models\Activity;
+use ReflectionClass;
 
 trait RecordsActivity
 {
@@ -38,7 +39,7 @@ trait RecordsActivity
 
     protected function getActivityEvent(string $event): string
     {
-        $type = strtolower(new \ReflectionClass($this)->getShortName());
-        return "{$event}_{$type}";
+        $type = strtolower(new ReflectionClass($this)->getShortName());
+        return $event . '_' . $type;
     }
 }
