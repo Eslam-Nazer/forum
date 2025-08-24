@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Forum\Database\Factories\ReplyFactory;
+use Modules\Forum\Domain\Traits\RecordsActivity;
 
 class Reply extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     /**
      * @var string
@@ -31,6 +32,7 @@ class Reply extends Model
         'user_id',
         'thread_id',
         'body',
+        'type',
     ];
 
     /**

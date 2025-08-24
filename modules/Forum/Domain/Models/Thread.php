@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ThreadFactory;
+use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected static function booted(): void
     {
@@ -46,6 +47,7 @@ class Thread extends Model
         'channel_id',
         'title',
         'body',
+        'type',
     ];
 
     /**
