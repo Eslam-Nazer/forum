@@ -4,18 +4,18 @@ namespace Modules\Forum\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Modules\Forum\Domain\Models\Activity;
 
 class ActivityController extends Controller
 {
-    public function index(Request $request): Response|RedirectResponse
+    public function index(): Response|RedirectResponse
     {
         if (auth()->check()) {
             $user = auth()->user();
             return Inertia::render('settings/activities', [
-                'activities' => $user->activities()->get(),
+                'activities' => Activity::feed($user),
                 'user' => $user
             ]);
         }

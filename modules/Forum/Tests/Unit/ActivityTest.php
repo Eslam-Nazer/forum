@@ -37,4 +37,21 @@ class ActivityTest extends TestCase
 
         $this->assertEquals(2, Activity::query()->count());
     }
+
+    public function test_fetching_a_feed_for_any_user(): void
+    {
+        $this->signIn();
+        create(Thread::class, ['user_id' => auth()->id()], 2);
+
+        auth()->user()->activities()->first()->update(['created_at' => now()->subWeek()]);
+        $feed = Activity::feed(auth()->user());
+
+        $this->assertTrue($feed->keys()->contains(
+            now()->format('Y-m-d')
+        ));
+
+        $this->assertTrue($feed->keys()->contains(
+            now()->subWeek()->format('Y-m-d')
+        ));
+    }
 }

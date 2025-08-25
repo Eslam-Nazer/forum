@@ -1,8 +1,8 @@
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
 import { Props } from '@headlessui/react/dist/types';
+import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,10 +17,15 @@ export default function Threads({ activities, user }: Props) {
             <Head title={'Threads Settings'} />
             <SettingsLayout>
                 <div className="mt-2">
-                    {activities?.map((activity: any) => (
-                        <div key={activity.id}>
-                            <div className={"m-2"}>{user.name}: {activity.type.split("_").join(" ")} at {new Date(activity.created_at).toLocaleString()}</div>
-                            <hr />
+                    {Object.entries(activities).map(([date, activity]) => (
+                        <div>
+                            <h3 className={'m-2'}>{date}</h3>
+                            <hr className={"border-gray-300"}/>
+                            <div>
+                                {activity.map((record: any) => (
+                                    <div>{user.name}: {record.type.split('_').join(' ')}</div>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>
