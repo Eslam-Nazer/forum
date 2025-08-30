@@ -27,6 +27,11 @@ const sidebarNavItems: NavItem[] = [
       href: '/settings/threads',
       icon: null,
     },
+    {
+        title: 'Activities',
+        href: '/settings/activities',
+        icon: null,
+    },
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {

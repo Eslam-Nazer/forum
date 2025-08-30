@@ -42,11 +42,21 @@ class CreateThreadTest extends TestCase
         $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $threadNotOwnUser = create(Thread::class);
         $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
         $this->assertDatabaseHas('threads', $thread->getAttributes());
+
         $this->assertDatabaseHas('replies', $reply->getAttributes());
+
         $this->delete($thread->path());
+
         $this->assertDatabaseMissing('replies', $reply->getAttributes());
+
         $this->assertDatabaseMissing('threads', $thread->getAttributes());
+
+        $this->assertDatabaseMissing('activities', ['subject_id' => $thread->id, 'subject_type' => get_class($thread)]);
+
+        $this->assertDatabaseMissing('activities', ['subject_id' => $reply->id, 'subject_type' => get_class($reply)]);
+
         $this->delete($threadNotOwnUser->path())->assertStatus(403);
     }
 

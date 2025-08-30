@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Thread;
 
 class User extends Authenticatable
@@ -51,5 +52,10 @@ class User extends Authenticatable
     public function threads(): HasMany
     {
         return $this->hasMany(Thread::class)->latest();
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class)->latest();
     }
 }

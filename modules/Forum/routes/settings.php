@@ -1,9 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Forum\Http\Controllers\Settings\ActivityController;
 use Modules\Forum\Http\Controllers\Settings\ThreadController;
 
 
 Route::controller(ThreadController::class)->group(function () {
     Route::get('settings/threads', 'index')->name('settings.threads.index');
+});
+
+Route::controller(ActivityController::class)->group(function () {
+    Route::get('settings/activities', 'index')->name('settings.activity.index');
 });
