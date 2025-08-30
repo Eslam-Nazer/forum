@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Domain\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Forum\Domain\Models\Activity;
 use ReflectionClass;
@@ -12,11 +13,16 @@ trait RecordsActivity
     {
         if (!auth()->guest()) {
             foreach (static::getActivitiesToRecord() as $event) {
-                static::$event(static function ($model) use ($event) {
+                static::$event(static function (Model $model) use ($event) {
+                logger()->info(get_class($model));
                     $model->recordActivity($event);
                 });
             }
         }
+
+        static::deleting(static function (Model $model) {
+            $model->activities()->delete();
+        });
     }
 
     protected static function getActivitiesToRecord(): array
@@ -26,13 +32,13 @@ trait RecordsActivity
 
     protected function recordActivity(string $event): void
     {
-        $this->activity()->create([
+        $this->activities()->create([
             'user_id' => auth()->id(),
             'type' => $this->getActivityEvent($event),
         ]);
     }
 
-    public function activity(): MorphMany
+    public function activities(): MorphMany
     {
         return $this->morphMany(Activity::class, 'subject');
     }

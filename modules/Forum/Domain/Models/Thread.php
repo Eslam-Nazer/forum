@@ -24,7 +24,9 @@ class Thread extends Model
         });
 
         static::deleting(static function (self $thread): void {
-            $thread->replies()->delete();
+            $thread->replies->each(function (Reply $reply) {
+                $reply->delete();
+            });
         });
     }
 

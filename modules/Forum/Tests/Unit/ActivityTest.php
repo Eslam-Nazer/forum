@@ -15,7 +15,7 @@ class ActivityTest extends TestCase
     public function test_records_activity_when_thread_is_created(): void
     {
         $this->signIn();
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_thread',
