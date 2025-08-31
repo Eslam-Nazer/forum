@@ -14,7 +14,6 @@ trait RecordsActivity
         if (!auth()->guest()) {
             foreach (static::getActivitiesToRecord() as $event) {
                 static::$event(static function (Model $model) use ($event) {
-                logger()->info(get_class($model));
                     $model->recordActivity($event);
                 });
             }

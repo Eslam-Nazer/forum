@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
+use ReflectionClass;
 use Tests\TestCase;
 
 class ActivityTest extends TestCase
@@ -53,5 +54,20 @@ class ActivityTest extends TestCase
         $this->assertTrue($feed->keys()->contains(
             now()->subWeek()->format('Y-m-d')
         ));
+    }
+
+    public function test_should_record_activity_when_it_make_favorite(): void
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class);
+
+        $favorite = $reply->favorite(auth()->id());
+
+        $this->assertDatabaseHas('activities', [
+            "type" => "created_" . strtolower(new ReflectionClass($favorite)->getShortName()),
+            "subject_type" => get_class($favorite),
+            "subject_id" => $favorite->id,
+        ]);
     }
 }
