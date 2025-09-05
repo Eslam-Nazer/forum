@@ -69,4 +69,25 @@ class ParticipateInForumTest extends TestCase
         ->assertStatus(302);
         $this->assertDatabaseMissing('replies', $reply->getAttributes());
     }
+
+    public function test_authorize_user_can_update_own_replies(): void
+    {
+        $repliesOtherUser = create(Reply::class, []);
+
+        $this->patch('replies/' . $repliesOtherUser->id, [])
+        ->assertRedirect('login');
+
+        $this->signIn();
+        $replies = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $updatedReply = 'You been changed, foo.';
+
+        $this->patch('replies/' . $repliesOtherUser->id , ['body' => $updatedReply])
+        ->assertStatus(403);
+
+        $this->patch('replies/' . $replies->id, ['body' => $updatedReply])
+        ->assertRedirect();
+
+        $this->assertDatabaseHas('replies', ['id' => $replies->id, 'body' => $updatedReply]);
+    }
 }
