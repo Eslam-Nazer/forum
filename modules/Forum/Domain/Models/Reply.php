@@ -3,13 +3,16 @@
 namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Forum\Database\Factories\ReplyFactory;
 use Modules\Forum\Domain\Traits\RecordsActivity;
+use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
 
+#[UsePolicy(ReplyPolicy::class)]
 class Reply extends Model
 {
     use HasFactory, RecordsActivity;

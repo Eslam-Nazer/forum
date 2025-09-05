@@ -4,6 +4,7 @@ namespace Modules\Forum\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Reply\FindReplyRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
@@ -11,6 +12,7 @@ use Modules\Forum\Domain\Repositories\Thread\DeleteThreadRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\CreateFavoriteRepository;
+use Modules\Forum\Infrastructure\Repositories\Reply\FindReplyRepository;
 use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThreadRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\AllThreadsRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
@@ -31,5 +33,6 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(AllThreadsRepositoryInterface::class, AllThreadsRepository::class);
         $this->app->bind(FilterThreadsRepositoryInterface::class, FilterThreadsRepository::class);
         $this->app->bind(CreateFavoriteRepositoryInterface::class, CreateFavoriteRepository::class);
+        $this->app->bind(FindReplyRepositoryInterface::class, FindReplyRepository::class);
     }
 }
