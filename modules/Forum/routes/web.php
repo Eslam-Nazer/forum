@@ -16,6 +16,7 @@ Route::controller(ThreadController::class)->group(function () {
 
 Route::controller(ReplyController::class)->group(function () {
     Route::post('threads/{channel}/{threadId}/replies', 'store')->name('threads.replies.store');
+    Route::delete('replies/{id}', 'destroy')->name('threads.replies.destroy');
 });
 
 Route::controller(FavoriteController::class)->group(function () {

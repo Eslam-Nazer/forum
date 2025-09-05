@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
+use Modules\Forum\Application\UseCases\Reply\DeleteReplyUseCase;
 use Modules\Forum\Application\UseCases\Reply\UserAddReplyInThreadUseCase;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Http\Requests\Reply\UserAddReplyInThreadRequest;
@@ -76,7 +77,10 @@ class ReplyController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id, DeleteReplyUseCase $case): RedirectResponse
     {
+        $case->execute( $id);
+
+        return redirect()->back();
     }
 }
