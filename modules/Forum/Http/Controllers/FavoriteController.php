@@ -38,9 +38,9 @@ class FavoriteController extends Controller implements HasMiddleware
      * @param CreateFavoriteUseCase $case
      * @return RedirectResponse
      */
-    public function store(string $id, CreateFavoriteUseCase $case): RedirectResponse
+    public function store(string $type,string $id, CreateFavoriteUseCase $case): RedirectResponse
     {
-        $case->execute($id);
+        $case->execute($id, $type);
         return redirect()->back();
     }
 }

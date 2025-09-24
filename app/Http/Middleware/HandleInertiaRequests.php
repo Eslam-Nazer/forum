@@ -46,6 +46,9 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'channels' => \Modules\Forum\Domain\Models\Channel::query()
+            ->select('id', 'name', 'slug')
+            ->get(),
         ];
     }
 }

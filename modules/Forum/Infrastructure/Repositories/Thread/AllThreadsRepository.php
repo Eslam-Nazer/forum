@@ -3,6 +3,7 @@
 namespace Modules\Forum\Infrastructure\Repositories\Thread;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
@@ -19,9 +20,9 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
     /**
      * @param Request $request
      * @param string|null $channel
-     * @return Collection
+     * @return Collection|LengthAwarePaginator
      */
-    public function handle(Request $request, string|null $channel = null): Collection
+    public function handle(Request $request, string|null $channel = null): Collection|LengthAwarePaginator
     {
         $threads = Thread::query()
             ->withCount('replies')
@@ -33,6 +34,6 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
 
         $threads = $this->filterThreadsRepository->apply($threads, $request);
 
-        return $threads->get();
+        return $threads->paginate(5);
     }
 }

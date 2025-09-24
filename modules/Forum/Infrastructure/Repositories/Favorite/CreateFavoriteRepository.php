@@ -3,6 +3,7 @@
 namespace Modules\Forum\Infrastructure\Repositories\Favorite;
 
 use Modules\Forum\Domain\Models\Reply;
+use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
 
 class CreateFavoriteRepository implements CreateFavoriteRepositoryInterface
@@ -12,12 +13,20 @@ class CreateFavoriteRepository implements CreateFavoriteRepositoryInterface
      * @param string $id
      * @return void
      */
-    public function handle(string $userId, string $id): void
+    public function handle(string $userId, string $type, string $id): void
     {
-        $reply = Reply::find($id);
+        $model = '';
+        if ($type === 'replies') {
+            $model = Reply::query()->find($id);
+        } elseif ($type === 'threads') {
+            $model = Thread::query()->find($id);
+        }
 
-        if ($reply->exists()) {
-            $reply->favorite($userId);
+
+        if ($model) {
+            $model->favorite($userId);
+        } else {
+            abort(404);
         }
     }
 }

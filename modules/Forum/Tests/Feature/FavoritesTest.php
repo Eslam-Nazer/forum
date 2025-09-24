@@ -5,6 +5,7 @@ namespace Modules\Forum\Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Mockery\Exception;
 use Modules\Forum\Domain\Models\Reply;
+use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
 
 class FavoritesTest extends TestCase
@@ -42,5 +43,25 @@ class FavoritesTest extends TestCase
 
         $this->assertDatabaseHas($reply->getTable(), $reply->getAttributes());
         $this->assertCount(1, $reply->favorites);
+    }
+
+    public function test_an_authenticated_user_can_favorite_thread_once(): void
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $this->post('threads/' . $thread->id . '/favorites')
+        ->assertStatus(302);
+
+        $this->assertDatabaseHas('favorites', [
+            'user_id' => auth()->id(),
+            'favorite_id' => $thread->id,
+            'favorite_type' => Thread::class,
+        ]);
+
+        $this->post('threads/' . $thread->id . '/favorites');
+
+        $this->assertCount(1, $thread->favorites);
     }
 }

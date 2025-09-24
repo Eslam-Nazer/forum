@@ -19,8 +19,8 @@ readonly class CreateFavoriteUseCase
      * @param string $id
      * @return void
      */
-    public function execute(string $id): void
+    public function execute(string $id, string $type): void
     {
-        $this->repository->handle(auth()->id(), $id);
+        $this->repository->handle(auth()->id(), $type,$id);
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Forum\Application\UseCases\Thread;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Domain\Models\Channel;
@@ -16,7 +17,7 @@ class AllThreadsUseCase
     {
     }
 
-    public function execute(Request $request, AllThreadsFilteredDto $dto): Collection
+    public function execute(Request $request, AllThreadsFilteredDto $dto): Collection|LengthAwarePaginator
     {
         $channel = '';
         if (filled($dto->channel)) {
