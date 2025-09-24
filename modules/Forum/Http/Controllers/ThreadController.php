@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
+use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
@@ -31,7 +32,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection
+    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection|Response
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
@@ -40,15 +41,18 @@ class ThreadController extends Controller implements HasMiddleware
             return $threads;
         }
 
-        return view('forum::threads.index', compact('threads'));
+        return Inertia::render('threads/Index', [
+            'Threads' => $threads,
+            'slug' => $channel
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create(): View|Response
     {
-        return view('forum::threads.create');
+        return Inertia::render('threads/Create');
     }
 
     /**
@@ -63,7 +67,7 @@ class ThreadController extends Controller implements HasMiddleware
             body: $request->validated('body')
         );
         $thread = $case->execute($data);
-        return redirect($thread->path());
+        return redirect()->route('threads.index');
     }
 
     /**

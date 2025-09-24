@@ -11,5 +11,5 @@ interface CreateFavoriteRepositoryInterface
      * @param string $id
      * @return void
      */
-    public function handle(string $userId, string $id): void;
+    public function handle(string $userId, string $type, string $id): void;
 }

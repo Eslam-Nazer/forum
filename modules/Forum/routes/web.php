@@ -21,7 +21,9 @@ Route::controller(ReplyController::class)->group(function () {
 });
 
 Route::controller(FavoriteController::class)->group(function () {
-    Route::post('replies/{id}/favorites', 'store')->name('favorite.store');
+    Route::post('{type}/{id}/favorites', 'store')
+        ->whereIn('type', ['threads', 'replies'])
+        ->name('favorite.store');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';
