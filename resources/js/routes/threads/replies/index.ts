@@ -241,9 +241,9 @@ destroyForm.delete = (args: { id: string | number } | [id: string | number ] | s
 destroy.form = destroyForm
 
 const replies = {
-    store,
-    update,
-    destroy,
+    store: Object.assign(store, store),
+    update: Object.assign(update, update),
+    destroy: Object.assign(destroy, destroy),
 }
 
 export default replies

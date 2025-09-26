@@ -26,10 +26,10 @@ interface Channel {
     id: string;
     name: string;
     slug: string;
-};
+}
 
-defineProps<{
-    channels: Channel[]
+const props =defineProps<{
+    channels: Channel[];
 }>();
 
 const form = useForm({
@@ -51,9 +51,14 @@ function submit() {
                 <h2 class="text-3xl">Create Thread</h2>
                 <form @submit.prevent="submit">
                     <div class="w-full max-w-xl">
-                        <Label for="title" class="text-lg font-bold">Title</Label>
+                        <Label for="title" class="text-lg font-bold"
+                            >Title</Label
+                        >
                         <Input v-model="form.title" id="title" />
-                        <InputError class="!text-md" :message="$page.props.errors.title" />
+                        <InputError
+                            class="!text-md"
+                            :message="$page.props.errors.title"
+                        />
 
                         <Select v-model="form.channel_id">
                             <SelectTrigger class="mt-5 w-full">
@@ -61,12 +66,26 @@ function submit() {
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectLabel>Select a channel</SelectLabel>
-                                <SelectItem v-for="channel in channels" :key="channel.id" :value="channel.id"> {{ channel.name }} </SelectItem>
+                                <SelectItem
+                                    v-for="channel in channels"
+                                    :key="channel.id"
+                                    :value="channel.id"
+                                >
+                                    {{ channel.name }}
+                                </SelectItem>
                             </SelectContent>
                         </Select>
-                        <InputError class="!text-md" :message="$page.props.errors.channel_id" />
+                        <InputError
+                            class="!text-md"
+                            :message="$page.props.errors.channel_id"
+                        />
 
-                        <Label for="body" class="mt-5 block text-lg font-bold text-gray-900 dark:text-white"> Body </Label>
+                        <Label
+                            for="body"
+                            class="mt-5 block text-lg font-bold text-gray-900 dark:text-white"
+                        >
+                            Body
+                        </Label>
                         <textarea
                             v-model="form.body"
                             id="body"
@@ -74,7 +93,10 @@ function submit() {
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-gray-500 focus:ring-gray-500 dark:border-[#262626] dark:bg-black dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-500 dark:focus:ring-gray-500"
                             placeholder="Write your thoughts here..."
                         ></textarea>
-                        <InputError class="!text-md" :message="$page.props.errors.body" />
+                        <InputError
+                            class="!text-md"
+                            :message="$page.props.errors.body"
+                        />
                         <button
                             type="submit"
                             class="my-5 me-2 mb-2 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"

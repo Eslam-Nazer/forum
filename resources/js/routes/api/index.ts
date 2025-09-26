@@ -1,7 +1,7 @@
 import forum from './forum'
 
 const api = {
-    forum,
+    forum: Object.assign(forum, forum),
 }
 
 export default api

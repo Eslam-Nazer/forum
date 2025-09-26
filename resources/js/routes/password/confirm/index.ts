@@ -1,8 +1,8 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../wayfinder'
 /**
-* @see \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-* @see app/Http/Controllers/Auth/ConfirmablePasswordController.php:26
-* @route '/confirm-password'
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
+* @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
+* @route '/user/confirm-password'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,22 +11,22 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '/confirm-password',
+    url: '/user/confirm-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
-* @see \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-* @see app/Http/Controllers/Auth/ConfirmablePasswordController.php:26
-* @route '/confirm-password'
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
+* @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
+* @route '/user/confirm-password'
 */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-* @see app/Http/Controllers/Auth/ConfirmablePasswordController.php:26
-* @route '/confirm-password'
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
+* @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
+* @route '/user/confirm-password'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -34,9 +34,9 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 })
 
 /**
-* @see \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-* @see app/Http/Controllers/Auth/ConfirmablePasswordController.php:26
-* @route '/confirm-password'
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
+* @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
+* @route '/user/confirm-password'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -44,9 +44,9 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 })
 
 /**
-* @see \App\Http\Controllers\Auth\ConfirmablePasswordController::store
-* @see app/Http/Controllers/Auth/ConfirmablePasswordController.php:26
-* @route '/confirm-password'
+* @see \Laravel\Fortify\Http\Controllers\ConfirmablePasswordController::store
+* @see vendor/laravel/fortify/src/Http/Controllers/ConfirmablePasswordController.php:51
+* @route '/user/confirm-password'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: store.url(options),
@@ -56,7 +56,7 @@ storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => (
 store.form = storeForm
 
 const confirm = {
-    store,
+    store: Object.assign(store, store),
 }
 
 export default confirm

@@ -73,7 +73,7 @@ storeForm.post = (args: { type: string | number, id: string | number } | [type: 
 store.form = storeForm
 
 const favorite = {
-    store,
+    store: Object.assign(store, store),
 }
 
 export default favorite

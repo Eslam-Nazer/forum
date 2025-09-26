@@ -1,7 +1,7 @@
 import Forum from './Forum'
 
 const Modules = {
-    Forum,
+    Forum: Object.assign(Forum, Forum),
 }
 
 export default Modules

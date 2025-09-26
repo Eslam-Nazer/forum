@@ -64,7 +64,9 @@ function onChangeChannel(slug?: Ref<string | null>): void {
 }
 
 const numericLinks = computed(() => {
-    const links = props.Threads.links.filter((link: any) => !isNaN(Number(link.label)));
+    const links = props.Threads.links.filter(
+        (link: any) => !isNaN(Number(link.label)),
+    );
     const currentLink = links.find((link: any) => link.active);
 
     if (!currentLink) return links; // Handle case where no active link is found
@@ -133,13 +135,24 @@ const numericLinks = computed(() => {
                 </div>
 
                 <div>
-                    <Select v-model="selectChannel" @update:model-value="onChangeChannel">
+                    <Select
+                        v-model="selectChannel"
+                        @update:model-value="onChangeChannel"
+                    >
                         <SelectTrigger>
                             <SelectValue placeholder="Select Channel" />
                         </SelectTrigger>
                         <SelectContent>
-                            <RecycleScroller :items="channels" :item-size="30" key-field="id" v-slot="{ item: channel }">
-                                <SelectItem :key="channel.id" :value="channel.slug">
+                            <RecycleScroller
+                                :items="channels"
+                                :item-size="30"
+                                key-field="id"
+                                v-slot="{ item: channel }"
+                            >
+                                <SelectItem
+                                    :key="channel.id"
+                                    :value="channel.slug"
+                                >
                                     {{ channel.name }}
                                 </SelectItem>
                             </RecycleScroller>
@@ -152,9 +165,18 @@ const numericLinks = computed(() => {
                 class="my-4 w-3/4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                 :key="thread.id"
             >
-                <div class="block">Create By: {{ thread.creator.name }} at {{ dayjs(thread.created_at).format('HH:mm YYYY-MM-DD') }}</div>
-                <div class="mb-2 flex content-center items-center justify-between">
-                    <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ thread.title }}</h5>
+                <div class="block">
+                    Create By: {{ thread.creator.name }} at
+                    {{ dayjs(thread.created_at).format('HH:mm YYYY-MM-DD') }}
+                </div>
+                <div
+                    class="mb-2 flex content-center items-center justify-between"
+                >
+                    <h5
+                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                    >
+                        {{ thread.title }}
+                    </h5>
 
                     <div class="flex flex-col items-center justify-center">
                         <TextLink
@@ -171,7 +193,12 @@ const numericLinks = computed(() => {
                             class="cursor-pointer"
                             preserve-scroll
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                class="size-6"
+                            >
                                 <path
                                     d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
                                 />
@@ -180,7 +207,9 @@ const numericLinks = computed(() => {
                         <span>{{ thread.favorites_count }}</span>
                     </div>
                 </div>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ thread.body }}</p>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                    {{ thread.body }}
+                </p>
                 <a
                     href="#"
                     class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -193,7 +222,13 @@ const numericLinks = computed(() => {
                         fill="none"
                         viewBox="0 0 14 10"
                     >
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M1 5h12m0 0L9 1m4 4L9 9"
+                        />
                     </svg>
                 </a>
             </div>

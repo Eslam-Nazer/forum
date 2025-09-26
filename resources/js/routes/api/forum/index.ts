@@ -429,11 +429,11 @@ destroyForm.delete = (args: { forum: string | number } | [forum: string | number
 destroy.form = destroyForm
 
 const forum = {
-    index,
-    store,
-    show,
-    update,
-    destroy,
+    index: Object.assign(index, index),
+    store: Object.assign(store, store),
+    show: Object.assign(show, show),
+    update: Object.assign(update, update),
+    destroy: Object.assign(destroy, destroy),
 }
 
 export default forum

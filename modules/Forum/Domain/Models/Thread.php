@@ -40,7 +40,7 @@ class Thread extends Model
     /**
      * @var list<string>
      */
-    protected $with = ['creator', 'channel'];
+    protected $with = ['creator', 'channel', 'favorites'];
 
     /**
      * @var array<string
@@ -126,6 +126,6 @@ class Thread extends Model
 
     public function isFavorite(): Attribute
     {
-        return Attribute::make(get: fn() => $this->favorites()->where('user_id', auth()->id())->exists());
+        return Attribute::make(get: fn() => $this->favorites->isNotEmpty());
     }
 }
