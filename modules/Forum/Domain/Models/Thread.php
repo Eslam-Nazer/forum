@@ -40,7 +40,7 @@ class Thread extends Model
     /**
      * @var list<string>
      */
-    protected $with = ['creator', 'channel', 'favorites'];
+    protected $with = ['creator', 'channel', 'favorites', 'replies'];
 
     /**
      * @var array<string

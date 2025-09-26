@@ -76,7 +76,34 @@ class ThreadController extends Controller implements HasMiddleware
     public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
     {
         $thread = $case->execute($id, $channel);
-        return view('forum::threads.show', compact('thread'));
+
+        return Inertia::render('threads/Show', [
+            'thread' => [
+                'id' => $thread->id,
+                'title' => $thread->title,
+                'body' => $thread->body,
+                'channel' => $thread->channel,
+                'replies' => $thread->replies->map(fn ($reply) => [
+                    'id' => $reply->id,
+                    'body' => $reply->body,
+                    'owner' => $reply->owner,
+                    'created_at' => $reply->created_at,
+                    'is_favorite' => $reply->is_favorite,
+                    'favorites_count' => $reply->favorites_count,
+                    'can' => [
+                        'update' => request()->user()->can('update', $reply),
+                        'delete' => request()->user()->can('delete', $reply),
+                    ]
+                ]),
+                'creator' => $thread->creator,
+                'isFavorite' => $thread->is_favorite,
+                'created_at' => $thread->created_at,
+                'can' => [
+                    'update' => request()->user()->can('update', $thread),
+                    'delete' => request()->user()->can('delete', $thread),
+                ]
+            ],
+        ]);
     }
 
     public function destroy(string $channel, string $id, DeleteThreadUseCase $case): RedirectResponse
