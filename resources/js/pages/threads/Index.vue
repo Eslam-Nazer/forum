@@ -210,9 +210,14 @@ const numericLinks = computed(() => {
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                     {{ thread.body }}
                 </p>
-                <a
-                    href="#"
-                    class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                <TextLink
+                    :href="
+                        threads.show({
+                            channel: thread.channel.slug,
+                            id: thread.id,
+                        })
+                    "
+                    class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white !no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                     Show {{ thread.replies_count }} Replies
                     <svg
@@ -230,7 +235,7 @@ const numericLinks = computed(() => {
                             d="M1 5h12m0 0L9 1m4 4L9 9"
                         />
                     </svg>
-                </a>
+                </TextLink>
             </div>
 
             <nav class="content-end-safe" aria-label="Page navigation example">

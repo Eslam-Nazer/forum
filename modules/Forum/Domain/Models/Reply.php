@@ -4,10 +4,12 @@ namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Database\Factories\ReplyFactory;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
@@ -21,6 +23,8 @@ class Reply extends Model
      * @var string
      */
     protected $table = 'replies';
+
+    protected $appends = ['is_favorite'];
 
     /**
      * @var list<string>
@@ -78,10 +82,12 @@ class Reply extends Model
     /**
      * @return bool
      */
-    public function isFavorite(): bool
+    public function isFavorite(): Attribute
     {
-        return (bool)$this->favorites
-            ->where('user_id', '=', auth()->id())
-            ->count();
+        return Attribute::make(
+            get: fn() => (bool)$this->favorites
+                ->where('user_id', '=', Auth::id())
+                ->count()
+        );
     }
 }

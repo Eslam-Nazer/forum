@@ -63,7 +63,7 @@ class ReplyController extends Controller implements HasMiddleware
 
     public function destroy(string $id, DeleteReplyUseCase $case): RedirectResponse
     {
-        $case->execute( $id);
+        $case->execute($id);
 
         return redirect()->back();
     }
