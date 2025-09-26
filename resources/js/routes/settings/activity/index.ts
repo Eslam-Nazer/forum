@@ -81,7 +81,7 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 index.form = indexForm
 
 const activity = {
-    index,
+    index: Object.assign(index, index),
 }
 
 export default activity

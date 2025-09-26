@@ -5,11 +5,11 @@ import FavoriteController from './FavoriteController'
 import Settings from './Settings'
 
 const Controllers = {
-    ForumController,
-    ThreadController,
-    ReplyController,
-    FavoriteController,
-    Settings,
+    ForumController: Object.assign(ForumController, ForumController),
+    ThreadController: Object.assign(ThreadController, ThreadController),
+    ReplyController: Object.assign(ReplyController, ReplyController),
+    FavoriteController: Object.assign(FavoriteController, FavoriteController),
+    Settings: Object.assign(Settings, Settings),
 }
 
 export default Controllers

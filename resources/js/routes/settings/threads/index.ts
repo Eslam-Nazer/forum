@@ -81,7 +81,7 @@ indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 index.form = indexForm
 
 const threads = {
-    index,
+    index: Object.assign(index, index),
 }
 
 export default threads

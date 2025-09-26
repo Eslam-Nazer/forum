@@ -503,13 +503,13 @@ destroyForm.delete = (args: { channel: string | number, id: string | number } | 
 destroy.form = destroyForm
 
 const threads = {
-    index,
-    create,
-    store,
-    show,
-    channel,
-    destroy,
-    replies,
+    index: Object.assign(index, index),
+    create: Object.assign(create, create),
+    store: Object.assign(store, store),
+    show: Object.assign(show, show),
+    channel: Object.assign(channel, channel),
+    destroy: Object.assign(destroy, destroy),
+    replies: Object.assign(replies, replies),
 }
 
 export default threads
