@@ -25,6 +25,7 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_view_a_single_thread(): void
     {
+        $this->signIn();
         $thread = create(Thread::class);
         $this->get($thread->path())
             ->assertSee($thread->title)
@@ -33,6 +34,7 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_see_replies_in_thread(): void
     {
+        $this->signIn();
         $thread = create(Thread::class);
         $reply = Reply::factory()->create(['thread_id' => $thread->id]);
         $this->get($thread->path())
@@ -66,6 +68,7 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_filter_threads_by_popularity(): void
     {
+        $this->signIn();
         $threadWithThreeReplies = create(Thread::class);
         create(Reply::class, ['thread_id' => $threadWithThreeReplies->id], 3);
 
@@ -76,6 +79,6 @@ class ReadThreadTest extends TestCase
 
         $response = $this->getJson('threads?popular')->json();
 
-        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
     }
 }

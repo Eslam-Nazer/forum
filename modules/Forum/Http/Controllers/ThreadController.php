@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
@@ -32,7 +33,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection|Response
+    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
@@ -83,7 +84,7 @@ class ThreadController extends Controller implements HasMiddleware
                 'title' => $thread->title,
                 'body' => $thread->body,
                 'channel' => $thread->channel,
-                'replies' => $thread->replies->map(fn ($reply) => [
+                'replies' => $thread->replies->map(fn($reply) => [
                     'id' => $reply->id,
                     'body' => $reply->body,
                     'owner' => $reply->owner,
