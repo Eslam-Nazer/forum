@@ -11,11 +11,7 @@ class FindThreadRepository implements FindThreadRepositoryInterface
     {
         return Thread::query()
             ->where('id', '=', $thread_id)
-            ->whereHas('channel', function ($query) use ($channel) {
-                $query->where('slug', '=', $channel);
-            })
-            ->firstOr(function () {
-                return null;
-            });
+            ->whereRelation('channel', 'slug', '=', $channel)
+            ->first();
     }
 }

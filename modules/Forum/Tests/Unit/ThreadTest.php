@@ -12,6 +12,8 @@ class ThreadTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected Thread $thread;
+
     public function setUp(): void
     {
         parent::setUp();

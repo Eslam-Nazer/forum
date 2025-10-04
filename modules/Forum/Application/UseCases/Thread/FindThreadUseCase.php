@@ -2,7 +2,6 @@
 
 namespace Modules\Forum\Application\UseCases\Thread;
 
-use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 

@@ -1,14 +1,22 @@
 <script setup lang="ts">
-import TextLink from '@/components/TextLink.vue';
+import AlertDialog from '@/components/ui/alert-dialog/AlertDialog.vue';
+import AlertDialogAction from '@/components/ui/alert-dialog/AlertDialogAction.vue';
+import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
+import AlertDialogContent from '@/components/ui/alert-dialog/AlertDialogContent.vue';
+import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue';
+import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
+import AlertDialogHeader from '@/components/ui/alert-dialog/AlertDialogHeader.vue';
+import AlertDialogTitle from '@/components/ui/alert-dialog/AlertDialogTitle.vue';
+import AlertDialogTrigger from '@/components/ui/alert-dialog/AlertDialogTrigger.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Card from '@/components/ui/card/Card.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
-import favorite from '@/routes/favorite';
 import replies from '@/routes/threads/replies';
 import { useForm } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ref } from 'vue';
+import FavoriteButton from '../favorites/FavoriteButton.vue';
 
 const props = defineProps<{
     reply: any;
@@ -38,6 +46,17 @@ function update() {
     );
 }
 
+function destroy() {
+    fromReply.delete(
+        replies.destroy({
+            id: props.reply.id,
+        }).url,
+        {
+            preserveScroll: true,
+        },
+    );
+}
+
 dayjs.extend(relativeTime);
 </script>
 
@@ -47,50 +66,49 @@ dayjs.extend(relativeTime);
             <h2 class="text-md">
                 {{ reply.owner.name }} replied at:
                 {{ dayjs(reply.created_at).fromNow() }}
+                <span v-if="reply.updated_at !== reply.created_at">
+                    &amp; updated at:
+                    {{ dayjs(reply.updated_at).fromNow() }}
+                </span>
             </h2>
             <div class="flex flex-col items-center justify-center">
-                <TextLink
-                    :href="
-                        favorite.store({
-                            type: 'replies',
-                            id: reply.id,
-                        })
-                    "
-                    :method="'post'"
-                    :class="{
-                        'text-red-400': reply.is_favorite,
-                    }"
-                    class="cursor-pointer"
-                    preserve-scroll
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="size-6"
-                    >
-                        <path
-                            d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
-                        />
-                    </svg>
-                </TextLink>
-                <span>{{ reply.favorites_count }}</span>
+                <FavoriteButton :model="reply" :type="'replies'" />
             </div>
         </div>
         <div>
             <div v-if="isEditing" class="my-4">
                 <Textarea v-model="fromReply.body" />
-                <Button class="mt-3 cursor-pointer" @click="update"
-                    >update</Button
-                >
-                <Button class="mt-3 ml-2 cursor-pointer" @click="toggleEditing"
-                    >cancel</Button
-                >
+                <Button class="mt-3 cursor-pointer" @click="update">
+                    update
+                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger>
+                        <Button class="mt-3 ml-2 cursor-pointer">
+                            cancel
+                        </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Are you sure to cancel?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                When you confirm this action, your changes will
+                                not be saved
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction @click="toggleEditing">
+                                Confirm
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
             <div v-else>
                 <div class="text-md">{{ reply.body }}</div>
             </div>
-            <!-- i need check first if user authorized to edit it or not -->
             <div class="mt-2 flex items-center">
                 <Button
                     v-if="reply.can.update && !isEditing"
@@ -99,12 +117,34 @@ dayjs.extend(relativeTime);
                 >
                     edit
                 </Button>
-                <Button
-                    v-if="reply.can.delete && !isEditing"
-                    class="mr-2 cursor-pointer"
-                >
-                    remove reply
-                </Button>
+                <AlertDialog>
+                    <AlertDialogTrigger>
+                        <Button
+                            v-if="reply.can.delete && !isEditing"
+                            class="mr-2 cursor-pointer"
+                        >
+                            remove reply
+                        </Button>
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Are you sure to delete reply?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                When you confirm this action, this reply will be
+                                deleted
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction @click="destroy">
+                                Confirm
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
         </div>
     </Card>

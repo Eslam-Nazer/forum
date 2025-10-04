@@ -10,6 +10,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
@@ -38,6 +39,15 @@ class ThreadController extends Controller implements HasMiddleware
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
 
+        $threads->through(function ($thread) {
+            $thread->can = [
+                'update' => request()->user()->can('update', $thread),
+                'delete' => request()->user()->can('delete', $thread),
+            ];
+
+            return $thread;
+        });
+
         if ($request->wantsJson()) {
             return $threads;
         }
@@ -62,7 +72,7 @@ class ThreadController extends Controller implements HasMiddleware
     public function store(CreateThreadRequest $request, CreateThreadUseCase $case): RedirectResponse
     {
         $data = new CreateThreadDto(
-            userId: auth()->id(),
+            userId: Auth::id(),
             channelId: $request->validated('channel_id'),
             title: $request->validated('title'),
             body: $request->validated('body')
@@ -89,6 +99,7 @@ class ThreadController extends Controller implements HasMiddleware
                     'body' => $reply->body,
                     'owner' => $reply->owner,
                     'created_at' => $reply->created_at,
+                    'updated_at' => $reply->updated_at,
                     'is_favorite' => $reply->is_favorite,
                     'favorites_count' => $reply->favorites_count,
                     'can' => [

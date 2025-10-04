@@ -6,12 +6,12 @@ import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
-import favorite from '@/routes/favorite';
 import threads from '@/routes/threads';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import { computed, Ref, ref } from 'vue';
+import FavoriteButton from '../favorites/FavoriteButton.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -121,8 +121,8 @@ const numericLinks = computed(() => {
     <Head title="Threads" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto mt-4 max-w-4xl">
-            <div class="flex w-3/4 justify-between">
+        <div class="mx-auto mt-4 max-w-4xl w-full">
+            <div class="flex w-full justify-between">
                 <div>
                     <TextLink
                         :href="threads.create()"
@@ -162,7 +162,7 @@ const numericLinks = computed(() => {
             </div>
             <div
                 v-for="thread in Threads.data"
-                class="my-4 w-3/4 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                class="my-4 w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                 :key="thread.id"
             >
                 <div class="block">
@@ -179,32 +179,7 @@ const numericLinks = computed(() => {
                     </h5>
 
                     <div class="flex flex-col items-center justify-center">
-                        <TextLink
-                            :href="
-                                favorite.store({
-                                    type: 'threads',
-                                    id: thread.id,
-                                })
-                            "
-                            :method="'post'"
-                            :class="{
-                                'text-red-400': thread.is_favorite,
-                            }"
-                            class="cursor-pointer"
-                            preserve-scroll
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                class="size-6"
-                            >
-                                <path
-                                    d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z"
-                                />
-                            </svg>
-                        </TextLink>
-                        <span>{{ thread.favorites_count }}</span>
+                        <FavoriteButton :model="thread" :type="'threads'" />
                     </div>
                 </div>
                 <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
