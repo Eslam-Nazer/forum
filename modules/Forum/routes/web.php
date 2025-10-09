@@ -21,9 +21,13 @@ Route::controller(ReplyController::class)->group(function () {
 });
 
 Route::controller(FavoriteController::class)->group(function () {
-    Route::post('{type}/{id}/favorites', 'store')
+    Route::post('favorites/{type}/{id}', 'store')
         ->whereIn('type', ['threads', 'replies'])
         ->name('favorite.store');
+
+    Route::delete('favorites/{type}/{id}', 'destroy')
+        ->whereIn('type', ['threads', 'replies'])
+        ->name('favorite.destroy');
 });
 
 require __DIR__ . '/settings.php';

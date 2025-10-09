@@ -4,6 +4,7 @@ namespace Modules\Forum\Domain\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Domain\Models\Activity;
 use ReflectionClass;
 
@@ -11,7 +12,7 @@ trait RecordsActivity
 {
     protected static function bootRecordsActivity(): void
     {
-        if (!auth()->guest()) {
+        if (!Auth::guest()) {
             foreach (static::getActivitiesToRecord() as $event) {
                 static::$event(static function (Model $model) use ($event) {
                     $model->recordActivity($event);
@@ -32,7 +33,7 @@ trait RecordsActivity
     protected function recordActivity(string $event): void
     {
         $this->activities()->create([
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'type' => $this->getActivityEvent($event),
         ]);
     }
@@ -44,7 +45,7 @@ trait RecordsActivity
 
     protected function getActivityEvent(string $event): string
     {
-        $type = strtolower(new ReflectionClass($this)->getShortName());
+        $type = strtolower((new ReflectionClass($this))->getShortName());
         return $event . '_' . $type;
     }
 }

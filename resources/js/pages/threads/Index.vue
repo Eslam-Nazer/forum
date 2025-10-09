@@ -121,7 +121,7 @@ const numericLinks = computed(() => {
     <Head title="Threads" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mx-auto mt-4 max-w-4xl w-full">
+        <div class="mx-auto mt-4 w-full max-w-4xl">
             <div class="flex w-full justify-between">
                 <div>
                     <TextLink
