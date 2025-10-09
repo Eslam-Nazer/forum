@@ -2,9 +2,7 @@
 
 namespace Modules\Forum\Infrastructure\Repositories\Favorite;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Modules\Forum\Domain\Models\Favorite;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
@@ -19,13 +17,14 @@ class DestroyFavoriteRepository implements DestroyFavoriteRepositoryInterface
             'threads' => Thread::query()->find($id),
         };
 
-        $favorite = Favorite::query()
+        $model = $model->favorites()
             ->where('user_id', '=', Auth::id())
-            ->whereMorphedTo('favorite', $model)
             ->first();
 
-        if ($favorite) {
-            $favorite->delete();
+        if (!$model) {
+            abort(404);
         }
+
+        $model->delete();
     }
 }

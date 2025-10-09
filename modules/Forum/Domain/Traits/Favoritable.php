@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Forum\Domain\Models\Favorite as FavoriteModel;
 
-trait Favorite
+trait Favoritable
 {
+    public static function bootFavoritable(): void
+    {
+        static::deleting(static function (Model $model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function favorites(): MorphMany
     {
         return $this->morphMany(FavoriteModel::class, 'favorite');
@@ -26,5 +33,10 @@ trait Favorite
     public function isFavorite(): Attribute
     {
         return Attribute::make(get: fn() => $this->favorites->isNotEmpty());
+    }
+
+    public function unFavorite(string $userId): void
+    {
+        $this->favorites()->where('user_id', $userId)->get()->each->delete();
     }
 }

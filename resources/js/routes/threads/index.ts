@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 import replies from './replies'
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -17,7 +17,7 @@ index.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -26,7 +26,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -36,7 +36,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -46,7 +46,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -56,7 +56,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -66,7 +66,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -83,7 +83,7 @@ index.form = indexForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -98,7 +98,7 @@ create.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 create.url = (options?: RouteQueryOptions) => {
@@ -107,7 +107,7 @@ create.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -117,7 +117,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -127,7 +127,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -137,7 +137,7 @@ const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -147,7 +147,7 @@ createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
-* @see modules/Forum/Http/Controllers/ThreadController.php:54
+* @see modules/Forum/Http/Controllers/ThreadController.php:64
 * @route '/threads/create'
 */
 createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -164,7 +164,7 @@ create.form = createForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::store
-* @see modules/Forum/Http/Controllers/ThreadController.php:62
+* @see modules/Forum/Http/Controllers/ThreadController.php:72
 * @route '/threads'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -179,7 +179,7 @@ store.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::store
-* @see modules/Forum/Http/Controllers/ThreadController.php:62
+* @see modules/Forum/Http/Controllers/ThreadController.php:72
 * @route '/threads'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -188,7 +188,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::store
-* @see modules/Forum/Http/Controllers/ThreadController.php:62
+* @see modules/Forum/Http/Controllers/ThreadController.php:72
 * @route '/threads'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -198,7 +198,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::store
-* @see modules/Forum/Http/Controllers/ThreadController.php:62
+* @see modules/Forum/Http/Controllers/ThreadController.php:72
 * @route '/threads'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -208,7 +208,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::store
-* @see modules/Forum/Http/Controllers/ThreadController.php:62
+* @see modules/Forum/Http/Controllers/ThreadController.php:72
 * @route '/threads'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -220,7 +220,7 @@ store.form = storeForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 export const show = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -235,7 +235,7 @@ show.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 show.url = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions) => {
@@ -261,7 +261,7 @@ show.url = (args: { channel: string | number, id: string | number } | [channel: 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 show.get = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -271,7 +271,7 @@ show.get = (args: { channel: string | number, id: string | number } | [channel: 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 show.head = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -281,7 +281,7 @@ show.head = (args: { channel: string | number, id: string | number } | [channel:
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 const showForm = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -291,7 +291,7 @@ const showForm = (args: { channel: string | number, id: string | number } | [cha
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 showForm.get = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -301,7 +301,7 @@ showForm.get = (args: { channel: string | number, id: string | number } | [chann
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
-* @see modules/Forum/Http/Controllers/ThreadController.php:77
+* @see modules/Forum/Http/Controllers/ThreadController.php:87
 * @route '/threads/{channel}/{id}'
 */
 showForm.head = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -318,7 +318,7 @@ show.form = showForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 export const channel = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -333,7 +333,7 @@ channel.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 channel.url = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -364,7 +364,7 @@ channel.url = (args?: { channel?: string | number } | [channel: string | number 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 channel.get = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -374,7 +374,7 @@ channel.get = (args?: { channel?: string | number } | [channel: string | number 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 channel.head = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -384,7 +384,7 @@ channel.head = (args?: { channel?: string | number } | [channel: string | number
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 const channelForm = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -394,7 +394,7 @@ const channelForm = (args?: { channel?: string | number } | [channel: string | n
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 channelForm.get = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -404,7 +404,7 @@ channelForm.get = (args?: { channel?: string | number } | [channel: string | num
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::channel
-* @see modules/Forum/Http/Controllers/ThreadController.php:36
+* @see modules/Forum/Http/Controllers/ThreadController.php:37
 * @route '/threads/{channel?}'
 */
 channelForm.head = (args?: { channel?: string | number } | [channel: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -421,7 +421,7 @@ channel.form = channelForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:111
+* @see modules/Forum/Http/Controllers/ThreadController.php:121
 * @route '/threads/{channel}/{id}'
 */
 export const destroy = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -436,7 +436,7 @@ destroy.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:111
+* @see modules/Forum/Http/Controllers/ThreadController.php:121
 * @route '/threads/{channel}/{id}'
 */
 destroy.url = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions) => {
@@ -462,7 +462,7 @@ destroy.url = (args: { channel: string | number, id: string | number } | [channe
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:111
+* @see modules/Forum/Http/Controllers/ThreadController.php:121
 * @route '/threads/{channel}/{id}'
 */
 destroy.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -472,7 +472,7 @@ destroy.delete = (args: { channel: string | number, id: string | number } | [cha
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:111
+* @see modules/Forum/Http/Controllers/ThreadController.php:121
 * @route '/threads/{channel}/{id}'
 */
 const destroyForm = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -487,7 +487,7 @@ const destroyForm = (args: { channel: string | number, id: string | number } | [
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:111
+* @see modules/Forum/Http/Controllers/ThreadController.php:121
 * @route '/threads/{channel}/{id}'
 */
 destroyForm.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

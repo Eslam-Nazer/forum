@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Forum\Database\Factories\ReplyFactory;
-use Modules\Forum\Domain\Traits\Favorite;
+use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
 
 #[UsePolicy(ReplyPolicy::class)]
 class Reply extends Model
 {
-    use HasFactory, RecordsActivity, Favorite;
+    use HasFactory, RecordsActivity, Favoritable;
 
     /**
      * @var string

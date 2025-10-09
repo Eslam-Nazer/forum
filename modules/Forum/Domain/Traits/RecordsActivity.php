@@ -21,7 +21,7 @@ trait RecordsActivity
         }
 
         static::deleting(static function (Model $model) {
-            $model->activities()->delete();
+            $model->activities->each->delete();
         });
     }
 

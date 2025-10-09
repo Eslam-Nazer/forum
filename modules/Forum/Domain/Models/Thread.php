@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ThreadFactory;
-use Modules\Forum\Domain\Traits\Favorite;
+use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory, RecordsActivity, Favorite;
+    use HasFactory, RecordsActivity, Favoritable;
 
     protected static function booted(): void
     {
