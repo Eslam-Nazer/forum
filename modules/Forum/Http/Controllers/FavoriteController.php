@@ -5,7 +5,9 @@ namespace Modules\Forum\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Modules\Forum\Application\DTOs\Favorite\DestroyFavoriteDto;
 use Modules\Forum\Application\UseCases\Favorite\CreateFavoriteUseCase;
+use Modules\Forum\Application\UseCases\Favorite\DestroyFavoriteUseCase;
 
 class FavoriteController extends Controller implements HasMiddleware
 {
@@ -17,30 +19,29 @@ class FavoriteController extends Controller implements HasMiddleware
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('forum::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('forum::create');
-    }
-
-    /**
      * Store a newly created resource in storage.
      * @param string $id
      * @param CreateFavoriteUseCase $case
      * @return RedirectResponse
      */
-    public function store(string $type,string $id, CreateFavoriteUseCase $case): RedirectResponse
+    public function store(string $type, string $id, CreateFavoriteUseCase $case): RedirectResponse
     {
         $case->execute($id, $type);
+        return redirect()->back();
+    }
+
+    /**
+     * Summary of destroy
+     * @param string $type
+     * @param string $id
+     * @param DestroyFavoriteUseCase $case
+     * @return RedirectResponse
+     */
+    public function destroy(string $type, string $id, DestroyFavoriteUseCase $case): RedirectResponse
+    {
+        $dto = new DestroyFavoriteDto($id, $type);
+
+        $case->execute($dto);
         return redirect()->back();
     }
 }

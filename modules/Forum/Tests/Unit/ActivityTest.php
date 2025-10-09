@@ -3,6 +3,7 @@
 namespace Modules\Forum\Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
@@ -16,11 +17,11 @@ class ActivityTest extends TestCase
     public function test_records_activity_when_thread_is_created(): void
     {
         $this->signIn();
-        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $thread = create(Thread::class, ['user_id' => Auth::id()]);
 
         $this->assertDatabaseHas('activities', [
             'type' => 'created_thread',
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'subject_id' => $thread->id,
             'subject_type' => get_class($thread),
         ]);
@@ -42,10 +43,10 @@ class ActivityTest extends TestCase
     public function test_fetching_a_feed_for_any_user(): void
     {
         $this->signIn();
-        create(Thread::class, ['user_id' => auth()->id()], 2);
+        create(Thread::class, ['user_id' => Auth::id()], 2);
 
-        auth()->user()->activities()->first()->update(['created_at' => now()->subWeek()]);
-        $feed = Activity::feed(auth()->user());
+        Auth::user()->activities()->first()->update(['created_at' => now()->subWeek()]);
+        $feed = Activity::feed(Auth::user());
 
         $this->assertTrue($feed->keys()->contains(
             now()->format('Y-m-d')
@@ -62,10 +63,10 @@ class ActivityTest extends TestCase
 
         $reply = create(Reply::class);
 
-        $favorite = $reply->favorite(auth()->id());
+        $favorite = $reply->favorite(Auth::id());
 
         $this->assertDatabaseHas('activities', [
-            "type" => "created_" . strtolower(new ReflectionClass($favorite)->getShortName()),
+            "type" => "created_" . strtolower((new ReflectionClass($favorite))->getShortName()),
             "subject_type" => get_class($favorite),
             "subject_id" => $favorite->id,
         ]);
