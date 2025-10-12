@@ -6,11 +6,13 @@ import SelectItem from '@/components/ui/select/SelectItem.vue';
 import SelectTrigger from '@/components/ui/select/SelectTrigger.vue';
 import SelectValue from '@/components/ui/select/SelectValue.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
+import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
-import { computed, Ref, ref } from 'vue';
+import { Ref, ref } from 'vue';
+import Paginator from '../accessories/paginations/Paginator.vue';
 import FavoriteButton from '../favorites/FavoriteButton.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -40,6 +42,7 @@ interface Thread {
     is_favorite: boolean;
     replies_count: number;
     favorites_count: number;
+    last_page: number;
 }
 
 const props = defineProps<{
@@ -49,6 +52,9 @@ const props = defineProps<{
         links: any[];
         prev_page_url: string;
         next_page_url: string;
+        current_page?: number;
+        per_page: number;
+        total: number;
     };
     slug?: string;
 }>();
@@ -63,58 +69,58 @@ function onChangeChannel(slug?: Ref<string | null>): void {
     }
 }
 
-const numericLinks = computed(() => {
-    const links = props.Threads.links.filter(
-        (link: any) => !isNaN(Number(link.label)),
-    );
-    const currentLink = links.find((link: any) => link.active);
+// const numericLinks = computed(() => {
+//     const links = props.Threads.links.filter(
+//         (link: any) => !isNaN(Number(link.label)),
+//     );
+//     const currentLink = links.find((link: any) => link.active);
 
-    if (!currentLink) return links; // Handle case where no active link is found
+//     if (!currentLink) return links; // Handle case where no active link is found
 
-    const current = Number(currentLink.label);
-    const totalPages = links.length;
-    const pages = [];
+//     const current = Number(currentLink.label);
+//     const totalPages = links.length;
+//     const pages = [];
 
-    // If we have 10 or fewer pages, show all pages
-    if (totalPages <= 10) return links;
+//     // If we have 10 or fewer pages, show all pages
+//     if (totalPages <= 10) return links;
 
-    // Always include the first page
-    pages.push(links[0]);
+//     // Always include the first page
+//     pages.push(links[0]);
 
-    if (current <= 4) {
-        // Show pages 1-5, then ellipsis, then last page
-        pages.push(...links.slice(1, 5));
-        if (totalPages > 6) {
-            pages.push({ label: '...', url: null, active: false });
-            pages.push(links[links.length - 1]);
-        }
-    } else if (current >= totalPages - 3) {
-        // Show first page, ellipsis, then last 5 pages
-        if (totalPages > 6) {
-            pages.push({ label: '...', url: null, active: false });
-        }
-        pages.push(...links.slice(totalPages - 5, totalPages));
-    } else {
-        // Show first page, ellipsis, current page ±2, ellipsis, last page
-        pages.push({ label: '...', url: null, active: false });
-        pages.push(...links.slice(current - 3, current + 2));
-        pages.push({ label: '...', url: null, active: false });
-        pages.push(links[links.length - 1]);
-    }
+//     if (current <= 4) {
+//         // Show pages 1-5, then ellipsis, then last page
+//         pages.push(...links.slice(1, 5));
+//         if (totalPages > 6) {
+//             pages.push({ label: '...', url: null, active: false });
+//             pages.push(links[links.length - 1]);
+//         }
+//     } else if (current >= totalPages - 3) {
+//         // Show first page, ellipsis, then last 5 pages
+//         if (totalPages > 6) {
+//             pages.push({ label: '...', url: null, active: false });
+//         }
+//         pages.push(...links.slice(totalPages - 5, totalPages));
+//     } else {
+//         // Show first page, ellipsis, current page ±2, ellipsis, last page
+//         pages.push({ label: '...', url: null, active: false });
+//         pages.push(...links.slice(current - 3, current + 2));
+//         pages.push({ label: '...', url: null, active: false });
+//         pages.push(links[links.length - 1]);
+//     }
 
-    // Remove duplicates that might occur at boundaries
-    const uniquePages = [];
-    const seenLabels = new Set();
+//     // Remove duplicates that might occur at boundaries
+//     const uniquePages = [];
+//     const seenLabels = new Set();
 
-    for (const page of pages) {
-        if (!seenLabels.has(page.label)) {
-            uniquePages.push(page);
-            seenLabels.add(page.label);
-        }
-    }
+//     for (const page of pages) {
+//         if (!seenLabels.has(page.label)) {
+//             uniquePages.push(page);
+//             seenLabels.add(page.label);
+//         }
+//     }
 
-    return uniquePages;
-});
+//     return uniquePages;
+// });
 </script>
 
 <template>
@@ -128,7 +134,7 @@ const numericLinks = computed(() => {
                         :href="threads.create()"
                         type="button"
                         class="me-2 mb-2 cursor-pointer rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        :class="['!no-underline']"
+                        :class="cn('!no-underline')"
                     >
                         New Thread
                     </TextLink>
@@ -213,7 +219,7 @@ const numericLinks = computed(() => {
                 </TextLink>
             </div>
 
-            <nav class="content-end-safe" aria-label="Page navigation example">
+            <!-- <nav class="content-end-safe" aria-label="Page navigation example">
                 <ul class="inline-flex h-10 -space-x-px text-base">
                     <li>
                         <Component
@@ -247,7 +253,17 @@ const numericLinks = computed(() => {
                         </Component>
                     </li>
                 </ul>
-            </nav>
+            </nav> -->
+
+            <Paginator
+                :links="Threads.links"
+                :currentPage="Threads.current_page"
+                :perPage="Threads.per_page"
+                :total="Threads.total"
+                :nextPageUrl="Threads.next_page_url"
+                :prevPageUrl="Threads.prev_page_url"
+                :lastPage="Threads.last_page"
+            />
         </div>
     </AppLayout>
 </template>

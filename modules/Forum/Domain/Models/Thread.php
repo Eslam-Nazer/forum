@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Http;
 use Modules\Forum\Database\Factories\ThreadFactory;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -104,6 +105,9 @@ class Thread extends Model
         $this->replies()->create($reply);
     }
 
+    /**
+     * @return BelongsTo<Channel, Thread>
+     */
     public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
