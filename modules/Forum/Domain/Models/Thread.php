@@ -3,15 +3,15 @@
 namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Http;
-use Modules\Forum\Database\Factories\ThreadFactory;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Modules\Forum\Database\Factories\ThreadFactory;
+use Modules\Forum\Domain\Models\ThreadSubscription;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 #[UsePolicy(ThreadPolicy::class)]
@@ -112,5 +112,40 @@ class Thread extends Model
     public function channel(): BelongsTo
     {
         return $this->belongsTo(Channel::class);
+    }
+
+    /**
+     * Summary of subscription
+     * @return HasMany<ThreadSubscription, Thread>
+     */
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(ThreadSubscription::class);
+    }
+
+    /**
+     * Summary of subscribe
+     * @param ?int $userid
+     * @return void
+     */
+    public function subscribe(?int $userid = null): void
+    {
+        $userid = $userid ?: auth()->guard()->id();
+        $query = $this->subscriptions();
+        if (!$query->where('user_id', $userid)->exists()) {
+            $query->create(['user_id' => $userid]);
+        }
+    }
+
+    /**
+     * Summary of unsubscribe
+     * @param ?int $userid
+     * @return void
+     */
+    public function unsubscribe(?int $userid = null): void
+    {
+        $this->subscriptions()
+            ->where('user_id', '=', $userid ?: auth()->guard()->id())
+            ->delete();
     }
 }

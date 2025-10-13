@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
-* @see modules/Forum/Http/Controllers/ReplyController.php:39
+* @see modules/Forum/Http/Controllers/ReplyController.php:30
 * @route '/threads/{channel}/{threadId}/replies'
 */
 export const store = (args: { channel: string | number, threadId: string | number } | [channel: string | number, threadId: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ store.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
-* @see modules/Forum/Http/Controllers/ReplyController.php:39
+* @see modules/Forum/Http/Controllers/ReplyController.php:30
 * @route '/threads/{channel}/{threadId}/replies'
 */
 store.url = (args: { channel: string | number, threadId: string | number } | [channel: string | number, threadId: string | number ], options?: RouteQueryOptions) => {
@@ -42,7 +42,7 @@ store.url = (args: { channel: string | number, threadId: string | number } | [ch
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
-* @see modules/Forum/Http/Controllers/ReplyController.php:39
+* @see modules/Forum/Http/Controllers/ReplyController.php:30
 * @route '/threads/{channel}/{threadId}/replies'
 */
 store.post = (args: { channel: string | number, threadId: string | number } | [channel: string | number, threadId: string | number ], options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -52,7 +52,7 @@ store.post = (args: { channel: string | number, threadId: string | number } | [c
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
-* @see modules/Forum/Http/Controllers/ReplyController.php:39
+* @see modules/Forum/Http/Controllers/ReplyController.php:30
 * @route '/threads/{channel}/{threadId}/replies'
 */
 const storeForm = (args: { channel: string | number, threadId: string | number } | [channel: string | number, threadId: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -62,7 +62,7 @@ const storeForm = (args: { channel: string | number, threadId: string | number }
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
-* @see modules/Forum/Http/Controllers/ReplyController.php:39
+* @see modules/Forum/Http/Controllers/ReplyController.php:30
 * @route '/threads/{channel}/{threadId}/replies'
 */
 storeForm.post = (args: { channel: string | number, threadId: string | number } | [channel: string | number, threadId: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -74,7 +74,7 @@ store.form = storeForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:57
+* @see modules/Forum/Http/Controllers/ReplyController.php:38
 * @route '/replies/{id}'
 */
 export const update = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -89,7 +89,7 @@ update.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:57
+* @see modules/Forum/Http/Controllers/ReplyController.php:38
 * @route '/replies/{id}'
 */
 update.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -116,7 +116,7 @@ update.url = (args: { id: string | number } | [id: string | number ] | string | 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:57
+* @see modules/Forum/Http/Controllers/ReplyController.php:38
 * @route '/replies/{id}'
 */
 update.patch = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -126,7 +126,7 @@ update.patch = (args: { id: string | number } | [id: string | number ] | string 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:57
+* @see modules/Forum/Http/Controllers/ReplyController.php:38
 * @route '/replies/{id}'
 */
 const updateForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -141,7 +141,7 @@ const updateForm = (args: { id: string | number } | [id: string | number ] | str
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:57
+* @see modules/Forum/Http/Controllers/ReplyController.php:38
 * @route '/replies/{id}'
 */
 updateForm.patch = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -158,7 +158,7 @@ update.form = updateForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:64
+* @see modules/Forum/Http/Controllers/ReplyController.php:45
 * @route '/replies/{id}'
 */
 export const destroy = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -173,7 +173,7 @@ destroy.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:64
+* @see modules/Forum/Http/Controllers/ReplyController.php:45
 * @route '/replies/{id}'
 */
 destroy.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -200,7 +200,7 @@ destroy.url = (args: { id: string | number } | [id: string | number ] | string |
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:64
+* @see modules/Forum/Http/Controllers/ReplyController.php:45
 * @route '/replies/{id}'
 */
 destroy.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -210,7 +210,7 @@ destroy.delete = (args: { id: string | number } | [id: string | number ] | strin
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:64
+* @see modules/Forum/Http/Controllers/ReplyController.php:45
 * @route '/replies/{id}'
 */
 const destroyForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -225,7 +225,7 @@ const destroyForm = (args: { id: string | number } | [id: string | number ] | st
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:64
+* @see modules/Forum/Http/Controllers/ReplyController.php:45
 * @route '/replies/{id}'
 */
 destroyForm.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
