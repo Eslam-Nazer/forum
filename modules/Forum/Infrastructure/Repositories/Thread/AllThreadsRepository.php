@@ -13,9 +13,7 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
 {
     public function __construct(
         private FilterThreadsRepositoryInterface $filterThreadsRepository,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @param Request $request
@@ -25,8 +23,8 @@ readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
     public function handle(Request $request, string|null $channel = null): Collection|LengthAwarePaginator
     {
         $threads = Thread::query()
-            ->withCount('replies')
-            ->latest();
+            ->latest()
+            ->orderBy('id');
 
         if (filled($channel)) {
             $threads->where('channel_id', '=', $channel);

@@ -2,10 +2,8 @@
 
 namespace Modules\Forum\Tests\Feature;
 
-use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Modules\Forum\Domain\Models\Channel;
+use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -18,18 +16,19 @@ class ParticipateInForumTest extends TestCase
     {
         $this->signIn();
         $this->assertAuthenticated('web');
-        $user = auth()->user();
 
-        $thread = create(Thread::class, ['user_id' => $user->id]);
+        $thread = create(Thread::class, ['user_id' => Auth::id()]);
 
         $reply = make(Reply::class);
 
         $this->post($thread->path() . '/replies', $reply->toArray())
-        ->assertStatus(302);
+            ->assertStatus(302);
+
+        $this->assertEquals(1, $thread->fresh()->replies_count);
 
         $this->get($thread->path())
-        ->assertSee($reply->body)
-        ->assertStatus(200);
+            ->assertSee($reply->body)
+            ->assertStatus(200);
     }
 
     public function test_unauthenticated_users_may_not_add_replies(): void
@@ -45,7 +44,7 @@ class ParticipateInForumTest extends TestCase
         $reply = make(Reply::class, ['body' => null]);
 
         $this->post($thread->path() . '/replies', $reply->toArray())
-        ->assertSessionHasErrors('body');
+            ->assertSessionHasErrors('body');
     }
 
     public function test_unauthenticated_users_may_not_delete_replies(): void
@@ -56,18 +55,19 @@ class ParticipateInForumTest extends TestCase
             ->assertRedirect('/login');
 
         $this->signIn()
-        ->delete('replies/' . $reply->id)
-        ->assertStatus(403);
+            ->delete('replies/' . $reply->id)
+            ->assertStatus(403);
     }
 
-    public function test_authorized_users_can_delete_replies():void
+    public function test_authorized_users_can_delete_replies(): void
     {
         $this->signIn();
 
-        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+        $reply = create(Reply::class, ['user_id' => Auth::id()]);
         $this->delete('replies/' . $reply->id)
-        ->assertStatus(302);
+            ->assertStatus(302);
         $this->assertDatabaseMissing('replies', $reply->getAttributes());
+        $this->assertEquals(0, $reply->thread->fresh()->replies_count);
     }
 
     public function test_authorize_user_can_update_own_replies(): void
@@ -75,18 +75,18 @@ class ParticipateInForumTest extends TestCase
         $repliesOtherUser = create(Reply::class, []);
 
         $this->patch('replies/' . $repliesOtherUser->id, [])
-        ->assertRedirect('login');
+            ->assertRedirect('login');
 
         $this->signIn();
-        $replies = create(Reply::class, ['user_id' => auth()->id()]);
+        $replies = create(Reply::class, ['user_id' => Auth::id()]);
 
         $updatedReply = 'You been changed, foo.';
 
-        $this->patch('replies/' . $repliesOtherUser->id , ['body' => $updatedReply])
-        ->assertStatus(403);
+        $this->patch('replies/' . $repliesOtherUser->id, ['body' => $updatedReply])
+            ->assertStatus(403);
 
         $this->patch('replies/' . $replies->id, ['body' => $updatedReply])
-        ->assertRedirect();
+            ->assertRedirect();
 
         $this->assertDatabaseHas('replies', ['id' => $replies->id, 'body' => $updatedReply]);
     }

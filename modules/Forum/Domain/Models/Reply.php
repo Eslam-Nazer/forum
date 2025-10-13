@@ -40,6 +40,17 @@ class Reply extends Model
         'type',
     ];
 
+    protected static function booted(): void
+    {
+        static::created(static function (self $reply): void {
+            $reply->thread->increment('replies_count');
+        });
+
+        static::deleted(static function (self $reply): void {
+            $reply->thread->decrement('replies_count');
+        });
+    }
+
     /**
      * @return ReplyFactory
      */
@@ -54,5 +65,14 @@ class Reply extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Summary of thread
+     * @return BelongsTo<Thread, Reply>
+     */
+    public function thread(): BelongsTo
+    {
+        return $this->belongsTo(Thread::class, 'thread_id');
     }
 }

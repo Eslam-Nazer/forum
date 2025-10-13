@@ -22,7 +22,7 @@ class Thread extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('repliesCount', static function ($query) {
-            $query->withCount(['replies', 'favorites']);
+            $query->withCount(['favorites']);
         });
 
         static::deleting(static function (self $thread): void {
@@ -57,6 +57,7 @@ class Thread extends Model
         'title',
         'body',
         'type',
+        'replies_count',
     ];
 
     /**

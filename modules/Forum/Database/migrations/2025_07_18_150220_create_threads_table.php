@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('user_id');
             $table->string('title');
             $table->text('body');
+            $table->unsignedBigInteger('replies_count')->default(0);
             $table->timestamps();
         });
     }
