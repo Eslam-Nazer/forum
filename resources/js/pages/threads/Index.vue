@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import TextLink from '@/components/TextLink.vue';
+import Button from '@/components/ui/button/Button.vue';
+import Card from '@/components/ui/card/Card.vue';
 import Select from '@/components/ui/select/Select.vue';
 import SelectContent from '@/components/ui/select/SelectContent.vue';
 import SelectItem from '@/components/ui/select/SelectItem.vue';
@@ -9,9 +11,11 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
 import { type BreadcrumbItem } from '@/types';
+import { FireIcon } from '@heroicons/vue/20/solid';
 import { Head, router } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
-import { Ref, ref } from 'vue';
+import { MessageCircleOff } from 'lucide-vue-next';
+import { markRaw, Ref, ref } from 'vue';
 import Paginator from '../accessories/paginations/Paginator.vue';
 import FavoriteButton from '../favorites/FavoriteButton.vue';
 
@@ -60,6 +64,7 @@ const props = defineProps<{
 }>();
 
 const selectChannel = ref(props.slug ?? null);
+const TextLinkRaw = markRaw(TextLink);
 
 function onChangeChannel(slug?: Ref<string | null>): void {
     if (slug) {
@@ -68,65 +73,36 @@ function onChangeChannel(slug?: Ref<string | null>): void {
         router.visit(threads.index().url);
     }
 }
-
-// const numericLinks = computed(() => {
-//     const links = props.Threads.links.filter(
-//         (link: any) => !isNaN(Number(link.label)),
-//     );
-//     const currentLink = links.find((link: any) => link.active);
-
-//     if (!currentLink) return links; // Handle case where no active link is found
-
-//     const current = Number(currentLink.label);
-//     const totalPages = links.length;
-//     const pages = [];
-
-//     // If we have 10 or fewer pages, show all pages
-//     if (totalPages <= 10) return links;
-
-//     // Always include the first page
-//     pages.push(links[0]);
-
-//     if (current <= 4) {
-//         // Show pages 1-5, then ellipsis, then last page
-//         pages.push(...links.slice(1, 5));
-//         if (totalPages > 6) {
-//             pages.push({ label: '...', url: null, active: false });
-//             pages.push(links[links.length - 1]);
-//         }
-//     } else if (current >= totalPages - 3) {
-//         // Show first page, ellipsis, then last 5 pages
-//         if (totalPages > 6) {
-//             pages.push({ label: '...', url: null, active: false });
-//         }
-//         pages.push(...links.slice(totalPages - 5, totalPages));
-//     } else {
-//         // Show first page, ellipsis, current page ±2, ellipsis, last page
-//         pages.push({ label: '...', url: null, active: false });
-//         pages.push(...links.slice(current - 3, current + 2));
-//         pages.push({ label: '...', url: null, active: false });
-//         pages.push(links[links.length - 1]);
-//     }
-
-//     // Remove duplicates that might occur at boundaries
-//     const uniquePages = [];
-//     const seenLabels = new Set();
-
-//     for (const page of pages) {
-//         if (!seenLabels.has(page.label)) {
-//             uniquePages.push(page);
-//             seenLabels.add(page.label);
-//         }
-//     }
-
-//     return uniquePages;
-// });
 </script>
 
 <template>
     <Head title="Threads" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
+        <template #header-actions>
+            <Button
+                :class="cn('!no-underline')"
+                :as="TextLinkRaw"
+                :href="'?unanswered=1'"
+            >
+                <MessageCircleOff />
+            </Button>
+            <Button
+                :class="cn('!no-underline')"
+                :as="TextLinkRaw"
+                :href="threads.index().url"
+            >
+                All Threads
+            </Button>
+            <Button
+                :class="cn('!no-underline')"
+                :as="TextLinkRaw"
+                :href="'?popular'"
+            >
+                <FireIcon class="h-5 w-5" /> Popular
+            </Button>
+        </template>
+
         <div class="mx-auto mt-4 w-full max-w-4xl">
             <div class="flex w-full justify-between">
                 <div>
@@ -166,7 +142,14 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                     </Select>
                 </div>
             </div>
+            <Card
+                :class="cn('mt-4 w-full p-4 text-center text-lg')"
+                v-if="Threads.data.length === 0"
+            >
+                Threads Not Found
+            </Card>
             <div
+                v-else
                 v-for="thread in Threads.data"
                 class="my-4 w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
                 :key="thread.id"

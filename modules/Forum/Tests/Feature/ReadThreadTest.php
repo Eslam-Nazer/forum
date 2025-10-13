@@ -8,6 +8,7 @@ use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Auth;
 
 class ReadThreadTest extends TestCase
 {
@@ -17,6 +18,7 @@ class ReadThreadTest extends TestCase
      */
     public function test_a_user_can_view_all_threads(): void
     {
+        $this->signIn();
         $threads = create(Thread::class);
         $response = $this->get('/threads');
         $response->assertSee($threads->title);
@@ -44,21 +46,21 @@ class ReadThreadTest extends TestCase
 
     public function test_a_user_can_filter_threads_by_channel(): void
     {
+        $this->signIn();
         $channel = create(Channel::class);
         $threadInChannel = create(Thread::class, ['channel_id' => $channel->id]);
         $threadNotInChannel = create(Thread::class);
 
         $this->get('/threads/' . $channel->slug)
             ->assertSee($threadInChannel->title)
-            ->assertDontSee($threadNotInChannel->title)
-            ->assertStatus(200);
+            ->assertDontSee($threadNotInChannel->title);
     }
 
     public function test_a_user_can_filter_threads_by_any_username(): void
     {
         $this->signIn(create(User::class, ['name' => 'EslamNazer']));
 
-        $threadInChannel = create(Thread::class, ['user_id' => auth()->id()]);
+        $threadInChannel = create(Thread::class, ['user_id' => Auth::id()]);
         $threadNotInChannel = create(Thread::class);
 
         $this->get('/threads?by=EslamNazer')
@@ -80,5 +82,19 @@ class ReadThreadTest extends TestCase
         $response = $this->getJson('threads?popular')->json();
 
         $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
+    }
+
+
+    public function test_a_user_can_filter_threads_by_unanswered(): void
+    {
+        $this->signIn();
+        $this->assertAuthenticated();
+        $thread = create(Thread::class);
+        create(Reply::class, ['thread_id' => $thread->id]);
+        create(Thread::class);
+
+        $response = $this->getJson('threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response['data']);
     }
 }

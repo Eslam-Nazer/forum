@@ -2,13 +2,14 @@
 
 namespace Modules\Forum\Infrastructure\Repositories\Thread\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Modules\Forum\Domain\Contracts\Thread\FilterStrategyInterface;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Forum\Domain\Contracts\Thread\FilterStrategyInterface;
 use Modules\Forum\Infrastructure\Filters\Thread\PopularFilterStrategy;
 use Modules\Forum\Infrastructure\Filters\Thread\UsernameFilterStrategy;
+use Modules\Forum\Infrastructure\Filters\Thread\UnansweredFilterStrategy;
+use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 
 class FilterThreadsRepository implements FilterThreadsRepositoryInterface
 {
@@ -30,7 +31,7 @@ class FilterThreadsRepository implements FilterThreadsRepositoryInterface
     public function apply(Builder $query, Request $request): Builder
     {
         foreach ($this->filters as $filter) {
-            if($filter->canHandle($request)) {
+            if ($filter->canHandle($request)) {
                 $filter->apply($query, $request);
             }
         }
@@ -41,6 +42,7 @@ class FilterThreadsRepository implements FilterThreadsRepositoryInterface
     {
         $this->setStrategy(new UsernameFilterStrategy());
         $this->setStrategy(new PopularFilterStrategy());
+        $this->setStrategy(new UnansweredFilterStrategy());
     }
 
     /**
