@@ -9,9 +9,15 @@ class FindThreadRepository implements FindThreadRepositoryInterface
 {
     public function handle(string $thread_id, string $channel): Thread|null
     {
-        return Thread::query()
+        $thread = Thread::query()
             ->where('id', '=', $thread_id)
             ->whereRelation('channel', 'slug', '=', $channel)
             ->first();
+
+        if (!$thread) {
+            abort(404);
+        }
+
+        return $thread;
     }
 }
