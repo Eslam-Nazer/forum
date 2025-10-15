@@ -13,23 +13,20 @@ class AllThreadsUseCase
 {
     public function __construct(
         protected AllThreadsRepositoryInterface $allThreadsRepository,
-    )
-    {
-    }
+    ) {}
 
     public function execute(Request $request, AllThreadsFilteredDto $dto): Collection|LengthAwarePaginator
     {
         $channel = '';
         if (filled($dto->channel)) {
-         $channel = Channel::query()
-             ->where('slug', '=', $dto->channel)
-            ->firstOr(fn() => null);
+            $channel = Channel::query()
+                ->where('slug', '=', $dto->channel)
+                ->firstOr(fn() => null);
         }
 
         if (filled($channel)) {
             return $this->allThreadsRepository->handle($request, $channel->id);
         }
-        return $this->allThreadsRepository->handle($request ,$channel);
+        return $this->allThreadsRepository->handle($request, $channel);
     }
-
 }

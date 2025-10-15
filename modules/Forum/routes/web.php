@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Forum\Http\Controllers\FavoriteController;
 use Modules\Forum\Http\Controllers\ReplyController;
 use Modules\Forum\Http\Controllers\ThreadController;
+use Modules\Forum\Http\Controllers\ThreadSubScriptionController;
 
 Route::controller(ThreadController::class)->group(function () {
     Route::get('threads', 'index')->name('threads.index');
@@ -30,4 +31,7 @@ Route::controller(FavoriteController::class)->group(function () {
         ->name('favorite.destroy');
 });
 
+Route::controller(ThreadSubScriptionController::class)->group(function () {
+    Route::post('threads/{channel}/{thread}/subscriptions', 'store');
+});
 require __DIR__ . '/settings.php';
