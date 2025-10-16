@@ -109,6 +109,7 @@ class ThreadController extends Controller implements HasMiddleware
                 ]),
                 'creator' => $thread->creator,
                 'isFavorite' => $thread->is_favorite,
+                'isSubscribedTo' => $thread->is_subscribed_to,
                 'created_at' => $thread->created_at,
                 'can' => [
                     'update' => request()->user()->can('update', $thread),

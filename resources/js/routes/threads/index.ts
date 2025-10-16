@@ -1,5 +1,6 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 import replies from './replies'
+import subscribe from './subscribe'
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
 * @see modules/Forum/Http/Controllers/ThreadController.php:37
@@ -421,7 +422,7 @@ channel.form = channelForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:121
+* @see modules/Forum/Http/Controllers/ThreadController.php:122
 * @route '/threads/{channel}/{id}'
 */
 export const destroy = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -436,7 +437,7 @@ destroy.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:121
+* @see modules/Forum/Http/Controllers/ThreadController.php:122
 * @route '/threads/{channel}/{id}'
 */
 destroy.url = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions) => {
@@ -462,7 +463,7 @@ destroy.url = (args: { channel: string | number, id: string | number } | [channe
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:121
+* @see modules/Forum/Http/Controllers/ThreadController.php:122
 * @route '/threads/{channel}/{id}'
 */
 destroy.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -472,7 +473,7 @@ destroy.delete = (args: { channel: string | number, id: string | number } | [cha
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:121
+* @see modules/Forum/Http/Controllers/ThreadController.php:122
 * @route '/threads/{channel}/{id}'
 */
 const destroyForm = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -487,7 +488,7 @@ const destroyForm = (args: { channel: string | number, id: string | number } | [
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:121
+* @see modules/Forum/Http/Controllers/ThreadController.php:122
 * @route '/threads/{channel}/{id}'
 */
 destroyForm.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -510,6 +511,7 @@ const threads = {
     channel: Object.assign(channel, channel),
     destroy: Object.assign(destroy, destroy),
     replies: Object.assign(replies, replies),
+    subscribe: Object.assign(subscribe, subscribe),
 }
 
 export default threads

@@ -32,7 +32,8 @@ class ReplyController extends Controller implements HasMiddleware
         $data = new UserAddReplyInThreadDto($threadId, Auth::id(), $request->validated('body'));
 
         $thread = $case->execute($data);
-        return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id]);
+        return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id])
+            ->with('messages', ['success' => 'Reply added successfully.'])  ;
     }
 
     public function update(UpdateReplyRequest $request, string $id, UpdateReplyUseCase $case): RedirectResponse

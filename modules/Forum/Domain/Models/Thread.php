@@ -11,6 +11,7 @@ use Modules\Forum\Database\Factories\ThreadFactory;
 use Modules\Forum\Domain\Models\ThreadSubscription;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
@@ -45,7 +46,7 @@ class Thread extends Model
     /**
      * @var array<string
      */
-    protected $appends = ['is_favorite'];
+    protected $appends = ['is_favorite', 'is_subscribed_to'];
 
     /**
      * The attributes that are mass assignable.
@@ -144,8 +145,27 @@ class Thread extends Model
      */
     public function unsubscribe(?int $userid = null): void
     {
-        $this->subscriptions()
+        $subscription = $this->subscriptions()
             ->where('user_id', '=', $userid ?: auth()->guard()->id())
-            ->delete();
+            ->first();
+
+        if (!$subscription) {
+            abort(404);
+        }
+        $subscription->delete();
+    }
+
+    /**
+     * Summary of isSubscribedTo
+     * @param ?int $userid
+     * @return bool
+     */
+    public function isSubscribedTo(?int $userid = null): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->subscriptions()
+                ->where('user_id', '=', $userid ?: auth()->guard()->id())
+                ->exists()
+        );
     }
 }
