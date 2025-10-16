@@ -2,6 +2,7 @@ import ForumController from './ForumController'
 import ThreadController from './ThreadController'
 import ReplyController from './ReplyController'
 import FavoriteController from './FavoriteController'
+import ThreadSubScriptionController from './ThreadSubScriptionController'
 import Settings from './Settings'
 
 const Controllers = {
@@ -9,6 +10,7 @@ const Controllers = {
     ThreadController: Object.assign(ThreadController, ThreadController),
     ReplyController: Object.assign(ReplyController, ReplyController),
     FavoriteController: Object.assign(FavoriteController, FavoriteController),
+    ThreadSubScriptionController: Object.assign(ThreadSubScriptionController, ThreadSubScriptionController),
     Settings: Object.assign(Settings, Settings),
 }
 
