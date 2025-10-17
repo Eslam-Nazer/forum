@@ -3,6 +3,7 @@
 namespace Modules\Forum\Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
 

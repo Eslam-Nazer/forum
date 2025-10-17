@@ -3,6 +3,7 @@
 namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -100,11 +101,19 @@ class Thread extends Model
 
     /**
      * @param array $reply
-     * @return void
+     * @return Reply
      */
-    public function addReply(array $reply): void
+    public function addReply(array $reply): Reply
     {
-        $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+
+        $this->subscriptions
+            ->filter(function ($subscription) use ($reply): bool {
+                return $subscription->user_id !== $reply->user_id;
+            })
+            ->each->notify(new ThreadWasUpdated($this, $reply));
+
+        return $reply;
     }
 
     /**
