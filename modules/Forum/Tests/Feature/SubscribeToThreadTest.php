@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Forum\Tests\Unit;
+namespace Modules\Forum\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
