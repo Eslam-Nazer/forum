@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
@@ -17,7 +18,7 @@ class ThreadWasUpdated extends Notification
      */
     public function __construct(
         protected Thread $thread,
-        protected Reply $reply,
+        protected Reply  $reply,
     ) {}
 
     /**
@@ -27,7 +28,7 @@ class ThreadWasUpdated extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -38,7 +39,26 @@ class ThreadWasUpdated extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'A thread you are subscribed to has been updated.',
+            'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
+            'link' => $this->reply->path(),
         ];
+    }
+
+    public function toBroadcast(object $notifiable): BroadcastMessage
+    {
+        $notification = $notifiable->notifications()->find($this->id);
+        return new BroadcastMessage([
+            'created_at' => $notification->created_at,
+            'data' => [
+                'message' => $this->reply->owner->name . ' replied to ' . $this->thread->title,
+                'link' => $this->reply->path(),
+            ],
+            'id' => $notification->id,
+            'notifiable_id' => $notification->notifiable_id,
+            'notifiable_type' => $notification->notifiable_type,
+            'read_at' => $notification->read_at,
+            'type' => $notification->type,
+            'updated_at' => $notification->updated_at,
+        ]);
     }
 }

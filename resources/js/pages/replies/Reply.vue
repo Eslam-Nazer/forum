@@ -11,6 +11,7 @@ import AlertDialogTrigger from '@/components/ui/alert-dialog/AlertDialogTrigger.
 import Button from '@/components/ui/button/Button.vue';
 import Card from '@/components/ui/card/Card.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
+import { useHashScroll } from '@/composables/useHashScroll';
 import replies from '@/routes/threads/replies';
 import { useForm } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
@@ -23,6 +24,8 @@ const props = defineProps<{
 }>();
 
 const isEditing = ref(false);
+dayjs.extend(relativeTime);
+useHashScroll();
 
 const fromReply = useForm({
     body: props.reply.body,
@@ -44,7 +47,6 @@ function update() {
             },
         },
     );
-    
 }
 
 function destroy() {
@@ -57,12 +59,10 @@ function destroy() {
         },
     );
 }
-
-dayjs.extend(relativeTime);
 </script>
 
 <template>
-    <Card class="gap-2 p-4">
+    <Card class="gap-2 p-4" :id="'reply-' + reply.id">
         <div class="flex items-center justify-between">
             <h2 class="text-md">
                 {{ reply.owner.name }} replied at:
