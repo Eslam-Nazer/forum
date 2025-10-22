@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -45,5 +46,19 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * @param Model $thread
+     * @return string
+     */
+    public function visitedThreadCacheKey(Model $thread): string
+    {
+        return sprintf("users.%s.visits.%s", $this->id, $thread->id);
+    }
+
+    public function read(Model $thread): void
+    {
+        cache()->forever($this->visitedThreadCacheKey($thread), now());
     }
 }
