@@ -4,6 +4,7 @@ namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -74,5 +75,14 @@ class Reply extends Model
     public function thread(): BelongsTo
     {
         return $this->belongsTo(Thread::class, 'thread_id');
+    }
+
+    /**
+     * Summary of path
+     * @return string
+     */
+    public function path(): string
+    {
+        return $this->thread->path() . "#reply-" . $this->id;
     }
 }

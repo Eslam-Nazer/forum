@@ -32,7 +32,7 @@ trait Favoritable
 
     public function isFavorite(): Attribute
     {
-        return Attribute::make(get: fn() => $this->favorites->isNotEmpty());
+        return Attribute::make(get: fn() => $this->favorites()->where('user_id', auth()->guard()->id())->exists());
     }
 
     public function unFavorite(string $userId): void

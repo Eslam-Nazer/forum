@@ -107,10 +107,8 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->subscriptions
-            ->filter(function ($subscription) use ($reply): bool {
-                return $subscription->user_id !== $reply->user_id;
-            })
+        $this->subscriptions()->where('user_id', '!=', $reply->user_id)
+            ->get()
             ->each->notify(new ThreadWasUpdated($this, $reply));
 
         return $reply;

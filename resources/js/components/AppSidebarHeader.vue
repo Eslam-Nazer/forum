@@ -2,6 +2,7 @@
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { BreadcrumbItemType } from '@/types';
+import Notifications from './Notifications/Notifications.vue';
 
 withDefaults(
     defineProps<{
@@ -25,6 +26,7 @@ withDefaults(
             <div class="ml-auto flex gap-3">
                 <slot name="actions" />
             </div>
+            <Notifications />
         </div>
     </header>
 </template>
