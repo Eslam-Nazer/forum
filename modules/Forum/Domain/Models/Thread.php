@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Domain\Models;
 
+use App\Events\ThreadHasNewReply;
 use App\Models\User;
 use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
@@ -107,9 +108,7 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
 
-        $this->subscriptions()->where('user_id', '!=', $reply->user_id)
-            ->get()
-            ->each->notify(new ThreadWasUpdated($this, $reply));
+        event(new ThreadHasNewReply($this, $reply));
 
         return $reply;
     }

@@ -3,7 +3,9 @@
 namespace Modules\Forum\Tests\Unit;
 
 use App\Models\User;
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Notification;
 use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -38,6 +40,22 @@ class ThreadTest extends TestCase
         ]);
 
         $this->assertCount(1, $this->thread->replies);
+    }
+
+    public function test_a_thread_notifies_registered_subscribers_when_a_reply_is_added(): void
+    {
+        Notification::fake();
+
+        $this->signIn();
+
+        $this->thread->subscribe();
+
+        $this->thread->addReply([
+            'body' => 'Foobar',
+            'user_id' => create(User::class, ['name' => 'John Doe'])->id,
+        ]);
+
+        Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
     }
 
     public function test_a_thread_belongs_to_a_channel(): void
