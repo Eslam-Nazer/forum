@@ -22,8 +22,8 @@ import FavoriteButton from '../favorites/FavoriteButton.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Threads',
-        href: threads.index().url,
-    },
+        href: threads.index().url
+    }
 ];
 
 interface Channel {
@@ -47,6 +47,7 @@ interface Thread {
     replies_count: number;
     favorites_count: number;
     last_page: number;
+    has_updates_for: boolean;
 }
 
 const props = defineProps<{
@@ -99,7 +100,8 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                 :as="TextLinkRaw"
                 :href="'?popular'"
             >
-                <FireIcon class="h-5 w-5" /> Popular
+                <FireIcon class="h-5 w-5" />
+                Popular
             </Button>
         </template>
 
@@ -162,7 +164,9 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                     class="mb-2 flex content-center items-center justify-between"
                 >
                     <h5
-                        class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+                        :class="cn('text-2xl font-bold tracking-tight',
+                         thread.has_updates_for ? 'text-gray-900' : 'text-gray-700',
+                           thread.has_updates_for ?  'dark:text-white' : 'dark:text-gray-500')"
                     >
                         {{ thread.title }}
                     </h5>

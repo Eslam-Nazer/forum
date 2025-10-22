@@ -4,13 +4,11 @@ namespace Modules\Forum\Domain\Models;
 
 use App\Events\ThreadHasNewReply;
 use App\Models\User;
-use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ThreadFactory;
-use Modules\Forum\Domain\Models\ThreadSubscription;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -48,7 +46,7 @@ class Thread extends Model
     /**
      * @var array<string
      */
-    protected $appends = ['is_favorite', 'is_subscribed_to'];
+    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for'];
 
     /**
      * The attributes that are mass assignable.
@@ -172,6 +170,16 @@ class Thread extends Model
             get: fn() => $this->subscriptions()
                 ->where('user_id', '=', $userid ?: auth()->guard()->id())
                 ->exists()
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    public function hasUpdatesFor(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this))
         );
     }
 }

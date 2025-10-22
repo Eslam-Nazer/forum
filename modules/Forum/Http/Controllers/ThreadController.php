@@ -19,7 +19,7 @@ use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
 use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\CreateThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
-use Modules\Forum\Application\UseCases\Thread\FindThreadUseCase;
+use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 
 class ThreadController extends Controller implements HasMiddleware
@@ -84,7 +84,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Show the specified resource.
      */
-    public function show(string $channel, string $id, FindThreadUseCase $case): Response|View
+    public function show(string $channel, string $id, ShowThreadUseCase $case): Response|View
     {
         $thread = $case->execute($id, $channel);
 
