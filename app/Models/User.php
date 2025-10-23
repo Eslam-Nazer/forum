@@ -57,6 +57,10 @@ class User extends Authenticatable
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
     }
 
+    /**
+     * @param Model $thread
+     * @return void
+     */
     public function read(Model $thread): void
     {
         cache()->forever($this->visitedThreadCacheKey($thread), now());

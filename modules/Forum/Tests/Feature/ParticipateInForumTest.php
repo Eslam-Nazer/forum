@@ -90,4 +90,15 @@ class ParticipateInForumTest extends TestCase
 
         $this->assertDatabaseHas('replies', ['id' => $replies->id, 'body' => $updatedReply]);
     }
+
+    public function test_replies_that_contain_spam_may_not_be_created(): void
+    {
+        $this->signIn();
+        $thread = create(Thread::class);
+
+        $reply = make(Reply::class, ['body' => 'foobar this spam']);
+        $this->expectException(\Exception::class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray());
+    }
 }
