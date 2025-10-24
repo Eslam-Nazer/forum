@@ -17,7 +17,7 @@ use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
 use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
-use Modules\Forum\Application\UseCases\Thread\CreateThreadUseCase;
+use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
@@ -69,7 +69,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateThreadRequest $request, CreateThreadUseCase $case): RedirectResponse
+    public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse
     {
         $data = new CreateThreadDto(
             userId: Auth::id(),
