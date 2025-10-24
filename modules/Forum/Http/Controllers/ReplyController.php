@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
 use Modules\Forum\Application\UseCases\Reply\DeleteReplyUseCase;
 use Modules\Forum\Application\UseCases\Reply\UpdateReplyUseCase;
-use Modules\Forum\Application\UseCases\Reply\UserAddReplyInThreadUseCase;
+use Modules\Forum\Application\UseCases\Reply\StoreReplyUseCase;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Http\Requests\Reply\UpdateReplyRequest;
 use Modules\Forum\Http\Requests\Reply\UserAddReplyInThreadRequest;
@@ -27,7 +27,7 @@ class ReplyController extends Controller implements HasMiddleware
         ];
     }
 
-    public function store(string $channel, string $threadId, UserAddReplyInThreadRequest $request, UserAddReplyInThreadUseCase $case): RedirectResponse
+    public function store(string $channel, string $threadId, UserAddReplyInThreadRequest $request, StoreReplyUseCase $case): RedirectResponse
     {
         $data = new UserAddReplyInThreadDto($threadId, Auth::id(), $request->validated('body'));
 

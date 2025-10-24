@@ -2,9 +2,9 @@
 
 namespace Modules\Forum\Tests\Feature;
 
+use Illuminate\Support\Facades\Bus;
 use Tests\TestCase;
 use App\Models\User;
-use App\Notifications\ThreadWasUpdated;
 use Database\Factories\DatabaseNotificationFactory;
 use Modules\Forum\Domain\Models\Thread;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -23,7 +23,9 @@ class NotificationsTest extends TestCase
 
     public function test_a_notification_is_prepared_when_a_subscribed_thread_receives_a_new_reply_that_is_not_by_the_current_user(): void
     {
+        Bus::fake();
         $user = Auth::user();
+
 
         $thread = create(Thread::class);
         $thread->subscribe();
