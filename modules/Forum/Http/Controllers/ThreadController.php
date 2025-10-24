@@ -3,6 +3,7 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -71,14 +72,18 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse
     {
-        $data = new CreateThreadDto(
-            userId: Auth::id(),
-            channelId: $request->validated('channel_id'),
-            title: $request->validated('title'),
-            body: $request->validated('body')
-        );
-        $thread = $case->execute($data);
-        return redirect()->route('threads.index');
+        try {
+            $data = new CreateThreadDto(
+                userId: Auth::id(),
+                channelId: $request->validated('channel_id'),
+                title: $request->validated('title'),
+                body: $request->validated('body')
+            );
+            $case->execute($data);
+            return redirect()->route('threads.index');
+        } catch (Exception $e) {
+            return back()->with('messages', ['error' => $e->getMessage()]);
+        }
     }
 
     /**
