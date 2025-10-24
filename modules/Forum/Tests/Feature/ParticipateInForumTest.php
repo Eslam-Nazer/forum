@@ -96,9 +96,10 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $thread = create(Thread::class);
 
-        $reply = make(Reply::class, ['body' => 'foobar this spam']);
-        $this->expectException(\Exception::class);
+        $reply = make(Reply::class, ['body' => 'aaaaaaaaaaaaaaaaa']);
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(302)
+            ->assertSessionHasErrors('body');
     }
 }

@@ -14,7 +14,7 @@ use Modules\Forum\Application\UseCases\Reply\UpdateReplyUseCase;
 use Modules\Forum\Application\UseCases\Reply\StoreReplyUseCase;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Http\Requests\Reply\UpdateReplyRequest;
-use Modules\Forum\Http\Requests\Reply\UserAddReplyInThreadRequest;
+use Modules\Forum\Http\Requests\Reply\StoreReplyRequest;
 
 class ReplyController extends Controller implements HasMiddleware
 {
@@ -28,28 +28,20 @@ class ReplyController extends Controller implements HasMiddleware
         ];
     }
 
-    public function store(string $channel, string $threadId, UserAddReplyInThreadRequest $request, StoreReplyUseCase $case): RedirectResponse
+    public function store(string $channel, string $threadId, StoreReplyRequest $request, StoreReplyUseCase $case): RedirectResponse
     {
         $data = new UserAddReplyInThreadDto($threadId, Auth::id(), $request->validated('body'));
 
-        try {
-            $thread = $case->execute($data);
-            return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id])
-                ->with('messages', ['success' => 'Reply added successfully.']);
-        } catch (Exception $e) {
-            return back()->with('messages', ['error' => $e->getMessage()]);
-        }
+        $thread = $case->execute($data);
+        return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id])
+            ->with('messages', ['success' => 'Reply added successfully.']);
     }
 
     public function update(UpdateReplyRequest $request, string $id, UpdateReplyUseCase $case): RedirectResponse
     {
-        try {
             $case->execute($id);
 
             return back()->with('messages', ['success' => 'Reply updated successfully.']);
-        } catch (Exception $e) {
-            return back()->with('messages', ['error' => $e->getMessage()]);
-        }
     }
 
     public function destroy(string $id, DeleteReplyUseCase $case): RedirectResponse

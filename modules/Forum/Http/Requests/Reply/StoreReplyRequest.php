@@ -2,9 +2,10 @@
 
 namespace Modules\Forum\Http\Requests\Reply;
 
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserAddReplyInThreadRequest extends FormRequest
+class StoreReplyRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,7 +13,7 @@ class UserAddReplyInThreadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'string'],
+            'body' => ['required', 'string', new SpamFree()],
         ];
     }
 

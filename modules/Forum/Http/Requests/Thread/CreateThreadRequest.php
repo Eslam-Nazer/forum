@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Http\Requests\Thread;
 
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateThreadRequest extends FormRequest
@@ -13,8 +14,8 @@ class CreateThreadRequest extends FormRequest
     {
         return [
             'channel_id' => ['required', 'integer', 'exists:channels,id'],
-            'title' => ['required', 'string'],
-            'body' => ['required', 'string'],
+            'title' => ['required', 'string', new SpamFree()],
+            'body' => ['required', 'string', new SpamFree()],
         ];
     }
 
