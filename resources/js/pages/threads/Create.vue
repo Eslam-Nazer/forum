@@ -13,7 +13,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import threads from '@/routes/threads';
 import { BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { defineProps } from 'vue';
+import Flash from '@/pages/accessories/alerts/Flash.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -30,6 +30,7 @@ interface Channel {
 
 const props =defineProps<{
     channels: Channel[];
+    messages?: Record<'success' | 'error' | 'warning' | 'info', string>
 }>();
 
 const form = useForm({
@@ -51,9 +52,9 @@ function submit() {
                 <h2 class="text-3xl">Create Thread</h2>
                 <form @submit.prevent="submit">
                     <div class="w-full max-w-xl">
-                        <Label for="title" class="text-lg font-bold"
-                            >Title</Label
-                        >
+                        <Label for="title" class="text-lg font-bold">
+                            Title
+                        </Label>
                         <Input v-model="form.title" id="title" />
                         <InputError
                             class="!text-md"
@@ -106,6 +107,13 @@ function submit() {
                     </div>
                 </form>
             </Card>
+            <Flash
+                v-if="messages"
+                v-for="(message, type) in messages"
+                :title="type"
+                :description="message"
+                :timestamp="Date.now()"
+            />
         </div>
     </AppLayout>
 </template>

@@ -3,6 +3,7 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -31,16 +32,24 @@ class ReplyController extends Controller implements HasMiddleware
     {
         $data = new UserAddReplyInThreadDto($threadId, Auth::id(), $request->validated('body'));
 
-        $thread = $case->execute($data);
-        return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id])
-            ->with('messages', ['success' => 'Reply added successfully.'])  ;
+        try {
+            $thread = $case->execute($data);
+            return redirect()->route('threads.show', ['channel' => $thread->channel->slug, 'id' => $thread->id])
+                ->with('messages', ['success' => 'Reply added successfully.']);
+        } catch (Exception $e) {
+            return back()->with('messages', ['error' => $e->getMessage()]);
+        }
     }
 
     public function update(UpdateReplyRequest $request, string $id, UpdateReplyUseCase $case): RedirectResponse
     {
-        $case->execute($id);
+        try {
+            $case->execute($id);
 
-        return redirect()->back();
+            return back()->with('messages', ['success' => 'Reply updated successfully.']);
+        } catch (Exception $e) {
+            return back()->with('messages', ['error' => $e->getMessage()]);
+        }
     }
 
     public function destroy(string $id, DeleteReplyUseCase $case): RedirectResponse
