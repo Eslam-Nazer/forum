@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Http\Requests\Reply;
 
+use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReplyRequest extends FormRequest
@@ -12,7 +13,7 @@ class UpdateReplyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'string', 'max:500'],
+            'body' => ['required', 'string', 'max:500', new SpamFree()],
         ];
     }
 

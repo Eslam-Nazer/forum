@@ -72,18 +72,14 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse
     {
-        try {
-            $data = new CreateThreadDto(
-                userId: Auth::id(),
-                channelId: $request->validated('channel_id'),
-                title: $request->validated('title'),
-                body: $request->validated('body')
-            );
-            $case->execute($data);
-            return redirect()->route('threads.index');
-        } catch (Exception $e) {
-            return back()->with('messages', ['error' => $e->getMessage()]);
-        }
+        $data = new CreateThreadDto(
+            userId: Auth::id(),
+            channelId: $request->validated('channel_id'),
+            title: $request->validated('title'),
+            body: $request->validated('body')
+        );
+        $case->execute($data);
+        return redirect()->route('threads.index');
     }
 
     /**
@@ -95,11 +91,11 @@ class ThreadController extends Controller implements HasMiddleware
 
         return Inertia::render('threads/Show', [
             'thread' => [
-                'id' => $thread->id,
-                'title' => $thread->title,
-                'body' => $thread->body,
-                'channel' => $thread->channel,
-                'replies' => $thread->replies->map(fn($reply) => [
+                'id' => $thread?->id,
+                'title' => $thread?->title,
+                'body' => $thread?->body,
+                'channel' => $thread?->channel,
+                'replies' => $thread?->replies->map(fn($reply) => [
                     'id' => $reply->id,
                     'body' => $reply->body,
                     'owner' => $reply->owner,
@@ -112,10 +108,10 @@ class ThreadController extends Controller implements HasMiddleware
                         'delete' => request()->user()->can('delete', $reply),
                     ]
                 ]),
-                'creator' => $thread->creator,
-                'isFavorite' => $thread->is_favorite,
-                'isSubscribedTo' => $thread->is_subscribed_to,
-                'created_at' => $thread->created_at,
+                'creator' => $thread?->creator,
+                'isFavorite' => $thread?->is_favorite,
+                'isSubscribedTo' => $thread?->is_subscribed_to,
+                'created_at' => $thread?->created_at,
                 'can' => [
                     'update' => request()->user()->can('update', $thread),
                     'delete' => request()->user()->can('delete', $thread),

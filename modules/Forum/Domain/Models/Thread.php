@@ -4,6 +4,8 @@ namespace Modules\Forum\Domain\Models;
 
 use App\Events\ThreadHasNewReply;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -15,6 +17,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
+/**
+ * @property Carbon|null $created_at
+ * @property Attribute|null $is_subscribed_to
+ * @property string|null $id
+ * @property string|null $title
+ * @property string|null $body
+ * @property Channel|null $channel
+ * @property Collection<Reply>|null $replies
+ * @property User|null $creator
+ * @property bool|null $is_favorite
+ */
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
@@ -99,12 +112,12 @@ class Thread extends Model
     }
 
     /**
-     * @param array $reply
+     * @param array $replyBody
      * @return Reply
      */
-    public function addReply(array $reply): Reply
+    public function addReply(array $replyBody): Reply
     {
-        $reply = $this->replies()->create($reply);
+        $reply = $this->replies()->create($replyBody);
 
         event(new ThreadHasNewReply($this, $reply));
 
@@ -130,10 +143,10 @@ class Thread extends Model
 
     /**
      * Summary of subscribe
-     * @param ?int $userid
+     * @param string|int|null $userid
      * @return void
      */
-    public function subscribe(?int $userid = null): void
+    public function subscribe(string|int|null $userid = null): void
     {
         $userid = $userid ?: auth()->guard()->id();
         $query = $this->subscriptions();
@@ -144,27 +157,28 @@ class Thread extends Model
 
     /**
      * Summary of unsubscribe
-     * @param ?int $userid
-     * @return void
+     * @param string|int|null $userid
+     * @return bool
      */
-    public function unsubscribe(?int $userid = null): void
+    public function unsubscribe(string|int|null $userid = null): bool
     {
         $subscription = $this->subscriptions()
             ->where('user_id', '=', $userid ?: auth()->guard()->id())
             ->first();
 
-        if (!$subscription) {
-            abort(404);
+        if ($subscription) {
+            return $subscription->delete();
         }
-        $subscription->delete();
+
+        abort(404);
     }
 
     /**
      * Summary of isSubscribedTo
-     * @param ?int $userid
-     * @return bool
+     * @param string|int|null $userid
+     * @return Attribute
      */
-    public function isSubscribedTo(?int $userid = null): Attribute
+    public function isSubscribedTo(string|int|null $userid = null): Attribute
     {
         return Attribute::make(
             get: fn() => $this->subscriptions()
