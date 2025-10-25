@@ -5,10 +5,15 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Modules\Forum\Domain\Models\Reply;
 
+/**
+ * @property HasOne $lastReply
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -64,5 +69,13 @@ class User extends Authenticatable
     public function read(Model $thread): void
     {
         cache()->forever($this->visitedThreadCacheKey($thread), now());
+    }
+
+    /**
+     * @return HasOne
+     */
+    public function lastReply(): HasOne
+    {
+        return $this->hasOne(Reply::class)->latest();
     }
 }

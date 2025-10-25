@@ -2,15 +2,17 @@
 
 namespace Modules\Forum\Application\UseCases\Reply;
 
+use Illuminate\Support\Facades\Gate;
 use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
+use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 
 class StoreReplyUseCase
 {
     public function __construct(
-        protected UserAddReplyInThreadRepositoryInterface $userAddReplyInThread,
-    ){}
+        protected StoreReplyRepositoryInterface $storeReplyRepository,
+    ) {}
 
     /**
      * @param UserAddReplyInThreadDto $dto
@@ -18,6 +20,9 @@ class StoreReplyUseCase
      */
     public function execute(UserAddReplyInThreadDto $dto): Thread
     {
-        return $this->userAddReplyInThread->handle($dto->threadId,$dto->userId,$dto->body);
+        Gate::authorize('create', Reply::class);
+
+        $reply = $this->storeReplyRepository->handle($dto->threadId, $dto->userId, $dto->body);
+        return $reply->thread;
     }
 }

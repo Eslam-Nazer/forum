@@ -17,8 +17,8 @@ use Modules\Forum\Infrastructure\Repositories\Favorite\CreateFavoriteRepository;
 use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\DestroyFavoriteRepository;
 use Modules\Forum\Domain\Repositories\Favorite\DestroyFavoriteRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Reply\UserAddReplyInThreadRepository;
-use Modules\Forum\Domain\Repositories\Reply\UserAddReplyInThreadRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Reply\StoreReplyRepository;
+use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 
@@ -29,7 +29,7 @@ class BindServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(UserAddReplyInThreadRepositoryInterface::class, UserAddReplyInThreadRepository::class);
+        $this->app->bind(StoreReplyRepositoryInterface::class, StoreReplyRepository::class);
         $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
         $this->app->bind(FindThreadRepositoryInterface::class, FindThreadRepository::class);
         $this->app->bind(AllThreadsRepositoryInterface::class, AllThreadsRepository::class);

@@ -16,4 +16,15 @@ class ReplyTest extends TestCase
 
         $this->assertInstanceOf(User::class, $reply->owner);
     }
+
+    public function test_knows_if_it_was_just_published(): void
+    {
+        $reply = create(Reply::class);
+
+        $this->assertTrue($reply->wasJustPublished());
+
+        $reply->created_at = now()->subMinute();
+
+        $this->assertFalse($reply->wasJustPublished());
+    }
 }
