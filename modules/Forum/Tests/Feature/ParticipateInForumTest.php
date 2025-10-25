@@ -4,6 +4,7 @@ namespace Modules\Forum\Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\UnauthorizedException;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -101,5 +102,20 @@ class ParticipateInForumTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertStatus(302)
             ->assertSessionHasErrors('body');
+    }
+
+    public function test_users_only_reply_maximum_of_once_per_minute() :void
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $reply = make(Reply::class, ['body' => 'foobar']);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+        ->assertStatus(302);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+        ->assertForbidden();
     }
 }

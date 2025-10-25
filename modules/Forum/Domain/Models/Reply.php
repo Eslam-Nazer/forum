@@ -3,6 +3,7 @@
 namespace Modules\Forum\Domain\Models;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,13 @@ use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
 
+/**
+ * @property string|int $user_id
+ * @property string $body
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property Thread $thread
+ */
 #[UsePolicy(ReplyPolicy::class)]
 class Reply extends Model
 {
@@ -38,7 +46,6 @@ class Reply extends Model
         'user_id',
         'thread_id',
         'body',
-        'type',
     ];
 
     protected static function booted(): void
@@ -84,5 +91,13 @@ class Reply extends Model
     public function path(): string
     {
         return $this->thread->path() . "#reply-" . $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function wasJustPublished(): bool
+    {
+        return $this->created_at->greaterThan(now()->subMinute());
     }
 }
