@@ -2,8 +2,13 @@
 
 namespace Modules\Forum\Http\Requests\Reply;
 
+use App\Exceptions\ThrottleException;
 use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Modules\Forum\Domain\Models\Reply;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class StoreReplyRequest extends FormRequest
 {
@@ -22,6 +27,15 @@ class StoreReplyRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('create', Reply::class);
+    }
+
+    /**
+     * @return void
+     * @throws ThrottleException
+     */
+    public function failedAuthorization(): void
+    {
+        throw new ThrottleException('you are posting too frequently.', Response::HTTP_BAD_REQUEST);
     }
 }

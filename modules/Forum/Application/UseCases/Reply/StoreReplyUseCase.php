@@ -20,8 +20,6 @@ class StoreReplyUseCase
      */
     public function execute(UserAddReplyInThreadDto $dto): Thread
     {
-        Gate::authorize('create', Reply::class);
-
         $reply = $this->storeReplyRepository->handle($dto->threadId, $dto->userId, $dto->body);
         return $reply->thread;
     }
