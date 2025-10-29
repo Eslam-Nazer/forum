@@ -10,6 +10,7 @@ use Tests\TestCase;
 class ReplyTest extends TestCase
 {
     use DatabaseMigrations;
+
     public function test_reply_has_owner(): void
     {
         $reply = Reply::factory()->create();
@@ -26,5 +27,14 @@ class ReplyTest extends TestCase
         $reply->created_at = now()->subMinute();
 
         $this->assertFalse($reply->wasJustPublished());
+    }
+
+    public function test_can_detect_all_mentioned_users_in_the_body(): void
+    {
+        $reply = create(Reply::class, [
+            'body' => '@janeDoe mentioned you in @JohnDoe'
+        ]);
+
+        $this->assertEquals(['janeDoe', 'JohnDoe'], $reply->mentionedUsers());
     }
 }

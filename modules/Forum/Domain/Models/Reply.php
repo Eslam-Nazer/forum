@@ -31,6 +31,9 @@ class Reply extends Model
      */
     protected $table = 'replies';
 
+    /**
+     * @var string[]
+     */
     protected $appends = ['is_favorite'];
 
     /**
@@ -60,6 +63,8 @@ class Reply extends Model
     }
 
     /**
+     * Reply model factory
+     *
      * @return ReplyFactory
      */
     protected static function newFactory(): ReplyFactory
@@ -68,6 +73,8 @@ class Reply extends Model
     }
 
     /**
+     * Users relation with reply (the owners)
+     *
      * @return BelongsTo
      */
     public function owner(): BelongsTo
@@ -76,7 +83,8 @@ class Reply extends Model
     }
 
     /**
-     * Summary of thread
+     * Thread relation with reply model
+     *
      * @return BelongsTo<Thread, Reply>
      */
     public function thread(): BelongsTo
@@ -85,7 +93,8 @@ class Reply extends Model
     }
 
     /**
-     * Summary of path
+     * Return reply path
+     *
      * @return string
      */
     public function path(): string
@@ -94,10 +103,24 @@ class Reply extends Model
     }
 
     /**
+     * Check a reply published now or after minute
+     *
      * @return bool
      */
     public function wasJustPublished(): bool
     {
         return $this->created_at->greaterThan(now()->subMinute());
+    }
+
+    /**
+     * Get mentioned users name
+     *
+     * @return array
+     */
+    public function mentionedUsers(): array
+    {
+        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+
+        return $matches[1];
     }
 }

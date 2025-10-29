@@ -20,7 +20,6 @@ class ThreadHasNewReply
      * Create a new event instance.
      */
     public function __construct(
-        public Thread $thread,
         public Reply $reply,
     ) {}
 
