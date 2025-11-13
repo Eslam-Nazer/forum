@@ -15,7 +15,10 @@ class MentionListener
      */
     public function handle(ThreadHasNewReply $event): void
     {
-        $users = User::query()->whereIn('name',  $event->reply->mentionedUsers())->get();
-        $users->each->notify(new YouWereMentioned($event->reply));
+        User::query()
+            ->whereIn('name', $event->reply->mentionedUsers())
+            ->get()
+            ->each
+            ->notify(new YouWereMentioned($event->reply));
     }
 }
