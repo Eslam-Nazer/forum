@@ -18,6 +18,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ref } from 'vue';
 import FavoriteButton from '../favorites/FavoriteButton.vue';
+import { cn } from '@/lib/utils';
 
 const props = defineProps<{
     reply: any;
@@ -108,7 +109,7 @@ function destroy() {
                 </AlertDialog>
             </div>
             <div v-else>
-                <div class="text-md">{{ reply.body }}</div>
+                <div :class="cn('text-md')" v-html="reply.body"></div>
             </div>
             <div class="mt-2 flex items-center">
                 <Button
