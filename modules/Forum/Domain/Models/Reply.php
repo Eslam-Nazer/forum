@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -119,8 +120,17 @@ class Reply extends Model
      */
     public function mentionedUsers(): array
     {
-        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+        preg_match_all('/\@([\w\-]+)/', $this->body, $matches);
 
         return $matches[1];
+    }
+
+    protected function body(): Attribute
+    {
+        return Attribute::make(
+            set: static function ($body) {
+                return preg_replace('/@([\w\-]+)/', '<Button class="text-blue-400" href="/profile/$1">$0</Button>', $body);
+            }
+        );
     }
 }

@@ -33,33 +33,33 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Threads/Show',
         href: threads.show({
             channel: props.thread.channel.slug,
-            id: props.thread.id,
-        }).url,
-    },
+            id: props.thread.id
+        }).url
+    }
 ];
 
 const formCreateReply = useForm({
-    body: '',
+    body: ''
 });
-const storeReply = function () {
+const storeReply = function() {
     formCreateReply.post(
         replies.store({
             channel: props.thread.channel.slug,
-            threadId: props.thread.id,
+            threadId: props.thread.id
         }).url,
         {
             preserveScroll: true,
-            onSuccess: () => formCreateReply.reset(),
-        },
+            onSuccess: () => formCreateReply.reset()
+        }
     );
 };
 
-const deleteThread = function () {
+const deleteThread = function() {
     router.delete(
         threads.destroy({
             channel: props.thread.channel.slug,
-            id: props.thread.id,
-        }),
+            id: props.thread.id
+        })
     );
 };
 
@@ -82,7 +82,8 @@ const goBack = () => {
                 :class="cn('cursor-pointer', '!no-underline')"
                 variant="secondary"
             >
-                <MoveLeftIcon /> Back
+                <MoveLeftIcon />
+                Back
             </Button>
         </template>
         <div class="mx-auto mt-4 w-full max-w-4xl">
@@ -116,9 +117,9 @@ const goBack = () => {
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
-                                        <AlertDialogCancel
-                                            >Cancel</AlertDialogCancel
-                                        >
+                                        <AlertDialogCancel>
+                                            Cancel
+                                        </AlertDialogCancel>
                                         <AlertDialogAction
                                             :class="
                                                 cn(

@@ -31,10 +31,20 @@ class ReplyTest extends TestCase
 
     public function test_can_detect_all_mentioned_users_in_the_body(): void
     {
-        $reply = create(Reply::class, [
+        $reply = new Reply([
             'body' => '@janeDoe mentioned you in @JohnDoe'
         ]);
 
         $this->assertEquals(['janeDoe', 'JohnDoe'], $reply->mentionedUsers());
+    }
+
+    public function test_wrap_mentioned_usernames_in_the_body_within_anchor_tag(): void
+    {
+        $reply = new Reply(['body' => '@janeDoe mentioned you in @JohnDoe.']);
+
+        $this->assertEquals(
+            '<a class="text-blue-400" href="/profile/janeDoe">@janeDoe</a> mentioned you in <a class="text-blue-400" href="/profile/JohnDoe">@JohnDoe</a>.',
+            $reply->body
+        );
     }
 }
