@@ -19,6 +19,6 @@ class NotificationController extends Controller
     {
         Auth::user()->notifications()
             ->find($notificationId)
-            ->markAsRead();
+            ?->markAsRead();
     }
 }

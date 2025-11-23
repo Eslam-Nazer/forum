@@ -3,6 +3,7 @@
 namespace Modules\Forum\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Forum\Domain\Repositories\User\FindUserRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\FindReplyRepository;
 use Modules\Forum\Domain\Repositories\Reply\FindReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\AllThreadsRepository;
@@ -10,9 +11,7 @@ use Modules\Forum\Infrastructure\Repositories\Thread\FindThreadRepository;
 use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
-use Modules\Forum\Infrastructure\Repositories\Thread\DeleteThreadRepository;
 use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\DeleteThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\CreateFavoriteRepository;
 use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\DestroyFavoriteRepository;
@@ -21,6 +20,7 @@ use Modules\Forum\Infrastructure\Repositories\Reply\StoreReplyRepository;
 use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\User\FindUserRepository;
 
 class BindServiceProvider extends ServiceProvider
 {
@@ -37,5 +37,6 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(CreateFavoriteRepositoryInterface::class, CreateFavoriteRepository::class);
         $this->app->bind(FindReplyRepositoryInterface::class, FindReplyRepository::class);
         $this->app->bind(DestroyFavoriteRepositoryInterface::class, DestroyFavoriteRepository::class);
+        $this->app->bind(FindUserRepositoryInterface::class, FindUserRepository::class);
     }
 }

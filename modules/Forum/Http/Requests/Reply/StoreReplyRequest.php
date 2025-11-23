@@ -30,12 +30,12 @@ class StoreReplyRequest extends FormRequest
         return Gate::allows('create', Reply::class);
     }
 
-    /**
-     * @return void
-     * @throws ThrottleException
-     */
-    public function failedAuthorization(): void
-    {
-        throw new ThrottleException('you are posting too frequently.', Response::HTTP_BAD_REQUEST);
-    }
+//    /**
+//     * @return void
+//     * @throws ThrottleException
+//     */
+//    public function failedAuthorization(): void
+//    {
+//        throw new ThrottleException('you are posting too frequently.', Response::HTTP_FORBIDDEN);
+//    }
 }

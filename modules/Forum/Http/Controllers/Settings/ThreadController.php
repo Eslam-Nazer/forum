@@ -14,7 +14,7 @@ class ThreadController extends Controller
     public function index(Request $request): Response|RedirectResponse
     {
         if (Auth::check()) {
-            return Inertia::render('settings/threads', [
+            return Inertia::render('settings/Thread', [
                 'threads' => $request->user()->threads()->get(),
             ]);
         }

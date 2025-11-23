@@ -52,14 +52,14 @@ class Thread extends Model
     protected $table = 'threads';
 
     /**
-     * @var list<string>
+     * @var string[]
      */
-    protected $with = ['creator', 'channel', 'favorites', 'replies'];
+    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for', 'path_to'];
 
     /**
-     * @var array<string
+     * @var string[]
      */
-    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for'];
+    protected $with = ['creator', 'channel', 'favorites', 'replies'];
 
     /**
      * The attributes that are mass assignable.
@@ -91,6 +91,18 @@ class Thread extends Model
             return '';
         }
         return "/threads/" . $this->channel->slug . "/" . $this->id;
+    }
+
+    /**
+     * Return path function as attribute
+     *
+     * @return Attribute
+     */
+    public function pathTo(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->path()
+        );
     }
 
     /**

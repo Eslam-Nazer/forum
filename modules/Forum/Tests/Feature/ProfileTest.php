@@ -29,7 +29,7 @@ class ProfileTest extends TestCase
 
         $this->get("/settings/threads")
             ->assertOk()
-            ->assertInertia(fn(AssertableInertia $page) => $page->component('settings/threads')
+            ->assertInertia(fn(AssertableInertia $page) => $page->component('settings/Thread')
                 ->has('threads', 1)
                 ->where('threads.0.title', $thread->title)
                 ->where('threads.0.body', $thread->body)
