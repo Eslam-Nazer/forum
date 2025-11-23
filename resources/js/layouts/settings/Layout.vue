@@ -9,6 +9,8 @@ import { edit as editProfile } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
+import threads from '@/routes/settings/threads';
+import activity from '@/routes/settings/activity';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -27,6 +29,18 @@ const sidebarNavItems: NavItem[] = [
         title: 'Appearance',
         href: editAppearance(),
     },
+    {
+        title: 'Thread',
+        href: threads.index().url,
+    },
+    {
+        title: 'Reply',
+        href: '',
+    },
+    {
+        title: 'Activity',
+        href: activity.index().url,
+    }
 ];
 
 const currentPath = typeof window !== undefined ? window.location.pathname : '';

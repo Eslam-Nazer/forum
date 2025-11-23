@@ -5,11 +5,11 @@ namespace Modules\Forum\Domain\Models;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ReplyFactory;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -35,10 +35,10 @@ class Reply extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['is_favorite'];
+    protected $appends = ['is_favorite', 'path_to'];
 
     /**
-     * @var list<string>
+     * @var string[]
      */
     protected $with = ['owner', 'favorites'];
 
@@ -100,7 +100,22 @@ class Reply extends Model
      */
     public function path(): string
     {
-        return $this->thread->path() . "#reply-" . $this->id;
+        return $this->thread()
+                ->without('replies')
+                ->first()
+                ?->path() . "#reply-" . $this->id;
+    }
+
+    /**
+     * Return path function as attribute
+     *
+     * @return Attribute
+     */
+    public function pathTo(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->path()
+        );
     }
 
     /**

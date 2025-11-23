@@ -35,4 +35,6 @@ Route::controller(ThreadSubScriptionController::class)->group(function () {
     Route::post('threads/{channel}/{thread}/subscriptions', 'store')->name('threads.subscribe.store');
     Route::delete('threads/{channel}/{thread}/subscriptions', 'destroy')->name('threads.subscribe.destroy');
 });
+
+require __DIR__ . '/users.php';
 require __DIR__ . '/settings.php';
