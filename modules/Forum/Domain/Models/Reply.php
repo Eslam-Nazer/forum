@@ -144,7 +144,7 @@ class Reply extends Model
     {
         return Attribute::make(
             set: static function ($body) {
-                return preg_replace('/@([\w\-]+)/', '<Button class="text-blue-400" href="/profile/$1">$0</Button>', $body);
+                return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
             }
         );
     }

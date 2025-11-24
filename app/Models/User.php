@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 
@@ -92,5 +93,15 @@ class User extends Authenticatable
     public function lastReply(): HasOne
     {
         return $this->hasOne(Reply::class)->latest();
+    }
+
+    /**
+     * Activities which user has many for it
+     *
+     * @return HasMany
+     */
+    public function activities(): HasMany
+    {
+        return $this->HasMany(Activity::class, 'user_id');
     }
 }

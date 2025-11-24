@@ -43,7 +43,7 @@ class ReplyTest extends TestCase
         $reply = new Reply(['body' => '@janeDoe mentioned you in @JohnDoe.']);
 
         $this->assertEquals(
-            '<a class="text-blue-400" href="/profile/janeDoe">@janeDoe</a> mentioned you in <a class="text-blue-400" href="/profile/JohnDoe">@JohnDoe</a>.',
+            '<a class="text-blue-400" href="/janeDoe/profile">@janeDoe</a> mentioned you in <a class="text-blue-400" href="/JohnDoe/profile">@JohnDoe</a>.',
             $reply->body
         );
     }
