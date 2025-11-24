@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Forum\Http\Controllers\Api\V1\AvatarController;
 use Modules\Forum\Http\Controllers\FavoriteController;
 use Modules\Forum\Http\Controllers\ReplyController;
 use Modules\Forum\Http\Controllers\ThreadController;
@@ -34,6 +35,10 @@ Route::controller(FavoriteController::class)->group(function () {
 Route::controller(ThreadSubScriptionController::class)->group(function () {
     Route::post('threads/{channel}/{thread}/subscriptions', 'store')->name('threads.subscribe.store');
     Route::delete('threads/{channel}/{thread}/subscriptions', 'destroy')->name('threads.subscribe.destroy');
+});
+
+Route::controller(AvatarController::class)->group(function () {
+    Route::post('/api/users/{user}/avatar', 'store')->name('users.avatar');
 });
 
 require __DIR__ . '/users.php';
