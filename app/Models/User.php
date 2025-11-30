@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,13 +14,13 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
+use function Termwind\render;
 
 /**
  * @property HasOne $lastReply
  */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable;
 
     /**
@@ -58,6 +59,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Handle avatar path to full path and return it
+     *
+     * @return Attribute
+     */
+    protected function avatarPath(): Attribute
+    {
+        return Attribute::get(fn($avatar_path) => asset('storage/' . $avatar_path));
+    }
+
+    /**
+     * Relation between user and threads which own it
+     *
      * @return HasMany
      */
     public function threads(): HasMany
@@ -71,6 +84,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Handle cache key which user visited threads
+     *
      * @param Model $thread
      * @return string
      */
@@ -80,6 +95,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Use to set cache how threads user visited
+     *
      * @param Model $thread
      * @return void
      */
@@ -89,6 +106,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Relation has one between user and reply model to get only latest one
+     *
      * @return HasOne
      */
     public function lastReply(): HasOne

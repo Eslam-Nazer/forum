@@ -38,7 +38,7 @@ Route::controller(ThreadSubScriptionController::class)->group(function () {
 });
 
 Route::controller(AvatarController::class)->group(function () {
-    Route::post('/api/users/{user}/avatar', 'store')->name('users.avatar');
+    Route::post('/api/users/{user}/avatar', 'store')->name('users.avatar.store');
 });
 
 require __DIR__ . '/users.php';

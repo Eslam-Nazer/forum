@@ -5,8 +5,8 @@ import { Auth, BreadcrumbItem, User } from '@/types';
 import profile from '@/routes/profile';
 import { Head, usePage } from '@inertiajs/vue3';
 import { cn, formatDate, shorten } from '@/lib/utils';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import TextLink from '@/components/TextLink.vue';
+import UserAvatar from '@/components/Users/UserAvatar.vue';
 
 interface Profile extends User {
     threads: any[];
@@ -34,17 +34,10 @@ const breadcrumbs: BreadcrumbItem[] = [
         <Head title="Profile" />
 
         <div :class="cn('w-full', 'max-w-md', 'mx-auto', 'mt-30' , 'mb-15', 'border-2', 'p-8', 'rounded-xl')">
-            <div :class="cn('flex justify-center items-center', 'mb-3')">
-                <Avatar :class="cn('w-30', 'h-30')">
-                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                    <AvatarFallback>
-                        <div :class="cn('text-5xl', 'text-center')">
-                            {{ user.name.charAt(0).toUpperCase() }}
-                        </div>
-                    </AvatarFallback>
-                </Avatar>
-            </div>
             <div :class="cn('flex justify-center items-center flex-col')">
+                <div :class="cn('flex justify-center items-center', 'mb-3')">
+                    <UserAvatar :user="user" size="lg" />
+                </div>
                 <h2 :class="cn('text-center', 'text-2xl', 'font-semibold')">{{ user.name }}</h2>
                 <span :class="cn('font-semibold', 'text-xl')">{{ user.email }}</span>
             </div>
