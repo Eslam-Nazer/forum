@@ -16,12 +16,13 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
 import replies from '@/routes/threads/replies';
-import { type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem } from '@/types';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { MoveLeftIcon } from 'lucide-vue-next';
 import Flash from '../accessories/alerts/Flash.vue';
 import Reply from '../replies/Reply.vue';
 import SubscribeButton from '../threadsupscriptions/SubscribeButton.vue';
+import UserAvatar from '@/components/Users/UserAvatar.vue';
 
 const props = defineProps<{
     thread: any;
@@ -90,10 +91,14 @@ const goBack = () => {
             <Card class="my-4 p-6">
                 <div>
                     <div class="flex items-center justify-between">
-                        <h2 class="text-2xl">
-                            {{ props.thread.creator.name }} posted:
-                            {{ props.thread.title }}
-                        </h2>
+                        <div :class="cn('flex justify-center items-center', 'mx-3')">
+                            <UserAvatar :user="thread.creator" size="base" class="mr-2" />
+
+                            <h2 class="text-2xl">
+                                {{ props.thread.creator.name }} posted:
+                                {{ props.thread.title }}
+                            </h2>
+                        </div>
                         <div :class="cn('flex gap-2')">
                             <AlertDialog>
                                 <AlertDialogTrigger>

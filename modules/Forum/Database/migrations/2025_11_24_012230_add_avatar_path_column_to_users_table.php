@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', static function (Blueprint $table) {
-            $table->string('avatar_path')->nullable()->default(null);
+            $table->string('avatar_path')->nullable()->default(null)->after('remember_token');
         });
     }
 

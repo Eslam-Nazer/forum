@@ -11,6 +11,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import threads from '@/routes/settings/threads';
 import activity from '@/routes/settings/activity';
+import avatar from '@/routes/settings/avatar';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -34,8 +35,8 @@ const sidebarNavItems: NavItem[] = [
         href: threads.index().url,
     },
     {
-        title: 'Reply',
-        href: '',
+        title: 'Avatar',
+        href: avatar.index().url,
     },
     {
         title: 'Activity',
