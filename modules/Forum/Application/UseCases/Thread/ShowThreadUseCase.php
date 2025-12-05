@@ -2,15 +2,16 @@
 
 namespace Modules\Forum\Application\UseCases\Thread;
 
-use Illuminate\Support\Facades\Redis;
 use JsonException;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
+use Modules\Forum\Infrastructure\Cache\Trending;
 
 class ShowThreadUseCase
 {
     public function __construct(
         protected FindThreadRepositoryInterface $findThreadRepository,
+        protected Trending $trending,
     ) {}
 
     /**
@@ -24,11 +25,7 @@ class ShowThreadUseCase
         }
         auth()->user()->read($thread);
 
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'slug' => $thread->channel->slug,
-            'path' => $thread->path()
-        ], JSON_THROW_ON_ERROR));
+        $this->trending->push($thread);
 
         return $thread;
     }
