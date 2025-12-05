@@ -12,8 +12,9 @@ import SelectValue from '@/components/ui/select/SelectValue.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import threads from '@/routes/threads';
 import { BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Form } from '@inertiajs/vue3';
 import Flash from '@/pages/accessories/alerts/Flash.vue';
+import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,10 +39,6 @@ const form = useForm({
     body: '',
     channel_id: '',
 });
-
-function submit() {
-    form.post(threads.store().url);
-}
 </script>
 
 <template>
@@ -50,18 +47,22 @@ function submit() {
         <div class="mx-auto w-full max-w-4xl">
             <Card class="mt-5 pl-6">
                 <h2 class="text-3xl">Create Thread</h2>
-                <form @submit.prevent="submit">
+                <Form
+                    v-bind="ThreadController.store.form()"
+                    resetOnError
+                    #default="{errors , processing, clearErrors}"
+                >
                     <div class="w-full max-w-xl">
                         <Label for="title" class="text-lg font-bold">
                             Title
                         </Label>
-                        <Input v-model="form.title" id="title" />
+                        <Input name="title" id="title" />
                         <InputError
                             class="!text-md"
-                            :message="$page.props.errors.title"
+                            :message="errors.title"
                         />
 
-                        <Select v-model="form.channel_id">
+                        <Select name="channel_id" v-model="form.channel_id">
                             <SelectTrigger class="mt-5 w-full">
                                 <SelectValue placeholder="Select a channel" />
                             </SelectTrigger>
@@ -78,7 +79,7 @@ function submit() {
                         </Select>
                         <InputError
                             class="!text-md"
-                            :message="$page.props.errors.channel_id"
+                            :message="errors.channel_id"
                         />
 
                         <Label
@@ -88,7 +89,7 @@ function submit() {
                             Body
                         </Label>
                         <textarea
-                            v-model="form.body"
+                            name="body"
                             id="body"
                             rows="4"
                             class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-gray-500 focus:ring-gray-500 dark:border-[#262626] dark:bg-black dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-500 dark:focus:ring-gray-500"
@@ -96,7 +97,7 @@ function submit() {
                         ></textarea>
                         <InputError
                             class="!text-md"
-                            :message="$page.props.errors.body"
+                            :message="errors.body"
                         />
                         <button
                             type="submit"
@@ -105,7 +106,7 @@ function submit() {
                             Save
                         </button>
                     </div>
-                </form>
+                </Form>
             </Card>
             <Flash
                 v-if="messages"
