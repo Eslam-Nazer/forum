@@ -37,4 +37,29 @@ export interface User {
     avatar_path: string;
 }
 
+interface Thread {
+    id: string;
+    title: string;
+    body: string;
+    slug: string;
+    created_at: string;
+    channel: Channel;
+    creator: {
+        id: string;
+        name: string;
+    };
+    is_favorite: boolean;
+    replies_count: number;
+    favorites_count: number;
+    last_page: number;
+    has_updates_for: boolean;
+}
+
+interface Trending {
+    title: string;
+    slug: string;
+    path: string;
+}
+
+
 export type BreadcrumbItemType = BreadcrumbItem;
