@@ -3,7 +3,6 @@
 namespace Modules\Forum\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,6 +23,7 @@ use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
+use Modules\Forum\Infrastructure\Cache\Trending;
 
 class ThreadController extends Controller implements HasMiddleware
 {
@@ -37,7 +37,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AllThreadsUseCase $case, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
+    public function index(Request $request, AllThreadsUseCase $case,  Trending $trending,?string $channel = null): View|Collection|Response|LengthAwarePaginator
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
@@ -51,8 +51,6 @@ class ThreadController extends Controller implements HasMiddleware
             return $thread;
         });
 
-        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 4));
-
         if ($request->wantsJson()) {
             return $threads;
         }
@@ -60,7 +58,7 @@ class ThreadController extends Controller implements HasMiddleware
         return Inertia::render('threads/Index', [
             'Threads' => $threads,
             'slug' => $channel,
-            'trending' => $trending,
+            'trending' => $trending->get(),
         ]);
     }
 
