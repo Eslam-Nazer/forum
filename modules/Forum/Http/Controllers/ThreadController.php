@@ -12,8 +12,10 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
+use JsonException;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
@@ -49,13 +51,16 @@ class ThreadController extends Controller implements HasMiddleware
             return $thread;
         });
 
+        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 4));
+
         if ($request->wantsJson()) {
             return $threads;
         }
 
         return Inertia::render('threads/Index', [
             'Threads' => $threads,
-            'slug' => $channel
+            'slug' => $channel,
+            'trending' => $trending,
         ]);
     }
 
@@ -84,6 +89,7 @@ class ThreadController extends Controller implements HasMiddleware
 
     /**
      * Show the specified resource.
+     * @throws JsonException
      */
     public function show(string $channel, string $id, ShowThreadUseCase $case): Response|View
     {
