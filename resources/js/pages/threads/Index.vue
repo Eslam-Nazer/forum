@@ -91,7 +91,7 @@ function onChangeChannel(slug?: Ref<string | null>): void {
             </Button>
         </template>
 
-        <div class="flex gap-2">
+        <div class="flex gap-2 mx-4">
             <div class="mx-auto mt-4 w-full max-w-4xl">
                 <div class="flex w-full justify-between">
                     <div>
