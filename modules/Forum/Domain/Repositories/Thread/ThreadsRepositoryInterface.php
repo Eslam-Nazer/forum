@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-interface AllThreadsRepositoryInterface
+interface ThreadsRepositoryInterface
 {
     public function handle(Request $request, string|null $channel = null): Collection|LengthAwarePaginator;
 }

@@ -197,7 +197,7 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                     </div>
                     <div>
                         <hr class="dark:border-gray-600 border-gray-400" />
-                        <div class="px-6 py-3 text-lg font-semibold">{{ thread.visits }} visits</div>
+                        <div class="px-6 py-3 text-lg font-semibold">{{ thread.visits_count }} visits</div>
                     </div>
                 </div>
 

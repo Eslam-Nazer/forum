@@ -53,7 +53,7 @@ interface Thread {
     favorites_count: number;
     last_page: number;
     has_updates_for: boolean;
-    visits?: number;
+    visits_count?: number;
 }
 
 interface Trending {
