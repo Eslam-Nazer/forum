@@ -11,7 +11,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
 use JsonException;
@@ -22,7 +21,6 @@ use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
-use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
 
