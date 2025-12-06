@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Modules\Forum\Domain\Traits\RecordVisits;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 /**
@@ -31,7 +32,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory, RecordsActivity, Favoritable;
+    use HasFactory, RecordsActivity, Favoritable, RecordVisits;
 
     protected static function booted(): void
     {

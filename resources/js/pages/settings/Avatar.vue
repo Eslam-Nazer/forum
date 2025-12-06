@@ -47,7 +47,7 @@ const props = defineProps<{
                             </div>
                             <Form
                                 v-bind="AvatarController.store.form(auth.user.id)"
-                                v-slot="{ errors }"
+                                #default="{ errors }"
                             >
                                 <Button :as="'input'" name="avatar" :type="'file'" variant="secondary" />
                                 <Button

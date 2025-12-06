@@ -26,6 +26,7 @@ class ShowThreadUseCase
         auth()->user()->read($thread);
 
         $this->trending->push($thread);
+        $thread->recordVisits();
 
         return $thread;
     }

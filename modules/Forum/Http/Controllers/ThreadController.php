@@ -11,7 +11,6 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 use Inertia\Response;
 use JsonException;
@@ -41,15 +40,6 @@ class ThreadController extends Controller implements HasMiddleware
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
-
-        $threads->through(function ($thread) {
-            $thread->can = [
-                'update' => request()->user()->can('update', $thread),
-                'delete' => request()->user()->can('delete', $thread),
-            ];
-
-            return $thread;
-        });
 
         if ($request->wantsJson()) {
             return $threads;
