@@ -7,16 +7,14 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Thread\ThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 
-readonly class AllThreadsRepository implements AllThreadsRepositoryInterface
+readonly class ThreadsRepository implements ThreadsRepositoryInterface
 {
     public function __construct(
         private FilterThreadsRepositoryInterface $filterThreadsRepository,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @param Request $request

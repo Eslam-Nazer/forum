@@ -17,7 +17,7 @@ use JsonException;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
-use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
+use Modules\Forum\Application\UseCases\Thread\ThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
@@ -36,7 +36,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, AllThreadsUseCase $case,  Trending $trending,?string $channel = null): View|Collection|Response|LengthAwarePaginator
+    public function index(Request $request, ThreadsUseCase $case, Trending $trending, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);

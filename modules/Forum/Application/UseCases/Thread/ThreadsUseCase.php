@@ -8,12 +8,12 @@ use Illuminate\Support\Collection;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
 use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Thread\AllThreadsRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Thread\ThreadsRepositoryInterface;
 
-class AllThreadsUseCase
+class ThreadsUseCase
 {
     public function __construct(
-        protected AllThreadsRepositoryInterface $allThreadsRepository,
+        protected ThreadsRepositoryInterface $allThreadsRepository,
     ) {}
 
     public function execute(Request $request, AllThreadsFilteredDto $dto): Collection|LengthAwarePaginator
@@ -26,7 +26,7 @@ class AllThreadsUseCase
                 'delete' => request()->user()->can('delete', $thread),
             ];
 
-            return $thread->append('visits');
+            return $thread->append('visits_count');
         });
 
         return $threads;

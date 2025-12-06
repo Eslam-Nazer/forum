@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Domain\Traits\RecordVisits;
+use Modules\Forum\Infrastructure\Cache\Visits;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 /**
@@ -32,7 +33,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory, RecordsActivity, Favoritable, RecordVisits;
+    use HasFactory, RecordsActivity, Favoritable;
 
     protected static function booted(): void
     {
@@ -208,5 +209,18 @@ class Thread extends Model
         return Attribute::make(
             get: fn() => $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this))
         );
+    }
+
+    /**
+     * @return Visits
+     */
+    public function visits(): Visits
+    {
+        return new Visits($this);
+    }
+
+    public function visitsCount(): Attribute
+    {
+        return Attribute::get(fn (): int => $this->visits()->count());
     }
 }
