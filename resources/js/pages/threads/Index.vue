@@ -131,66 +131,74 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                         </Select>
                     </div>
                 </div>
+
                 <Card
                     :class="cn('mt-4 w-full p-4 text-center text-lg')"
                     v-if="Threads.data.length === 0"
                 >
                     Threads Not Found
                 </Card>
+
                 <div
                     v-else
                     v-for="thread in Threads.data"
-                    class="my-4 w-full rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                    class="my-4 w-full rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800"
                     :key="thread.id"
                 >
-                    <div class="block">
-                        Create By: {{ thread.creator.name }} at
-                        {{ dayjs(thread.created_at).format('HH:mm YYYY-MM-DD') }}
-                    </div>
-                    <div
-                        class="mb-2 flex content-center items-center justify-between"
-                    >
-                        <h5
-                            :class="cn('text-2xl font-bold tracking-tight',
+                    <div class="p-6">
+                        <div class="block">
+                            Create By: {{ thread.creator.name }} at
+                            {{ dayjs(thread.created_at).format('HH:mm YYYY-MM-DD') }}
+                        </div>
+                        <div
+                            class="mb-2 flex content-center items-center justify-between"
+                        >
+                            <h5
+                                :class="cn('text-2xl font-bold tracking-tight',
                          thread.has_updates_for ? 'text-gray-900' : 'text-gray-700',
                            thread.has_updates_for ?  'dark:text-white' : 'dark:text-gray-500')"
-                        >
-                            {{ thread.title }}
-                        </h5>
+                            >
+                                {{ thread.title }}
+                            </h5>
 
-                        <div class="flex flex-col items-center justify-center">
-                            <FavoriteButton :model="thread" :type="'threads'" />
+                            <div class="flex flex-col items-center justify-center">
+                                <FavoriteButton :model="thread" :type="'threads'" />
+                            </div>
                         </div>
-                    </div>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                        {{ thread.body }}
-                    </p>
-                    <TextLink
-                        :href="
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            {{ thread.body }}
+                        </p>
+                        <TextLink
+                            :href="
                         threads.show({
                             channel: thread.channel.slug,
                             id: thread.id,
                         })
                     "
-                        class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white !no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                        Show {{ thread.replies_count }} Replies
-                        <svg
-                            class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 14 10"
+                            class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white !no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                         >
-                            <path
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M1 5h12m0 0L9 1m4 4L9 9"
-                            />
-                        </svg>
-                    </TextLink>
+                            Show {{ thread.replies_count }} Replies
+                            <svg
+                                class="ms-2 h-3.5 w-3.5 rtl:rotate-180"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 14 10"
+                            >
+                                <path
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M1 5h12m0 0L9 1m4 4L9 9"
+                                />
+                            </svg>
+                        </TextLink>
+                    </div>
+                    <div>
+                        <hr class="dark:border-gray-600 border-gray-400" />
+                        <div class="px-6 py-3 text-lg font-semibold">{{ thread.visits }} visits</div>
+                    </div>
                 </div>
 
                 <Paginator

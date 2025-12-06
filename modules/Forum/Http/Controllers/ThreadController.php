@@ -22,6 +22,7 @@ use Modules\Forum\Application\UseCases\Thread\AllThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
+use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
 
@@ -41,15 +42,6 @@ class ThreadController extends Controller implements HasMiddleware
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($request, $dto);
-
-        $threads->through(function ($thread) {
-            $thread->can = [
-                'update' => request()->user()->can('update', $thread),
-                'delete' => request()->user()->can('delete', $thread),
-            ];
-
-            return $thread;
-        });
 
         if ($request->wantsJson()) {
             return $threads;
