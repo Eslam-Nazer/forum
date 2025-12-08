@@ -56,11 +56,11 @@ watch(
             <AlertTitle v-if="title">
                 {{ title.charAt(0).toLocaleUpperCase() + title.slice(1) }}
             </AlertTitle>
-            <AlertDescription v-if="description">
+            <AlertDescription v-if="description" :class="cn('mt-3')">
                 {{ description }}
             </AlertDescription>
             <Button
-                :class="cn('absolute top-2 right-2 !p-0')"
+                :class="cn('absolute top-1 right-1 !p-0')"
                 variant="outline"
                 size="icon"
                 @click="close()"

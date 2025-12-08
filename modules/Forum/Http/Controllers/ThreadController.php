@@ -30,6 +30,7 @@ class ThreadController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('auth'),
+            new Middleware('must-be-confirmed', ['store']),
         ];
     }
 

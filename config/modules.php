@@ -157,7 +157,7 @@ return [
 
             // app/Http/
             'controller' => ['path' => '/Http/Controllers', 'generate' => true], // changed
-            'filter' => ['path' => 'app/Http/Middleware', 'generate' => false],
+            'filter' => ['path' => '/Http/Middleware', 'generate' => false],
             'request' => ['path' => '/Http/Requests', 'generate' => false], // changed
 
             // config/

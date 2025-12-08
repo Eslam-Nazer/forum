@@ -20,6 +20,7 @@ import Paginator from '../accessories/paginations/Paginator.vue';
 import FavoriteButton from '../favorites/FavoriteButton.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Badge } from '@/components/ui/badge';
+import Flash from '@/pages/accessories/alerts/Flash.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -47,7 +48,8 @@ const props = defineProps<{
         last_page: number;
     };
     slug?: string;
-    trending: Trending[]
+    trending: Trending[];
+    messages: object
 }>();
 
 const selectChannel = ref(props.slug ?? null);
@@ -236,6 +238,15 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                 </Card>
             </div>
         </div>
+
+            <Flash
+                v-if="messages"
+                v-for="(message, type) in messages"
+                :key="type"
+                :title="type"
+                :description="message"
+                :timestamp="Date.now()"
+            />
     </AppLayout>
 </template>
 
