@@ -16,7 +16,7 @@ import { ref, watch } from 'vue';
 const props = withDefaults(
     defineProps<{
         title?: 'success' | 'error' | 'warning' | 'info';
-        description: string | null;
+        description?: string;
         timestamp?: number;
     }>(),
     {
