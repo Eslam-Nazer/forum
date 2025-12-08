@@ -22,6 +22,10 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
+
+        $middleware->alias([
+            'must-be-confirmed' => Modules\Forum\Http\Middleware\RedirectIfEmailNotConfirmed::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

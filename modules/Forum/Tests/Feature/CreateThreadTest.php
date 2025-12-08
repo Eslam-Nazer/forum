@@ -24,6 +24,14 @@ class CreateThreadTest extends TestCase
             ->assertStatus(200);
     }
 
+    public function test_authenticated_users_must_first_confirm_their_email_before_creating_threads(): void
+    {
+        $this->publishThread()
+            ->assertRedirect('/threads')
+            ->assertSessionHas('messages',['warning' => 'You need to confirm your email before creating a thread.']);
+
+    }
+
     public function test_an_authenticated_user_can_create_new_forum_threads(): void
     {
         $this->signIn();
