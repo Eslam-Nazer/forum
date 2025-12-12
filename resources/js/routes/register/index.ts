@@ -57,7 +57,7 @@ store.form = storeForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 export const confirm = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -72,7 +72,7 @@ confirm.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 confirm.url = (options?: RouteQueryOptions) => {
@@ -81,7 +81,7 @@ confirm.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 confirm.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -91,7 +91,7 @@ confirm.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 confirm.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -101,7 +101,7 @@ confirm.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 const confirmForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -111,7 +111,7 @@ const confirmForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 confirmForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -121,7 +121,7 @@ confirmForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::confirm
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 confirmForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

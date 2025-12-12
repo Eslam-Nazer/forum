@@ -17,19 +17,28 @@ class ConfirmUseCase
     /**
      * Execute confirmation functionality for user
      *
-     * @return bool|RedirectResponse
+     * @return RedirectResponse
      */
-    public function execute(): bool|RedirectResponse
+    public function execute(): RedirectResponse
     {
-        try {
-            return $this->userRepository
-                ->handle()
-                ->where('confirmation_token', '=', request('token'))
-                ->firstOrFail()
-                ->update(['confirmed' => true]);
-        } catch (Exception $exception) {
+        $user = $this->userRepository
+            ->handle()
+            ->where('confirmation_token', '=', request('token'))
+            ->first();
+
+        if (!$user) {
             return redirect()->route('threads.index')
                 ->with('messages', ['error' => 'Invalid confirmation token.']);
         }
+
+        $user->update([
+            'confirmed' => true,
+            'confirmation_token' => null,
+        ]);
+        return redirect()
+            ->route('threads.index')
+            ->with('messages', [
+                'success' => 'Your account has been confirmed. you may post to the forum.'
+            ]);
     }
 }

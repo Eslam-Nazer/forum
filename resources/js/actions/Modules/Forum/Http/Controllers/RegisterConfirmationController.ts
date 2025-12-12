@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\RegisterConfirmationController::index
-* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:17
+* @see modules/Forum/Http/Controllers/RegisterConfirmationController.php:18
 * @route '/register/confirm'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
