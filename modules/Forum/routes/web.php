@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Forum\Http\Controllers\Api\V1\AvatarController;
 use Modules\Forum\Http\Controllers\FavoriteController;
+use Modules\Forum\Http\Controllers\RegisterConfirmationController;
 use Modules\Forum\Http\Controllers\ReplyController;
 use Modules\Forum\Http\Controllers\ThreadController;
 use Modules\Forum\Http\Controllers\ThreadSubScriptionController;
@@ -39,6 +40,10 @@ Route::controller(ThreadSubScriptionController::class)->group(function () {
 
 Route::controller(AvatarController::class)->group(function () {
     Route::post('/api/users/{user}/avatar', 'store')->name('users.avatar.store');
+});
+
+Route::controller(RegisterConfirmationController::class)->group(function () {
+    Route::get('/register/confirm', 'index')->name('register.confirm');
 });
 
 require __DIR__ . '/users.php';

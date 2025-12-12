@@ -12,6 +12,6 @@ class SendEmailConfirmationRequest
 {
     public function handle(Registered $event): void
     {
-        Mail::to($event->user)->send(new PleaseConfirmYourEmail());
+        Mail::to($event->user)->send(new PleaseConfirmYourEmail($event->user));
     }
 }
