@@ -17,11 +17,6 @@ class RegisterConfirmationController extends Controller
      */
     public function index(ConfirmUseCase $case): RedirectResponse
     {
-        $case->execute();
-        return redirect()
-            ->route('threads.index')
-            ->with('messages', [
-                'success' => 'Your account has been confirmed. you may post to the forum.'
-            ]);
+        return $case->execute();
     }
 }

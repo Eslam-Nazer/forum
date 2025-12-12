@@ -29,6 +29,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'confirmation_token' => Str::limit(base64_encode(Str::random(25)), 36),
+            'confirmed' => true,
         ];
     }
 
@@ -39,6 +41,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function unconfirmed(): static
+    {
+        return $this->state(fn (array $attributes) => [
+           'confirmed' => false,
         ]);
     }
 }

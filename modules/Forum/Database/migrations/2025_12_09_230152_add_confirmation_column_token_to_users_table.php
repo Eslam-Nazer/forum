@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', static function (Blueprint $table) {
-            $table->string('confirmation_token', 25)->nullable()->after('confirmed');
+            $table->string('confirmation_token', 36)
+                ->nullable()
+                ->unique()
+                ->after('confirmed');
         });
     }
 

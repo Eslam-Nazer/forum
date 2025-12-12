@@ -20,16 +20,20 @@ class CreateThreadTest extends TestCase
     {
         $this->signIn();
 
-        $this->get('/threads/create')
+        $this->get(route('threads.create'))
             ->assertStatus(200);
     }
 
     public function test_authenticated_users_must_first_confirm_their_email_before_creating_threads(): void
     {
-        $this->publishThread()
-            ->assertRedirect('/threads')
-            ->assertSessionHas('messages',['warning' => 'You need to confirm your email before creating a thread.']);
+        $this->signIn(User::factory()->unconfirmed()->create());
+        $thread = make(Thread::class);
 
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertRedirect(route('threads.index'))
+            ->assertSessionHas('messages', [
+                'warning' => 'You need to confirm your email before creating a thread.'
+            ]);
     }
 
     public function test_an_authenticated_user_can_create_new_forum_threads(): void
@@ -37,7 +41,7 @@ class CreateThreadTest extends TestCase
         $this->signIn();
         $thread = make(Thread::class, ['user_id' => auth()->id()]);
 
-        $response = $this->post('/threads', $thread->toArray());
+        $response = $this->post(route('threads.store'), $thread->toArray());
 
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
@@ -71,49 +75,54 @@ class CreateThreadTest extends TestCase
     // guest
     public function test_a_guest_may_not_create_new_thread(): void
     {
-        $this->get('/threads/create')
+        $this->get(route('threads.create'))
             ->assertRedirect('/login');
 
-        $this->post('/threads', [])
-            ->assertRedirect('/login');
+        $this->post(route('threads.store'), [])
+            ->assertRedirect(route('login'));
     }
 
-    public function test_a_thread_requires_a_title(): void
+    public function test_a_thread_requires_title_and_body(): void
     {
-        $this->publishThread(['title' => null])->assertSessionHasErrors('title');
-    }
+        $this->signIn();
 
-    public function test_a_thread_requires_a_body(): void
-    {
-        $this->publishThread(['body' => null])->assertSessionHasErrors('body');
+        $thread = make(Thread::class, ['title' => null]);
+
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertSessionHasErrors('title');
+
+        $thread = make(Thread::class, ['body' => null]);
+
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertSessionHasErrors('body');
     }
 
     public function test_a_thread_requires_a_valid_channel_id(): void
     {
-        $this->publishThread(['channel_id' => null])->assertSessionHasErrors('channel_id');
-        $this->publishThread(['channel_id' => 999])->assertSessionHasErrors('channel_id');
-    }
-
-    public function publishThread(array $overrides = []): TestResponse
-    {
         $this->signIn();
 
-        $thread = make(Thread::class, $overrides);
+        $thread = make(Thread::class, ['channel_id' => null]);
 
-        return $this->post('/threads', $thread->toArray());
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertSessionHasErrors('channel_id');
+
+        $thread = make(Thread::class, ['channel_id' => 999]);
+
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertSessionHasErrors('channel_id');
     }
 
     public function test_guests_cannot_remove_threads(): void
     {
         $thread = create(Thread::class);
 
-        $this->delete($thread->path())->assertRedirect('/login');
+        $this->delete($thread->path())->assertRedirect(route('login'));
     }
 
     public function test_unauthorized_users_cannot_delete_threads(): void
     {
         $thread = create(Thread::class);
-        $this->delete($thread->path())->assertRedirect('/login');
+        $this->delete($thread->path())->assertRedirect(route('login'));
         $this->signIn();
         $this->delete($thread->path())->assertStatus(403);
     }

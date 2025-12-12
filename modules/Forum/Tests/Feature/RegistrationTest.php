@@ -2,7 +2,6 @@
 
 namespace Modules\Forum\Tests\Feature;
 
-use App\Listeners\SendEmailConfirmationRequest;
 use App\Mail\PleaseConfirmYourEmail;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -24,9 +23,10 @@ class RegistrationTest extends TestCase
         Mail::assertSent(PleaseConfirmYourEmail::class);
     }
 
-    public function test_user_can_fully_confirm_their_email_addresses():void
+    public function test_user_can_fully_confirm_their_email_addresses(): void
     {
-        $this->post('/register', [
+        Mail::fake();
+        $this->post(route('register'), [
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'password',
@@ -38,10 +38,23 @@ class RegistrationTest extends TestCase
         $this->assertFalse($user->confirmed);
         $this->assertNotNull($user->confirmation_token);
 
-        $response = $this->get('/register/confirm?token=' . $user->confirmation_token);
+        $response = $this->get(route('register.confirm', [
+            "token" => $user->confirmation_token
+        ]))
+        ->assertRedirect(route('threads.index'));
 
-        $this->assertTrue($user->fresh()->confirmed);
+        tap($user->fresh(), function ($user) {
+            $this->assertTrue($user->confirmed);
+            $this->assertNull($user->confirmation_token);
+        });
+    }
 
-        $response->assertRedirect('/threads');
+    public function test_confirming_an_invalid_token(): void
+    {
+        $this->get(route('register.confirm', [
+            "token" => 'invalid-token'
+        ]))
+            ->assertRedirect(route('threads.index'))
+            ->assertSessionHas('messages', ['error' => 'Invalid confirmation token.']);
     }
 }

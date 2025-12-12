@@ -41,7 +41,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'confirmation_token' => Str::random(25),
+            'confirmation_token' => Str::limit(base64_encode(Str::random(25)), 36, ''),
         ]);
 
         event(new Registered($user));
