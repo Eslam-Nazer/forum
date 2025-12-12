@@ -4,6 +4,7 @@ namespace Modules\Forum\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Modules\Forum\Domain\Repositories\User\FindUserRepositoryInterface;
+use Modules\Forum\Domain\Repositories\User\UserRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\FindReplyRepository;
 use Modules\Forum\Domain\Repositories\Reply\FindReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\ThreadsRepository;
@@ -21,6 +22,7 @@ use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
 use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\User\FindUserRepository;
+use Modules\Forum\Infrastructure\Repositories\User\UserRepository;
 
 class BindServiceProvider extends ServiceProvider
 {
@@ -38,5 +40,6 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(FindReplyRepositoryInterface::class, FindReplyRepository::class);
         $this->app->bind(DestroyFavoriteRepositoryInterface::class, DestroyFavoriteRepository::class);
         $this->app->bind(FindUserRepositoryInterface::class, FindUserRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 }
