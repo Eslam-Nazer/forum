@@ -17,7 +17,12 @@ class RegisterConfirmationController extends Controller
      */
     public function index(ConfirmUseCase $case): RedirectResponse
     {
-        $case->execute();
+        $result = $case->execute();
+
+        if($result instanceof RedirectResponse) {
+            return $result;
+        }
+
         return redirect()
             ->route('threads.index')
             ->with('messages', [
