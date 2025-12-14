@@ -80,9 +80,9 @@ class ThreadController extends Controller implements HasMiddleware
      * Show the specified resource.
      * @throws JsonException
      */
-    public function show(string $channel, string $id, ShowThreadUseCase $case): Response|View
+    public function show(string $channel, string $slug, ShowThreadUseCase $case): Response|View
     {
-        $thread = $case->execute($id, $channel);
+        $thread = $case->execute($slug, $channel);
 
         return Inertia::render('threads/Show', [
             'thread' => [
@@ -115,9 +115,9 @@ class ThreadController extends Controller implements HasMiddleware
         ]);
     }
 
-    public function destroy(string $channel, string $id, DeleteThreadUseCase $case): RedirectResponse
+    public function destroy(string $channel, string $slug, DeleteThreadUseCase $case): RedirectResponse
     {
-        $dto = new DeleteThreadDto($channel, $id);
+        $dto = new DeleteThreadDto($channel, $slug);
         $case->execute($dto);
         return redirect()->route('threads.index');
     }

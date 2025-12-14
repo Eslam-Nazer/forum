@@ -17,9 +17,9 @@ class ShowThreadUseCase
     /**
      * @throws JsonException
      */
-    public function execute(string $thread_id, string $channel): Thread|null
+    public function execute(string $slug, string $channel): Thread|null
     {
-        $thread = $this->findThreadRepository->handle($thread_id, $channel);
+        $thread = $this->findThreadRepository->handle($slug, $channel);
         if (!$thread) {
             abort(404);
         }
