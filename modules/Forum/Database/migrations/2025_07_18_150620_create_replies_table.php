@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('thread_id');
+            $table->foreignId('thread_id')->constrained('threads');
             $table->text('body');
             $table->timestamps();
         });

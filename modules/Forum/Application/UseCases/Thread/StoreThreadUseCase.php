@@ -11,7 +11,9 @@ class StoreThreadUseCase
 {
     public function __construct(
         protected CreateThreadRepositoryInterface $createThreadRepository,
-    ) {}
+    )
+    {
+    }
 
     /**
      * @param CreateThreadDto $dto
@@ -24,7 +26,7 @@ class StoreThreadUseCase
             'body' => $dto->body,
             'user_id' => $dto->userId,
             'channel_id' => $dto->channelId,
-            'slug' => Str::slug($dto->title)
+            'slug' => $dto->title,
         ]);
     }
 }
