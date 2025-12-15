@@ -327,28 +327,28 @@ store.form = storeForm
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-export const show = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 
 show.definition = {
     methods: ["get","head"],
-    url: '/threads/{channel}/{id}',
+    url: '/threads/{channel}/{slug}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-show.url = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions) => {
+show.url = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
             channel: args[0],
-            id: args[1],
+            slug: args[1],
         }
     }
 
@@ -356,21 +356,21 @@ show.url = (args: { channel: string | number, id: string | number } | [channel: 
 
     const parsedArgs = {
         channel: args.channel,
-        id: args.id,
+        slug: args.slug,
     }
 
     return show.definition.url
             .replace('{channel}', parsedArgs.channel.toString())
-            .replace('{id}', parsedArgs.id.toString())
+            .replace('{slug}', parsedArgs.slug.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-show.get = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -378,9 +378,9 @@ show.get = (args: { channel: string | number, id: string | number } | [channel: 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-show.head = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -388,9 +388,9 @@ show.head = (args: { channel: string | number, id: string | number } | [channel:
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-const showForm = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -398,9 +398,9 @@ const showForm = (args: { channel: string | number, id: string | number } | [cha
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-showForm.get = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -408,9 +408,9 @@ showForm.get = (args: { channel: string | number, id: string | number } | [chann
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::show
 * @see modules/Forum/Http/Controllers/ThreadController.php:83
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-showForm.head = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
@@ -425,28 +425,28 @@ show.form = showForm
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
 * @see modules/Forum/Http/Controllers/ThreadController.php:118
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-export const destroy = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
 destroy.definition = {
     methods: ["delete"],
-    url: '/threads/{channel}/{id}',
+    url: '/threads/{channel}/{slug}',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
 * @see modules/Forum/Http/Controllers/ThreadController.php:118
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-destroy.url = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions) => {
+destroy.url = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
             channel: args[0],
-            id: args[1],
+            slug: args[1],
         }
     }
 
@@ -454,21 +454,21 @@ destroy.url = (args: { channel: string | number, id: string | number } | [channe
 
     const parsedArgs = {
         channel: args.channel,
-        id: args.id,
+        slug: args.slug,
     }
 
     return destroy.definition.url
             .replace('{channel}', parsedArgs.channel.toString())
-            .replace('{id}', parsedArgs.id.toString())
+            .replace('{slug}', parsedArgs.slug.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
 * @see modules/Forum/Http/Controllers/ThreadController.php:118
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-destroy.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -476,9 +476,9 @@ destroy.delete = (args: { channel: string | number, id: string | number } | [cha
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
 * @see modules/Forum/Http/Controllers/ThreadController.php:118
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-const destroyForm = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+const destroyForm = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',
@@ -491,9 +491,9 @@ const destroyForm = (args: { channel: string | number, id: string | number } | [
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
 * @see modules/Forum/Http/Controllers/ThreadController.php:118
-* @route '/threads/{channel}/{id}'
+* @route '/threads/{channel}/{slug}'
 */
-destroyForm.delete = (args: { channel: string | number, id: string | number } | [channel: string | number, id: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+destroyForm.delete = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
     action: destroy.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'DELETE',

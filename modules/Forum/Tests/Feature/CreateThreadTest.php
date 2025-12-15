@@ -15,7 +15,6 @@ class CreateThreadTest extends TestCase
 {
     use DatabaseMigrations;
 
-    // user
     public function test_a_user_can_show_create_thread_page(): void
     {
         $this->signIn();
@@ -72,7 +71,6 @@ class CreateThreadTest extends TestCase
         $this->delete($threadNotOwnUser->path())->assertStatus(403);
     }
 
-    // guest
     public function test_a_guest_may_not_create_new_thread(): void
     {
         $this->get(route('threads.create'))
@@ -110,6 +108,23 @@ class CreateThreadTest extends TestCase
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertSessionHasErrors('channel_id');
+    }
+
+    public function test_thread_requires_a_unique_slug(): void
+    {
+        $this->signIn()->withoutExceptionHandling();
+
+        $thread = create(Thread::class, ['title' => 'Foo title', 'slug' => 'foo-title']);
+
+        $this->assertEquals('foo-title', $thread->fresh()->slug);
+
+        $this->post(route('threads.store'), $thread->toArray());
+
+        $this->assertTrue(Thread::query()->where('slug', 'foo-title-2')->exists());
+
+        $this->post(route('threads.store'), $thread->toArray());
+
+        $this->assertTrue(Thread::query()->where('slug', 'foo-title-3')->exists());
     }
 
     public function test_guests_cannot_remove_threads(): void

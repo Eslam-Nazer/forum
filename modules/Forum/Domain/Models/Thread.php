@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -223,5 +224,28 @@ class Thread extends Model
     public function visitsCount(): Attribute
     {
         return Attribute::get(fn (): int => $this->visits()->count());
+    }
+
+    protected function slug(): Attribute
+    {
+        return Attribute::make(set: function ($value) {
+            if(static::query()->whereSlug($slug = Str::slug($value))->exists()) {
+                $slug = $this->incrementSlug($slug);
+            }
+            return $slug;
+        });
+    }
+
+    public function incrementSlug(string $slug): string
+    {
+        $max = static::query()->whereTitle($this->title)->latest('id')->value('slug');
+
+        if (is_numeric($max[-1])) {
+            return preg_replace_callback('/(\d+)$/', function ($match) {
+                return $match[1] + 1;
+            }, $max);
+        }
+
+        return "{$slug}-2";
     }
 }

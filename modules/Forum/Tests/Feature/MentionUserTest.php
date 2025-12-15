@@ -4,6 +4,7 @@ namespace Modules\Forum\Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Bus;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
 use Tests\TestCase;
@@ -16,7 +17,7 @@ class MentionUserTest extends TestCase
     {
         $john = create(User::class, ['name' => 'JohnDoe']);
 
-        $this->actingAs($john);
+        $this->actingAs($john)->withoutExceptionHandling();
 
         $poe = create(User::class, ['name' => 'PoeDoe']);
 

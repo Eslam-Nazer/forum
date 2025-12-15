@@ -24,7 +24,7 @@ class ThreadFactory extends Factory
             'user_id' => fn () => User::factory()->create()->id,
             'channel_id' => fn () => Channel::factory()->create()->id,
             'title' => $title,
-            'slug' => Str::slug($title),
+            'slug' => $title,
             'body' => fake()->paragraph(),
         ];
     }
