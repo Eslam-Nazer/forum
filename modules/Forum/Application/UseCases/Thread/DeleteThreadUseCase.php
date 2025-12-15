@@ -16,7 +16,7 @@ readonly class DeleteThreadUseCase
 
     public function execute(DeleteThreadDto $dto): void
     {
-        $thread = $this->findThreadRepository->handle($dto->id, $dto->channel);
+        $thread = $this->findThreadRepository->handle($dto->slug, $dto->channel);
         if ($thread === null) {
             abort(404);
         }

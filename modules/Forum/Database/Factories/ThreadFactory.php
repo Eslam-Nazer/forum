@@ -4,6 +4,7 @@ namespace Modules\Forum\Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 use Modules\Forum\Domain\Models\Channel;
 
 class ThreadFactory extends Factory
@@ -18,11 +19,13 @@ class ThreadFactory extends Factory
      */
     public function definition(): array
     {
+        $title = fake()->sentence();
         return [
             'user_id' => fn () => User::factory()->create()->id,
             'channel_id' => fn () => Channel::factory()->create()->id,
-            'title' => $this->faker->sentence(),
-            'body' => $this->faker->paragraph(),
+            'title' => $title,
+            'slug' => Str::slug($title),
+            'body' => fake()->paragraph(),
         ];
     }
 }

@@ -71,6 +71,7 @@ class Thread extends Model
         'user_id',
         'channel_id',
         'title',
+        'slug',
         'body',
         'type',
         'replies_count',
@@ -92,7 +93,7 @@ class Thread extends Model
         if (!$this->id) {
             return '';
         }
-        return "/threads/" . $this->channel->slug . "/" . $this->id;
+        return "/threads/" . $this->channel->slug . "/" . $this->slug;
     }
 
     /**
