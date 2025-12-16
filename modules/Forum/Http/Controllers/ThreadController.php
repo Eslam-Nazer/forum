@@ -23,6 +23,7 @@ use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
+use Illuminate\Http\Response as HttpResponse;
 
 class ThreadController extends Controller implements HasMiddleware
 {
@@ -64,7 +65,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse
+    public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse|HttpResponse
     {
         $data = new CreateThreadDto(
             userId: Auth::id(),
@@ -72,7 +73,12 @@ class ThreadController extends Controller implements HasMiddleware
             title: $request->validated('title'),
             body: $request->validated('body')
         );
-        $case->execute($data);
+        $thread = $case->execute($data);
+
+        if (request()->wantsJson()) {
+            return response($thread, 201);
+        }
+
         return redirect()->route('threads.index');
     }
 

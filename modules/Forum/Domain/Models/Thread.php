@@ -47,6 +47,10 @@ class Thread extends Model
                 $reply->delete();
             });
         });
+
+        static::created(static function (self $thread): void {
+            $thread->update(['slug' => Str::slug($thread->title)]);
+        });
     }
 
     /**
@@ -223,29 +227,18 @@ class Thread extends Model
 
     public function visitsCount(): Attribute
     {
-        return Attribute::get(fn (): int => $this->visits()->count());
+        return Attribute::get(fn(): int => $this->visits()->count());
     }
 
     protected function slug(): Attribute
     {
         return Attribute::make(set: function ($value) {
-            if(static::query()->whereSlug($slug = Str::slug($value))->exists()) {
-                $slug = $this->incrementSlug($slug);
+            $slug = Str::slug($value);
+
+            if (static::query()->whereSlug($slug)->exists()) {
+                $slug = "{$slug}-" . $this->id;
             }
             return $slug;
         });
-    }
-
-    public function incrementSlug(string $slug): string
-    {
-        $max = static::query()->whereTitle($this->title)->latest('id')->value('slug');
-
-        if (is_numeric($max[-1])) {
-            return preg_replace_callback('/(\d+)$/', function ($match) {
-                return $match[1] + 1;
-            }, $max);
-        }
-
-        return "{$slug}-2";
     }
 }

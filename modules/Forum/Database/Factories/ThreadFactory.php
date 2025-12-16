@@ -19,12 +19,10 @@ class ThreadFactory extends Factory
      */
     public function definition(): array
     {
-        $title = fake()->sentence();
         return [
             'user_id' => fn () => User::factory()->create()->id,
             'channel_id' => fn () => Channel::factory()->create()->id,
-            'title' => $title,
-            'slug' => $title,
+            'title' => fake()->sentence(),
             'body' => fake()->paragraph(),
         ];
     }
