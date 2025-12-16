@@ -114,17 +114,32 @@ class CreateThreadTest extends TestCase
     {
         $this->signIn()->withoutExceptionHandling();
 
-        $thread = create(Thread::class, ['title' => 'Foo title', 'slug' => 'foo-title']);
+        $thread = create(Thread::class, ['title' => 'Foo title']);
 
         $this->assertEquals('foo-title', $thread->fresh()->slug);
 
+        $response = $this->postJson(route('threads.store'), $thread->toArray());
+
+        $this->assertEquals('foo-title-2', $response->json('slug'));
+
+        $response = $this->postJson(route('threads.store'), $thread->toArray());
+
+        $this->assertEquals('foo-title-3', $response->json('slug'));
+    }
+
+    public function test_a_thread_with_a_title_thad_ends_in_a_number_should_generate_the_proper_slug(): void
+    {
+        $this->signIn()->withoutExceptionHandling();
+
+        $thread = create(Thread::class, ['title' => 'Some Title 24']);
+
         $this->post(route('threads.store'), $thread->toArray());
 
-        $this->assertTrue(Thread::query()->where('slug', 'foo-title-2')->exists());
+        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-2')->exists());
 
         $this->post(route('threads.store'), $thread->toArray());
 
-        $this->assertTrue(Thread::query()->where('slug', 'foo-title-3')->exists());
+        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-3')->exists());
     }
 
     public function test_guests_cannot_remove_threads(): void
