@@ -75,6 +75,7 @@ class Thread extends Model
     protected $fillable = [
         'user_id',
         'channel_id',
+        'best_reply_id',
         'title',
         'slug',
         'body',
@@ -240,5 +241,10 @@ class Thread extends Model
             }
             return $slug;
         });
+    }
+
+    public function markBestReply(Reply $reply): void
+    {
+        $this->update(['best_reply_id', $reply->id]);
     }
 }

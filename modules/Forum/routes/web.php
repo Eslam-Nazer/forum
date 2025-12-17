@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Forum\Http\Controllers\Api\V1\AvatarController;
+use Modules\Forum\Http\Controllers\BestReplyController;
 use Modules\Forum\Http\Controllers\FavoriteController;
 use Modules\Forum\Http\Controllers\RegisterConfirmationController;
 use Modules\Forum\Http\Controllers\ReplyController;
@@ -21,6 +22,10 @@ Route::controller(ReplyController::class)->group(function () {
     Route::post('threads/{channel}/{threadId}/replies', 'store')->name('threads.replies.store');
     Route::patch('replies/{id}', 'update')->name('threads.replies.update');
     Route::delete('replies/{id}', 'destroy')->name('threads.replies.destroy');
+});
+
+Route::controller(BestReplyController::class)->group(function () {
+    Route::post('/replies/{id}/best', 'store')->name('best-reply.store');
 });
 
 Route::controller(FavoriteController::class)->group(function () {

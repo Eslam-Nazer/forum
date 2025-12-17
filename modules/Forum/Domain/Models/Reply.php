@@ -140,6 +140,11 @@ class Reply extends Model
         return $matches[1];
     }
 
+    /**
+     * Prepare body attribute to store mentions users as anchor tag
+     *
+     * @return Attribute
+     */
     protected function body(): Attribute
     {
         return Attribute::make(
@@ -147,5 +152,10 @@ class Reply extends Model
                 return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
             }
         );
+    }
+
+    public function isBest(): bool
+    {
+        return $this->thread->best_reply_id === $this->id;
     }
 }
