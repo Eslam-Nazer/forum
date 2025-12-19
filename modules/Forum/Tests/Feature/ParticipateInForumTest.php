@@ -22,7 +22,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make(Reply::class);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post(route('replies.store', ['threadSlug' => $thread->slug]), $reply->toArray())
             ->assertStatus(302);
 
         $this->assertEquals(1, $thread->fresh()->replies_count);
@@ -34,7 +34,7 @@ class ParticipateInForumTest extends TestCase
 
     public function test_unauthenticated_users_may_not_add_replies(): void
     {
-        $this->post('threads/cat/1/replies', [])
+        $this->post('threads/cat/replies', [])
             ->assertRedirect('/login');
     }
 
@@ -44,7 +44,7 @@ class ParticipateInForumTest extends TestCase
         $thread = create(Thread::class);
         $reply = make(Reply::class, ['body' => null]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post(route('replies.store', ['threadSlug' => $thread->slug]), $reply->toArray())
             ->assertSessionHasErrors('body');
     }
 
@@ -99,7 +99,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make(Reply::class, ['body' => 'aaaaaaaaaaaaaaaaa']);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post(route('replies.store', ['threadSlug' => $thread->slug]), $reply->toArray())
             ->assertStatus(302)
             ->assertSessionHasErrors('body');
     }
@@ -112,10 +112,10 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make(Reply::class, ['body' => 'foobar']);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post(route('replies.store', ['threadSlug' => $thread->slug]), $reply->toArray())
         ->assertStatus(302);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->post(route('replies.store', ['threadSlug' => $thread->slug]), $reply->toArray())
         ->assertForbidden();
     }
 }

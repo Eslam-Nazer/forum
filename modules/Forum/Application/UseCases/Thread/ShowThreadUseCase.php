@@ -11,18 +11,18 @@ class ShowThreadUseCase
 {
     public function __construct(
         protected FindThreadRepositoryInterface $findThreadRepository,
-        protected Trending $trending,
+        protected Trending                      $trending,
     ) {}
 
     /**
      * @throws JsonException
      */
-    public function execute(string $slug, string $channel): Thread|null
+    public function execute(string $slug, string $channel): Thread
     {
         $thread = $this->findThreadRepository->handle($slug, $channel);
-        if (!$thread) {
-            abort(404);
-        }
+
+        abort_if(!$thread, 404);
+
         auth()->user()->read($thread);
 
         $this->trending->push($thread);

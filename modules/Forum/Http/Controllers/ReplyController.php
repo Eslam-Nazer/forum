@@ -5,7 +5,7 @@ namespace Modules\Forum\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
+use Modules\Forum\Application\DTOs\Reply\StoreReplyDto;
 use Modules\Forum\Application\UseCases\Reply\DeleteReplyUseCase;
 use Modules\Forum\Application\UseCases\Reply\UpdateReplyUseCase;
 use Modules\Forum\Application\UseCases\Reply\StoreReplyUseCase;
@@ -24,9 +24,17 @@ class ReplyController extends Controller implements HasMiddleware
         ];
     }
 
-    public function store(string $channel, string $threadId, StoreReplyRequest $request, StoreReplyUseCase $case): RedirectResponse
+    /**
+     * Store reply via routes
+     *
+     * @param string $threadSlug
+     * @param StoreReplyRequest $request
+     * @param StoreReplyUseCase $case
+     * @return RedirectResponse
+     */
+    public function store(string $threadSlug, StoreReplyRequest $request, StoreReplyUseCase $case): RedirectResponse
     {
-        $dto = new UserAddReplyInThreadDto($threadId, $request->user()->id, $request->post('body'));
+        $dto = new StoreReplyDto($threadSlug, $request->user()->id, $request->post('body'));
 
         $case->execute($dto);
         return back()

@@ -10,7 +10,8 @@ use Modules\Forum\Domain\Models\Reply;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class StoreReplyRequest extends FormRequest
+class
+StoreReplyRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.

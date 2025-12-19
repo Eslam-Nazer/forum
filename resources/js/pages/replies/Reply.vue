@@ -12,24 +12,29 @@ import Button from '@/components/ui/button/Button.vue';
 import Card from '@/components/ui/card/Card.vue';
 import Textarea from '@/components/ui/textarea/Textarea.vue';
 import { useHashScroll } from '@/composables/useHashScroll';
-import replies from '@/routes/threads/replies';
 import { useForm } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ref } from 'vue';
 import FavoriteButton from '../favorites/FavoriteButton.vue';
 import { cn } from '@/lib/utils';
+import { MessageCircleHeart } from 'lucide-vue-next';
+import BestReplyButton from '@/pages/replies/BestReplyButton.vue';
+import replies from '@/routes/replies';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     reply: any;
-}>();
+    isThreadOwner?: boolean;
+}>(), {
+    isThreadOwner: false
+});
 
 const isEditing = ref(false);
 dayjs.extend(relativeTime);
 useHashScroll();
 
 const fromReply = useForm({
-    body: props.reply.body,
+    body: props.reply.body
 });
 
 function toggleEditing() {
@@ -39,25 +44,25 @@ function toggleEditing() {
 function update() {
     fromReply.patch(
         replies.update({
-            id: props.reply.id,
+            id: props.reply.id
         }).url,
         {
             preserveScroll: true,
             onSuccess: () => {
                 isEditing.value = false;
-            },
-        },
+            }
+        }
     );
 }
 
 function destroy() {
     fromReply.delete(
         replies.destroy({
-            id: props.reply.id,
+            id: props.reply.id
         }).url,
         {
-            preserveScroll: true,
-        },
+            preserveScroll: true
+        }
     );
 }
 </script>
@@ -73,7 +78,8 @@ function destroy() {
                     {{ dayjs(reply.updated_at).fromNow() }}
                 </span>
             </h2>
-            <div class="flex flex-col items-center justify-center">
+            <div class="flex items-center justify-center">
+                <BestReplyButton :reply="reply" :isThreadOwner="isThreadOwner" />
                 <FavoriteButton :model="reply" :type="'replies'" />
             </div>
         </div>

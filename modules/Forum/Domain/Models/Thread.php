@@ -61,12 +61,12 @@ class Thread extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for', 'path_to'];
+    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for', 'path_to', 'can'];
 
     /**
      * @var string[]
      */
-    protected $with = ['creator', 'channel', 'favorites', 'replies'];
+//    protected $with = ['creator', 'channel', 'favorites', 'replies'];
 
     /**
      * The attributes that are mass assignable.
@@ -75,6 +75,7 @@ class Thread extends Model
     protected $fillable = [
         'user_id',
         'channel_id',
+        'best_reply_id',
         'title',
         'slug',
         'body',
@@ -95,7 +96,7 @@ class Thread extends Model
      */
     public function path(): string
     {
-        if (!$this->id) {
+        if (!$this->slug) {
             return '';
         }
         return "/threads/" . $this->channel->slug . "/" . $this->slug;
@@ -240,5 +241,13 @@ class Thread extends Model
             }
             return $slug;
         });
+    }
+
+    protected function can(): Attribute
+    {
+        return Attribute::get(fn() => auth()->check() ? [
+            'update' => auth()->user()->can('update', $this),
+            'delete' => auth()->user()->can('delete', $this),
+        ] : false);
     }
 }

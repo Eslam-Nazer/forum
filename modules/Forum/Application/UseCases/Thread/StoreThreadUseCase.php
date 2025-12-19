@@ -2,31 +2,24 @@
 
 namespace Modules\Forum\Application\UseCases\Thread;
 
-use Illuminate\Support\Str;
-use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
+use Modules\Forum\Application\DTOs\Thread\StoreThreadDto;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Thread\StoreThreadRepositoryInterface;
 
 class StoreThreadUseCase
 {
     public function __construct(
-        protected CreateThreadRepositoryInterface $createThreadRepository,
-    )
-    {
-    }
+        protected StoreThreadRepositoryInterface $storeThreadRepository,
+    ) {}
 
     /**
-     * @param CreateThreadDto $dto
+     * Execute query that make new thread
+     *
+     * @param StoreThreadDto $dto
      * @return Thread
      */
-    public function execute(CreateThreadDto $dto): Thread
+    public function execute(StoreThreadDto $dto): Thread
     {
-        return $this->createThreadRepository->handle()->create([
-            'title' => $dto->title,
-            'body' => $dto->body,
-            'user_id' => $dto->userId,
-            'channel_id' => $dto->channelId,
-            'slug' => $dto->title,
-        ]);
+        return $this->storeThreadRepository->handle($dto);
     }
 }

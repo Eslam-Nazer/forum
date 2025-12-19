@@ -2,15 +2,15 @@
 
 namespace Modules\Forum\Application\UseCases\Favorite;
 
-use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Favorite\StoreFavoriteRepositoryInterface;
 
 readonly class CreateFavoriteUseCase
 {
     /**
-     * @param CreateFavoriteRepositoryInterface $repository
+     * @param StoreFavoriteRepositoryInterface $repository
      */
     public function __construct(
-        protected CreateFavoriteRepositoryInterface $repository
+        protected StoreFavoriteRepositoryInterface $repository
     )
     {
     }

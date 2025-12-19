@@ -4,7 +4,7 @@ namespace Modules\Forum\Domain\Repositories\Favorite;
 
 use Modules\Forum\Domain\Models\Reply;
 
-interface CreateFavoriteRepositoryInterface
+interface StoreFavoriteRepositoryInterface
 {
     /**
      * @param string $userId

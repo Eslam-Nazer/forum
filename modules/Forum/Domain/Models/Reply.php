@@ -35,7 +35,7 @@ class Reply extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['is_favorite', 'path_to'];
+    protected $appends = ['is_favorite', 'path_to', 'is_best', 'can'];
 
     /**
      * @var string[]
@@ -61,6 +61,55 @@ class Reply extends Model
         static::deleted(static function (self $reply): void {
             $reply->thread->decrement('replies_count');
         });
+    }
+
+    /**
+     * Return path function as attribute
+     *
+     * @return Attribute
+     */
+    public function pathTo(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->path()
+        );
+    }
+
+    /**
+     * Prepare body attribute to store mentions users as anchor tag
+     *
+     * @return Attribute
+     */
+    protected function body(): Attribute
+    {
+        return Attribute::make(
+            set: static function ($body) {
+                return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
+            }
+        );
+    }
+
+    /**
+     * Check this reply is the thread owner make it the best or not
+     *
+     * @return Attribute
+     */
+    public function isBest(): Attribute
+    {
+        return Attribute::get(fn() => $this->thread->best_reply_id === $this->id);
+    }
+
+    /**
+     * Actions that the owner can take in this reply
+     *
+     * @returns Attribute
+     */
+    protected function can(): Attribute
+    {
+        return Attribute::get(fn() => auth()->check() ? [
+            'update' => auth()->user()->can('update', $this),
+            'delete' => auth()->user()->can('delete', $this),
+        ] : false);
     }
 
     /**
@@ -107,18 +156,6 @@ class Reply extends Model
     }
 
     /**
-     * Return path function as attribute
-     *
-     * @return Attribute
-     */
-    public function pathTo(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => $this->path()
-        );
-    }
-
-    /**
      * Check a reply published now or after minute
      *
      * @return bool
@@ -138,14 +175,5 @@ class Reply extends Model
         preg_match_all('/\@([\w\-]+)/', $this->body, $matches);
 
         return $matches[1];
-    }
-
-    protected function body(): Attribute
-    {
-        return Attribute::make(
-            set: static function ($body) {
-                return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
-            }
-        );
     }
 }
