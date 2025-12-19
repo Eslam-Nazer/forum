@@ -2,7 +2,7 @@
 
 namespace Modules\Forum\Application\DTOs\Thread;
 
-class CreateThreadDto
+class StoreThreadDto
 {
     public function __construct(
         public string $userId,

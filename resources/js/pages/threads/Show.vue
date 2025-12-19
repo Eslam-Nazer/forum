@@ -15,18 +15,24 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
-import replies from '@/routes/threads/replies';
 import { Auth, type BreadcrumbItem } from '@/types';
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm, Form } from '@inertiajs/vue3';
 import { MoveLeftIcon } from 'lucide-vue-next';
 import Flash from '../accessories/alerts/Flash.vue';
 import Reply from '../replies/Reply.vue';
 import SubscribeButton from '../threadsupscriptions/SubscribeButton.vue';
 import UserAvatar from '@/components/Users/UserAvatar.vue';
+import TextLink from '@/components/TextLink.vue';
+import Profile from '@/routes/profile';
+import ReplyController from '@/actions/Modules/Forum/Http/Controllers/ReplyController';
+import replies from '@/routes/replies';
+import { ref } from 'vue';
+import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
 
 const props = defineProps<{
     thread: any;
     messages?: Record<'success' | 'error' | 'warning' | 'info', string>;
+    auth: Auth
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -34,34 +40,17 @@ const breadcrumbs: BreadcrumbItem[] = [
         title: 'Threads/Show',
         href: threads.show({
             channel: props.thread.channel.slug,
-            id: props.thread.id
+            slug: props.thread.slug
         }).url
     }
 ];
 
-const formCreateReply = useForm({
-    body: ''
-});
-const storeReply = function() {
-    formCreateReply.post(
-        replies.store({
-            channel: props.thread.channel.slug,
-            threadId: props.thread.id
-        }).url,
-        {
-            preserveScroll: true,
-            onSuccess: () => formCreateReply.reset()
-        }
-    );
-};
+const body = ref('');
 
 const deleteThread = function() {
-    router.delete(
-        threads.destroy({
-            channel: props.thread.channel.slug,
-            id: props.thread.id
-        })
-    );
+    const deleteRoute = threads.destroy({ channel: props.thread.channel.slug, slug: props.thread.slug });
+
+    router[deleteRoute.method](deleteRoute.url);
 };
 
 const goBack = () => {
@@ -92,18 +81,22 @@ const goBack = () => {
                 <div>
                     <div class="flex items-center justify-between">
                         <div :class="cn('flex justify-center items-center', 'mx-3')">
-                            <UserAvatar :user="thread.creator" size="base" class="mr-2" />
+                            <TextLink
+                                :href="Profile.show(thread.creator.name).url"
+                            >
+                                <UserAvatar :user="thread.creator" size="base" class="mr-2" />
+                            </TextLink>
 
                             <h2 class="text-2xl">
-                                {{ props.thread.creator.name }} posted:
-                                {{ props.thread.title }}
+                                {{ thread.creator.name }} posted:
+                                {{ thread.title }}
                             </h2>
                         </div>
                         <div :class="cn('flex gap-2')">
                             <AlertDialog>
                                 <AlertDialogTrigger>
                                     <Button
-                                        v-if="props.thread.can.delete"
+                                        v-if="thread.can.delete"
                                         type="button"
                                         variant="destructive"
                                         :class="cn('cursor-pointer')"
@@ -150,25 +143,29 @@ const goBack = () => {
                         class="my-8 h-px border-0 bg-gray-200 dark:bg-gray-500"
                     />
                     <div class="text-xl">
-                        <p>content: {{ props.thread.body }}</p>
+                        <p>content: {{ thread.body }}</p>
                     </div>
                 </div>
             </Card>
             <Card class="p-6">
                 <h2 class="text-lg">Replies:</h2>
                 <Reply
-                    v-for="reply in props.thread.replies"
+                    v-for="reply in thread.replies"
                     :key="reply.id"
                     :reply="reply"
+                    :isThreadOwner="auth.user.id === thread.creator.id"
                 />
-                <form
-                    @submit.prevent="storeReply"
-                    @keydown.enter.prevent="storeReply"
+                <Form
+                    :action="replies.store({threadSlug: thread.slug}).url"
+                    method="post"
+                    #default="{errors}"
+                    @success="body = ''"
+                    :options="{preserveScroll: true}"
                 >
-                    <Textarea v-model="formCreateReply.body" />
-                    <InputError :message="formCreateReply.errors.body" />
-                    <Button class="mt-3 cursor-pointer">reply</Button>
-                </form>
+                    <Textarea name="body" v-model="body" />
+                    <InputError :message="errors.body" />
+                    <Button type="submit" class="mt-3 cursor-pointer">reply</Button>
+                </Form>
             </Card>
         </div>
         <Flash

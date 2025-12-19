@@ -20,7 +20,7 @@ class StoreUseCase
 
         Gate::authorize('update', $reply->thread);
 
-        $reply->thread->markBestReply($reply);
+        $reply->thread->update(['best_reply_id' => $reply->id]);
 
         return $reply;
     }

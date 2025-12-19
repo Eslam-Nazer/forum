@@ -6,5 +6,5 @@ use Modules\Forum\Domain\Models\Reply;
 
 interface StoreReplyRepositoryInterface
 {
-    public function handle(string $threadId, string $userId, string $body): Reply;
+    public function handle(string $threadSlug, string $userId, string $body): Reply;
 }

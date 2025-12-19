@@ -15,12 +15,13 @@ use Inertia\Inertia;
 use Inertia\Response;
 use JsonException;
 use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
-use Modules\Forum\Application\DTOs\Thread\CreateThreadDto;
+use Modules\Forum\Application\DTOs\Thread\StoreThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
 use Modules\Forum\Application\UseCases\Thread\ThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
+use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
 use Illuminate\Http\Response as HttpResponse;
@@ -38,12 +39,12 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, ThreadsUseCase $case, Trending $trending, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
+    public function index(ThreadsUseCase $case, Trending $trending, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
     {
         $dto = new AllThreadsFilteredDto(channel: $channel);
-        $threads = $case->execute($request, $dto);
+        $threads = $case->execute($dto);
 
-        if ($request->wantsJson()) {
+        if (request()->wantsJson()) {
             return $threads;
         }
 
@@ -67,7 +68,7 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse|HttpResponse
     {
-        $data = new CreateThreadDto(
+        $data = new StoreThreadDto(
             userId: Auth::id(),
             channelId: $request->validated('channel_id'),
             title: $request->validated('title'),
@@ -91,33 +92,7 @@ class ThreadController extends Controller implements HasMiddleware
         $thread = $case->execute($slug, $channel);
 
         return Inertia::render('threads/Show', [
-            'thread' => [
-                'id' => $thread?->id,
-                'title' => $thread?->title,
-                'body' => $thread?->body,
-                'channel' => $thread?->channel,
-                'replies' => $thread?->replies->map(fn($reply) => [
-                    'id' => $reply->id,
-                    'body' => $reply->body,
-                    'owner' => $reply->owner,
-                    'created_at' => $reply->created_at,
-                    'updated_at' => $reply->updated_at,
-                    'is_favorite' => $reply->is_favorite,
-                    'favorites_count' => $reply->favorites_count,
-                    'can' => [
-                        'update' => request()->user()->can('update', $reply),
-                        'delete' => request()->user()->can('delete', $reply),
-                    ]
-                ]),
-                'creator' => $thread?->creator,
-                'isFavorite' => $thread?->is_favorite,
-                'isSubscribedTo' => $thread?->is_subscribed_to,
-                'created_at' => $thread?->created_at,
-                'can' => [
-                    'update' => request()->user()->can('update', $thread),
-                    'delete' => request()->user()->can('delete', $thread),
-                ]
-            ],
+            'thread' => $thread,
         ]);
     }
 

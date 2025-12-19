@@ -4,12 +4,13 @@ namespace Modules\Forum\Infrastructure\Repositories\Favorite;
 
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Favorite\StoreFavoriteRepositoryInterface;
 
-class CreateFavoriteRepository implements CreateFavoriteRepositoryInterface
+class StoreFavoriteRepository implements StoreFavoriteRepositoryInterface
 {
     /**
      * @param string $userId
+     * @param string $type
      * @param string $id
      * @return void
      */

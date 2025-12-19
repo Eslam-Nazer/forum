@@ -3,7 +3,7 @@
 namespace Modules\Forum\Application\UseCases\Reply;
 
 use App\Events\ThreadHasNewReply;
-use Modules\Forum\Application\DTOs\Reply\UserAddReplyInThreadDto;
+use Modules\Forum\Application\DTOs\Reply\StoreReplyDto;
 use Modules\Forum\Domain\Models\Thread;
 use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 
@@ -14,12 +14,14 @@ class StoreReplyUseCase
     ) {}
 
     /**
-     * @param UserAddReplyInThreadDto $dto
+     * Execute reply query creation use case
+     *
+     * @param StoreReplyDto $dto
      * @return Thread
      */
-    public function execute(UserAddReplyInThreadDto $dto): Thread
+    public function execute(StoreReplyDto $dto): Thread
     {
-        $reply = $this->storeReplyRepository->handle($dto->threadId, $dto->userId, $dto->body);
+        $reply = $this->storeReplyRepository->handle($dto->threadSlug, $dto->userId, $dto->body);
 
         event(new ThreadHasNewReply($reply));
 

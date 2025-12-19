@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ChannelFactory;
 
+/**
+ * @property string $id
+ */
 class Channel extends Model
 {
     use HasFactory;

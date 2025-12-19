@@ -27,7 +27,9 @@ class MentionUserTest extends TestCase
             'body' => '@PoeDoe look at this.'
         ]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+        $this->post(route('replies.store', [
+            'threadSlug' => $thread->slug
+        ]), $reply->toArray());
 
         $this->assertCount(1, $poe->notifications);
     }

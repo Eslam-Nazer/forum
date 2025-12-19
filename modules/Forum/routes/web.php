@@ -19,9 +19,9 @@ Route::controller(ThreadController::class)->group(function () {
 });
 
 Route::controller(ReplyController::class)->group(function () {
-    Route::post('threads/{channel}/{threadId}/replies', 'store')->name('threads.replies.store');
-    Route::patch('replies/{id}', 'update')->name('threads.replies.update');
-    Route::delete('replies/{id}', 'destroy')->name('threads.replies.destroy');
+    Route::post('threads/{threadSlug}/replies', 'store')->name('replies.store');
+    Route::patch('replies/{id}', 'update')->name('replies.update');
+    Route::delete('replies/{id}', 'destroy')->name('replies.destroy');
 });
 
 Route::controller(BestReplyController::class)->group(function () {

@@ -3,18 +3,20 @@
 namespace Modules\Forum\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Modules\Forum\Domain\Repositories\Channel\FindChannelRepositoryInterface;
 use Modules\Forum\Domain\Repositories\User\FindUserRepositoryInterface;
 use Modules\Forum\Domain\Repositories\User\UserRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Channel\FindChannelRepository;
 use Modules\Forum\Infrastructure\Repositories\Reply\FindReplyRepository;
 use Modules\Forum\Domain\Repositories\Reply\FindReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\ThreadsRepository;
 use Modules\Forum\Infrastructure\Repositories\Thread\FindThreadRepository;
 use Modules\Forum\Domain\Repositories\Thread\ThreadsRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Thread\CreateThreadRepository;
-use Modules\Forum\Domain\Repositories\Thread\CreateThreadRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Favorite\CreateFavoriteRepository;
-use Modules\Forum\Domain\Repositories\Favorite\CreateFavoriteRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Thread\StoreThreadRepository;
+use Modules\Forum\Domain\Repositories\Thread\StoreThreadRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Favorite\StoreFavoriteRepository;
+use Modules\Forum\Domain\Repositories\Favorite\StoreFavoriteRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\DestroyFavoriteRepository;
 use Modules\Forum\Domain\Repositories\Favorite\DestroyFavoriteRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\StoreReplyRepository;
@@ -31,15 +33,21 @@ class BindServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(StoreReplyRepositoryInterface::class, StoreReplyRepository::class);
-        $this->app->bind(CreateThreadRepositoryInterface::class, CreateThreadRepository::class);
+        // thread
+        $this->app->bind(StoreThreadRepositoryInterface::class, StoreThreadRepository::class);
         $this->app->bind(FindThreadRepositoryInterface::class, FindThreadRepository::class);
         $this->app->bind(ThreadsRepositoryInterface::class, ThreadsRepository::class);
         $this->app->bind(FilterThreadsRepositoryInterface::class, FilterThreadsRepository::class);
-        $this->app->bind(CreateFavoriteRepositoryInterface::class, CreateFavoriteRepository::class);
+        // reply
+        $this->app->bind(StoreReplyRepositoryInterface::class, StoreReplyRepository::class);
         $this->app->bind(FindReplyRepositoryInterface::class, FindReplyRepository::class);
+        // favorite
+        $this->app->bind(StoreFavoriteRepositoryInterface::class, StoreFavoriteRepository::class);
         $this->app->bind(DestroyFavoriteRepositoryInterface::class, DestroyFavoriteRepository::class);
+        // user
         $this->app->bind(FindUserRepositoryInterface::class, FindUserRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        // channel
+        $this->app->bind(FindChannelRepositoryInterface::class, FindChannelRepository::class);
     }
 }

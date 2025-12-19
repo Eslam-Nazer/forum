@@ -53,10 +53,10 @@ class ReplyTest extends TestCase
         $this->withoutExceptionHandling();
         $reply = create(Reply::class);
 
-        $this->assertFalse($reply->isBest());
+        $this->assertFalse($reply->isBest);
 
         $reply->thread->update(['best_reply_id' => $reply->id]);
 
-        $this->assertTrue($reply->fresh()->isBest());
+        $this->assertTrue($reply->fresh()->isBest);
     }
 }

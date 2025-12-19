@@ -2,41 +2,34 @@
 
 namespace Modules\Forum\Infrastructure\Repositories\Thread;
 
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Modules\Forum\Domain\Models\Channel;
+use Illuminate\Database\Eloquent\Builder;
 use Modules\Forum\Domain\Models\Thread;
+use Modules\Forum\Domain\Repositories\Channel\FindChannelRepositoryInterface;
 use Modules\Forum\Domain\Repositories\Thread\ThreadsRepositoryInterface;
-use Modules\Forum\Domain\Repositories\Thread\Filters\FilterThreadsRepositoryInterface;
 
 readonly class ThreadsRepository implements ThreadsRepositoryInterface
 {
     public function __construct(
-        private FilterThreadsRepositoryInterface $filterThreadsRepository,
+        protected FindChannelRepositoryInterface $findChannelRepository,
     ) {}
 
     /**
-     * @param Request $request
      * @param string|null $channel
-     * @return Collection|LengthAwarePaginator
+     * @return Builder
      */
-    public function handle(Request $request, string|null $channel = null): Collection|LengthAwarePaginator
+    public function handle(string|null $channel = null): Builder
     {
         $threads = Thread::query()
             ->latest()
+            ->with(['creator', 'favorites'])
             ->orderBy('id');
 
         if (filled($channel)) {
             $threads->where(
-                'channel_id', '=', Channel::query()
-                ->where('slug', '=', $channel)
-                ->firstOrFail()->id
+                'channel_id', '=', $this->findChannelRepository->handle(channel_slug: $channel)->id
             );
         }
 
-        $threads = $this->filterThreadsRepository->apply($threads, $request);
-
-        return $threads->paginate(5);
+       return $threads;
     }
 }

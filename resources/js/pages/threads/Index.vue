@@ -21,6 +21,7 @@ import FavoriteButton from '../favorites/FavoriteButton.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Badge } from '@/components/ui/badge';
 import Flash from '@/pages/accessories/alerts/Flash.vue';
+import Profile from '@/routes/profile';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -49,7 +50,7 @@ const props = defineProps<{
     };
     slug?: string;
     trending: Trending[];
-    messages: object
+    messages?: object
 }>();
 
 const selectChannel = ref(props.slug ?? null);
@@ -149,7 +150,11 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                 >
                     <div class="p-6">
                         <div class="block">
-                            Create By: {{ thread.creator.name }} at
+                            Create By:
+                            <TextLink :href="Profile.show(thread.creator.name).url">
+                                {{ thread.creator.name }}
+                            </TextLink>
+                            at
                             {{ dayjs(thread.created_at).format('HH:mm YYYY-MM-DD') }}
                         </div>
                         <div
@@ -174,7 +179,7 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                             :href="
                         threads.show({
                             channel: thread.channel.slug,
-                            id: thread.id,
+                            slug: thread.slug,
                         })
                     "
                             class="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white !no-underline hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -239,14 +244,14 @@ function onChangeChannel(slug?: Ref<string | null>): void {
             </div>
         </div>
 
-            <Flash
-                v-if="messages"
-                v-for="(message, type) in messages"
-                :key="type"
-                :title="type"
-                :description="message"
-                :timestamp="Date.now()"
-            />
+        <Flash
+            v-if="messages"
+            v-for="(message, type) in messages"
+            :key="type"
+            :title="type"
+            :description="message"
+            :timestamp="Date.now()"
+        />
     </AppLayout>
 </template>
 

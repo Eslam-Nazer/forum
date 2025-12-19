@@ -17,7 +17,7 @@ class BestReplyController extends Controller
         $reply = $case->execute($id);
 
         return redirect()->route('threads.show', [
-            'channel' => $reply->thread->channel_id, 'slug' => $reply->thread->slug
+            'channel' => $reply->thread->channel->slug, 'slug' => $reply->thread->slug
         ]);
     }
 

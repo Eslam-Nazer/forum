@@ -2,10 +2,10 @@
 
 namespace Modules\Forum\Application\DTOs\Reply;
 
-readonly class UserAddReplyInThreadDto
+readonly class StoreReplyDto
 {
     public function __construct(
-        public string $threadId,
+        public string $threadSlug,
         public string $userId,
         public string $body,
     ){}

@@ -16,7 +16,7 @@ class BestReplyTest extends TestCase
     {
         $this->signIn()->withoutExceptionHandling();
 
-        $thread = create(Thread::class);
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $replies = create(Reply::class, ['thread_id' => $thread->id], 2);
 
@@ -24,7 +24,7 @@ class BestReplyTest extends TestCase
 
         $this->post(route('best-reply.store', ['id' => $best->id]), $best->toArray());
 
-        $this->assertTrue($best->fresh()->isBest());
+        $this->assertTrue($best->fresh()->isBest);
     }
 
     public function test_only_thread_creator_may_mark_a_reply_as_best(): void
@@ -41,6 +41,6 @@ class BestReplyTest extends TestCase
         $this->post(route('best-reply.store', ['id' => $best->id]), $best->toArray())
         ->assertStatus(403);
 
-        $this->assertFalse($best->fresh()->isBest());
+        $this->assertFalse($best->fresh()->isBest);
     }
 }
