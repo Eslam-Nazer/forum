@@ -17,6 +17,7 @@ class DeleteReplyUseCase
     {
         $reply = $this->findReplyRepository->handle($id);
 
+        abort_if(!$reply, 404);
         Gate::authorize('delete', $reply);
 
         $reply?->delete();
