@@ -43,4 +43,54 @@ class BestReplyTest extends TestCase
 
         $this->assertFalse($best->fresh()->isBest);
     }
+
+    public function test_if_a_best_reply_is_deleted_then_the_thread_is_properly_updated_to_reflect_that(): void
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $reply->thread->update(['best_reply_id' => $reply->id]);
+
+        $this->assertTrue($reply->isBest);
+
+        $this->delete(route('replies.destroy', ['id' => $reply->id]));
+
+        $this->assertNull($reply->thread->fresh()->best_reply_id);
+    }
+
+    public function test_a_thread_creator_only_may_make_best_reply_remove_from_best(): void
+    {
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $reply = create(Reply::class, ['user_id' => auth()->id(), 'thread_id' => $thread->id]);
+
+        $this->post(route('best-reply.store', ['id' => $reply->id]))
+        ->assertStatus(302);
+
+        $this->assertNotNull($thread->fresh()->best_reply_id);
+
+        $this->delete(route('best-reply.destroy', ['id' => $reply->id]))
+        ->assertStatus(302);
+
+        $this->assertNull($thread->best_reply_id);
+    }
+
+    public function test_a_thread_creator_only_can_update_best_reply_to_another_reply(): void
+    {
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+        $replies = create(Reply::class, ['user_id' => auth()->id(), 'thread_id' => $thread->id], 2);
+
+        $this->post(route('best-reply.store', ['id' => $replies[0]->id]))
+        ->assertStatus(302);
+
+        $this->assertNotNull($thread->fresh()->best_reply_id);
+        $this->assertEquals($thread->fresh()->best_reply_id, $replies[0]->id);
+
+        $this->patch(route('best-reply.update', ['id' => $replies[1]->id]))
+        ->assertStatus(302);
+
+        $this->assertEquals($thread->fresh()->best_reply_id, $replies[1]->id);
+    }
 }

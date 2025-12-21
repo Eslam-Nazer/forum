@@ -26,6 +26,8 @@ Route::controller(ReplyController::class)->group(function () {
 
 Route::controller(BestReplyController::class)->group(function () {
     Route::post('/replies/{id}/best', 'store')->name('best-reply.store');
+    Route::patch('replies/{id}/best', 'update')->name('best-reply.update');
+    Route::delete('/replies/{id}/best', 'destroy')->name('best-reply.destroy');
 });
 
 Route::controller(FavoriteController::class)->group(function () {

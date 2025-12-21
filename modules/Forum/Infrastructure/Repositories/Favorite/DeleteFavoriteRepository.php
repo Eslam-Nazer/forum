@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Forum\Domain\Models\Favorite;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
-use Modules\Forum\Domain\Repositories\Favorite\DestroyFavoriteRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Favorite\DeleteFavoriteRepositoryInterface;
 
-class DestroyFavoriteRepository implements DestroyFavoriteRepositoryInterface
+class DeleteFavoriteRepository implements DeleteFavoriteRepositoryInterface
 {
     public function destroy(string $type, string $id): void
     {

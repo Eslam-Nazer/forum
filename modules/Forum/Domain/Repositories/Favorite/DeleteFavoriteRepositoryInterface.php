@@ -2,7 +2,7 @@
 
 namespace Modules\Forum\Domain\Repositories\Favorite;
 
-interface DestroyFavoriteRepositoryInterface
+interface DeleteFavoriteRepositoryInterface
 {
     public function destroy(string $type, string $id): void;
 }
