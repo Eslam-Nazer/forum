@@ -2,7 +2,7 @@
 
 namespace Modules\Forum\Application\DTOs\Thread;
 
-readonly class AllThreadsFilteredDto
+readonly class ThreadsFilteredDto
 {
     public function __construct(
         public string|null $channel = null,

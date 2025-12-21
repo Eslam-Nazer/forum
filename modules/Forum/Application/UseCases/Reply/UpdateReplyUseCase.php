@@ -22,9 +22,7 @@ class UpdateReplyUseCase
 
         Gate::authorize('update', $reply);
 
-        if(!$reply) {
-            abort(404);
-        }
+        abort_if(!$reply, 404);
         $reply->update(['body' => request()->post('body')]);
 
         return $reply;

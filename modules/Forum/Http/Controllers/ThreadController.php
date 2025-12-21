@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use JsonException;
-use Modules\Forum\Application\DTOs\Thread\AllThreadsFilteredDto;
+use Modules\Forum\Application\DTOs\Thread\ThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\StoreThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
 use Modules\Forum\Application\UseCases\Thread\ThreadsUseCase;
@@ -41,7 +41,7 @@ class ThreadController extends Controller implements HasMiddleware
      */
     public function index(ThreadsUseCase $case, Trending $trending, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
     {
-        $dto = new AllThreadsFilteredDto(channel: $channel);
+        $dto = new ThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($dto);
 
         if (request()->wantsJson()) {
