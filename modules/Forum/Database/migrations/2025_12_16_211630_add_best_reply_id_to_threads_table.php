@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('threads', static function (Blueprint $table) {
             $table->unsignedBigInteger('best_reply_id')->nullable()->default(null)->after('channel_id');
+
+            $table->foreign('best_reply_id')->references('id')->on('replies')->nullOnDelete();
         });
     }
 
@@ -21,7 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('threads', function (Blueprint $table) {
+        Schema::table('threads', static function (Blueprint $table) {
+            $table->dropForeign('threads_best_reply_id_foreign');
             $table->dropColumn('best_reply_id');
         });
     }
