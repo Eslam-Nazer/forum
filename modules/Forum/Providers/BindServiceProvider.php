@@ -17,8 +17,8 @@ use Modules\Forum\Infrastructure\Repositories\Thread\StoreThreadRepository;
 use Modules\Forum\Domain\Repositories\Thread\StoreThreadRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Favorite\StoreFavoriteRepository;
 use Modules\Forum\Domain\Repositories\Favorite\StoreFavoriteRepositoryInterface;
-use Modules\Forum\Infrastructure\Repositories\Favorite\DestroyFavoriteRepository;
-use Modules\Forum\Domain\Repositories\Favorite\DestroyFavoriteRepositoryInterface;
+use Modules\Forum\Infrastructure\Repositories\Favorite\DeleteFavoriteRepository;
+use Modules\Forum\Domain\Repositories\Favorite\DeleteFavoriteRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Reply\StoreReplyRepository;
 use Modules\Forum\Domain\Repositories\Reply\StoreReplyRepositoryInterface;
 use Modules\Forum\Infrastructure\Repositories\Thread\Filters\FilterThreadsRepository;
@@ -43,7 +43,7 @@ class BindServiceProvider extends ServiceProvider
         $this->app->bind(FindReplyRepositoryInterface::class, FindReplyRepository::class);
         // favorite
         $this->app->bind(StoreFavoriteRepositoryInterface::class, StoreFavoriteRepository::class);
-        $this->app->bind(DestroyFavoriteRepositoryInterface::class, DestroyFavoriteRepository::class);
+        $this->app->bind(DeleteFavoriteRepositoryInterface::class, DeleteFavoriteRepository::class);
         // user
         $this->app->bind(FindUserRepositoryInterface::class, FindUserRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);

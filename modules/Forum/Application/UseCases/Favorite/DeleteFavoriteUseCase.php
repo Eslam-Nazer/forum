@@ -3,12 +3,12 @@
 namespace Modules\Forum\Application\UseCases\Favorite;
 
 use Modules\Forum\Application\DTOs\Favorite\DestroyFavoriteDto;
-use Modules\Forum\Domain\Repositories\Favorite\DestroyFavoriteRepositoryInterface;
+use Modules\Forum\Domain\Repositories\Favorite\DeleteFavoriteRepositoryInterface;
 
-class DestroyFavoriteUseCase
+class DeleteFavoriteUseCase
 {
     public function __construct(
-        private DestroyFavoriteRepositoryInterface $repository
+        private DeleteFavoriteRepositoryInterface $repository
     ) {}
 
     public function execute(DestroyFavoriteDto $dto)

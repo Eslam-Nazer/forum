@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Modules\Forum\Application\DTOs\Favorite\DestroyFavoriteDto;
 use Modules\Forum\Application\UseCases\Favorite\CreateFavoriteUseCase;
-use Modules\Forum\Application\UseCases\Favorite\DestroyFavoriteUseCase;
+use Modules\Forum\Application\UseCases\Favorite\DeleteFavoriteUseCase;
 
 class FavoriteController extends Controller implements HasMiddleware
 {
@@ -34,10 +34,10 @@ class FavoriteController extends Controller implements HasMiddleware
      * Summary of destroy
      * @param string $type
      * @param string $id
-     * @param DestroyFavoriteUseCase $case
+     * @param DeleteFavoriteUseCase $case
      * @return RedirectResponse
      */
-    public function destroy(string $type, string $id, DestroyFavoriteUseCase $case): RedirectResponse
+    public function destroy(string $type, string $id, DeleteFavoriteUseCase $case): RedirectResponse
     {
         $dto = new DestroyFavoriteDto($id, $type);
 
