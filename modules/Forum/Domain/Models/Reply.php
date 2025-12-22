@@ -162,7 +162,7 @@ class Reply extends Model
      */
     public function wasJustPublished(): bool
     {
-        return $this->created_at->greaterThan(now()->subMinute());
+        return $this->created_at->greaterThan(now()->subSeconds(15));
     }
 
     /**

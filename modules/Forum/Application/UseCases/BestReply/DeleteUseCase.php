@@ -18,7 +18,7 @@ class DeleteUseCase
         abort_if(!$reply, 404);
         Gate::authorize('delete', $reply->thread);
 
-        return $reply->delete();
+        return $reply->thread()->update(['best_reply_id' => null]);
     }
 
 }
