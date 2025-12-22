@@ -24,16 +24,6 @@ class BestReplyController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(string $id, UpdateUseCase $case): RedirectResponse
-    {
-        $case->execute($id);
-
-        return redirect()->back();
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id, DeleteUseCase $case): RedirectResponse

@@ -162,7 +162,7 @@ const goBack = () => {
                     @success="body = ''"
                     :options="{preserveScroll: true}"
                 >
-                    <Textarea name="body" v-model="body" />
+                    <Textarea name="body" v-model="body" @keydown.enter="$event.target.form.requestSubmit()" />
                     <InputError :message="errors.body" />
                     <Button type="submit" class="mt-3 cursor-pointer">reply</Button>
                 </Form>

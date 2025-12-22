@@ -9,18 +9,19 @@ const props = withDefaults(defineProps<{
     reply: any
     isThreadOwner?: boolean
 }>(), {
-    isThreadOwner: false,
+    isThreadOwner: false
 });
 
-let bestReply = BestReply.store({id: props.reply.id})
+let storeBestReply = BestReply.store({ id: props.reply.id });
+let deleteBestReply = BestReply.destroy({ id: props.reply.id });
 </script>
 
 <template>
     <TextLink
         v-if="isThreadOwner"
-        :href="bestReply.url"
+        :href="reply.is_best ? deleteBestReply.url : storeBestReply.url"
         :class="cn('mr-2')"
-        method="post"
+        :method="reply.is_best ? deleteBestReply.method : storeBestReply.method"
     >
         <MessageCircleHeart :class="{
             'text-yellow-500': reply.is_best
