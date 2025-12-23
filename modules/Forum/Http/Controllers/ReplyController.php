@@ -41,6 +41,12 @@ class ReplyController extends Controller implements HasMiddleware
             ->with('messages', ['success' => 'Reply added successfully.']);
     }
 
+    /**
+     * @param UpdateReplyRequest $request
+     * @param string $id
+     * @param UpdateReplyUseCase $case
+     * @return RedirectResponse
+     */
     public function update(UpdateReplyRequest $request, string $id, UpdateReplyUseCase $case): RedirectResponse
     {
         $case->execute($id);
@@ -48,6 +54,11 @@ class ReplyController extends Controller implements HasMiddleware
         return back()->with('messages', ['success' => 'Reply updated successfully.']);
     }
 
+    /**
+     * @param string $id
+     * @param DeleteReplyUseCase $case
+     * @return RedirectResponse
+     */
     public function destroy(string $id, DeleteReplyUseCase $case): RedirectResponse
     {
         $case->execute($id);

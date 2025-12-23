@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('threads', static function (Blueprint $table) {
-            $table->string('slug')->after('title')->unique()->nullable();
+            $table->boolean('locked')->default(false)->after('replies_count');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('threads', static function (Blueprint $table) {
-            $table->dropColumn('slug');
+            $table->dropColumn('locked');
         });
     }
 };
