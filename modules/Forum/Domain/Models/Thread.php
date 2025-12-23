@@ -29,6 +29,10 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
  * @property Collection<Reply>|null $replies
  * @property User|null $creator
  * @property bool|null $is_favorite
+ * @property string|null $slug
+ * @property boolean $locked
+ * @property string|int $best_reply_id
+ * @property int $replies_count
  */
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
@@ -73,9 +77,8 @@ class Thread extends Model
         'title',
         'slug',
         'body',
-        'type',
         'replies_count',
-        'best_reply_id'
+        'locked',
     ];
 
     /**
@@ -210,6 +213,15 @@ class Thread extends Model
         event(new ThreadHasNewReply($reply));
 
         return $reply;
+    }
+
+    /**
+     * Lock threads which can not users adding replies
+     * @return void
+     */
+    public function lock(): void
+    {
+        $this->update(['locked' => true]);
     }
 
     /**
