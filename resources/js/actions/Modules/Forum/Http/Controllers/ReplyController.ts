@@ -75,7 +75,7 @@ store.form = storeForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:44
+* @see modules/Forum/Http/Controllers/ReplyController.php:50
 * @route '/replies/{id}'
 */
 export const update = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -90,7 +90,7 @@ update.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:44
+* @see modules/Forum/Http/Controllers/ReplyController.php:50
 * @route '/replies/{id}'
 */
 update.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -117,7 +117,7 @@ update.url = (args: { id: string | number } | [id: string | number ] | string | 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:44
+* @see modules/Forum/Http/Controllers/ReplyController.php:50
 * @route '/replies/{id}'
 */
 update.patch = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -127,7 +127,7 @@ update.patch = (args: { id: string | number } | [id: string | number ] | string 
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:44
+* @see modules/Forum/Http/Controllers/ReplyController.php:50
 * @route '/replies/{id}'
 */
 const updateForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -142,7 +142,7 @@ const updateForm = (args: { id: string | number } | [id: string | number ] | str
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::update
-* @see modules/Forum/Http/Controllers/ReplyController.php:44
+* @see modules/Forum/Http/Controllers/ReplyController.php:50
 * @route '/replies/{id}'
 */
 updateForm.patch = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -159,7 +159,7 @@ update.form = updateForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:51
+* @see modules/Forum/Http/Controllers/ReplyController.php:62
 * @route '/replies/{id}'
 */
 export const destroy = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -174,7 +174,7 @@ destroy.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:51
+* @see modules/Forum/Http/Controllers/ReplyController.php:62
 * @route '/replies/{id}'
 */
 destroy.url = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -201,7 +201,7 @@ destroy.url = (args: { id: string | number } | [id: string | number ] | string |
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:51
+* @see modules/Forum/Http/Controllers/ReplyController.php:62
 * @route '/replies/{id}'
 */
 destroy.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -211,7 +211,7 @@ destroy.delete = (args: { id: string | number } | [id: string | number ] | strin
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:51
+* @see modules/Forum/Http/Controllers/ReplyController.php:62
 * @route '/replies/{id}'
 */
 const destroyForm = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -226,7 +226,7 @@ const destroyForm = (args: { id: string | number } | [id: string | number ] | st
 
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::destroy
-* @see modules/Forum/Http/Controllers/ReplyController.php:51
+* @see modules/Forum/Http/Controllers/ReplyController.php:62
 * @route '/replies/{id}'
 */
 destroyForm.delete = (args: { id: string | number } | [id: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
