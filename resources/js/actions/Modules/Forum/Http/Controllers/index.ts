@@ -2,6 +2,7 @@ import ForumController from './ForumController'
 import ThreadController from './ThreadController'
 import ReplyController from './ReplyController'
 import BestReplyController from './BestReplyController'
+import LockThreadsController from './LockThreadsController'
 import FavoriteController from './FavoriteController'
 import ThreadSubScriptionController from './ThreadSubScriptionController'
 import Api from './Api'
@@ -14,6 +15,7 @@ const Controllers = {
     ThreadController: Object.assign(ThreadController, ThreadController),
     ReplyController: Object.assign(ReplyController, ReplyController),
     BestReplyController: Object.assign(BestReplyController, BestReplyController),
+    LockThreadsController: Object.assign(LockThreadsController, LockThreadsController),
     FavoriteController: Object.assign(FavoriteController, FavoriteController),
     ThreadSubScriptionController: Object.assign(ThreadSubScriptionController, ThreadSubScriptionController),
     Api: Object.assign(Api, Api),

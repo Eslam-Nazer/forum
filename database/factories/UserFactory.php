@@ -31,6 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'confirmation_token' => Str::limit(base64_encode(Str::random(25)), 36),
             'confirmed' => true,
+            'is_admin' => false,
         ];
     }
 
@@ -48,6 +49,13 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
            'confirmed' => false,
+        ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'is_admin' => true,
         ]);
     }
 }

@@ -25,6 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'must-be-confirmed' => Modules\Forum\Http\Middleware\RedirectIfEmailNotConfirmed::class,
+            'can-lock-thread' => \Modules\Forum\Http\Middleware\CanLockThread::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

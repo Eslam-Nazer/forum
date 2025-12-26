@@ -1,0 +1,26 @@
+<?php
+
+namespace Modules\Forum\Application\UseCases\LockThread;
+
+use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
+
+class StoreUseCase
+{
+    public function __construct(
+        protected FindThreadRepositoryInterface $findThreadRepository,
+    ) {}
+
+    /**
+     * Handle lock thread
+     * @param string $slug
+     * @return void
+     */
+    public function execute(string $slug): void
+    {
+        $thread = $this->findThreadRepository->handle(slug: $slug);
+
+        abort_if(!$thread, 404);
+
+        $thread->lock();
+    }
+}

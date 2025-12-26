@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\Forum\Http\Controllers\Api\V1\AvatarController;
 use Modules\Forum\Http\Controllers\BestReplyController;
 use Modules\Forum\Http\Controllers\FavoriteController;
+use Modules\Forum\Http\Controllers\LockThreadsController;
 use Modules\Forum\Http\Controllers\RegisterConfirmationController;
 use Modules\Forum\Http\Controllers\ReplyController;
 use Modules\Forum\Http\Controllers\ThreadController;
@@ -27,6 +28,10 @@ Route::controller(ReplyController::class)->group(function () {
 Route::controller(BestReplyController::class)->group(function () {
     Route::post('/replies/{id}/best', 'store')->name('best-reply.store');
     Route::delete('/replies/{id}/best', 'destroy')->name('best-reply.destroy');
+});
+
+Route::controller(LockThreadsController::class)->group(function () {
+    Route::post('/threads/{slug}/lock', 'store')->name('lock-threads.store');
 });
 
 Route::controller(FavoriteController::class)->group(function () {

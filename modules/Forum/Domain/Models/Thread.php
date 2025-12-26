@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -33,6 +34,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
  * @property boolean $locked
  * @property string|int $best_reply_id
  * @property int $replies_count
+ * @property string|int $user_id
  */
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
@@ -80,6 +82,17 @@ class Thread extends Model
         'replies_count',
         'locked',
     ];
+
+    /**
+     * Casts the thread attributes
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'locked' => 'bool',
+        ];
+    }
 
     /**
      * @return ThreadFactory
