@@ -39,7 +39,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Display a listing of the resource.
      */
-    public function index(ThreadsUseCase $case, Trending $trending, ?string $channel = null): View|Collection|Response|LengthAwarePaginator
+    public function index(ThreadsUseCase $case, Trending $trending, ?string $channel = null): Response|LengthAwarePaginator
     {
         $dto = new ThreadsFilteredDto(channel: $channel);
         $threads = $case->execute($dto);

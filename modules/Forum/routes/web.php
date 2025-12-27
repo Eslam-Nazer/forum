@@ -45,8 +45,8 @@ Route::controller(FavoriteController::class)->group(function () {
 });
 
 Route::controller(ThreadSubScriptionController::class)->group(function () {
-    Route::post('threads/{channel}/{thread}/subscriptions', 'store')->name('threads.subscribe.store');
-    Route::delete('threads/{channel}/{thread}/subscriptions', 'destroy')->name('threads.subscribe.destroy');
+    Route::post('threads/{channel}/{slug}/subscriptions', 'store')->name('threads.subscribe.store');
+    Route::delete('threads/{channel}/{slug}/subscriptions', 'destroy')->name('threads.subscribe.destroy');
 });
 
 Route::controller(AvatarController::class)->group(function () {

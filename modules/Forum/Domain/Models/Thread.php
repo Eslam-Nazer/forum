@@ -22,7 +22,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 /**
  * @property Carbon|null $created_at
- * @property Attribute|null $is_subscribed_to
+ * @property boolean|null $is_subscribed
  * @property string|null $id
  * @property string|null $title
  * @property string|null $body
@@ -66,7 +66,7 @@ class Thread extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for', 'path_to', 'can'];
+    protected $appends = ['is_favorite', 'is_subscribed', 'has_updates_for', 'path_to', 'can'];
 
     /**
      * The attributes that are mass assignable.
@@ -115,11 +115,11 @@ class Thread extends Model
     }
 
     /**
-     * Summary of isSubscribedTo
+     * Summary of isSubscribed
      * @param string|int|null $userid
      * @return Attribute
      */
-    public function isSubscribedTo(string|int|null $userid = null): Attribute
+    public function isSubscribed(string|int|null $userid = null): Attribute
     {
         return Attribute::make(
             get: fn() => $this->subscriptions()

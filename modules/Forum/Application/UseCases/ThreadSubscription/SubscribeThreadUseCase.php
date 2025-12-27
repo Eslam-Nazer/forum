@@ -11,9 +11,11 @@ class SubscribeThreadUseCase
         public FindThreadRepositoryInterface $repository,
     ) {}
 
-    public function execute(FindThreadDto $dto)
+    public function execute(FindThreadDto $dto): void
     {
-        $thread = $this->repository->handle($dto->id, $dto->channelSlug);
+        $thread = $this->repository->handle(slug: $dto->slug, channel: $dto->channelSlug);
+        abort_if(!$thread, 404);
+        abort_if($thread->is_subscribed, 403);
         $thread->subscribe();
     }
 }

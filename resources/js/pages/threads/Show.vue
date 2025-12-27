@@ -28,6 +28,8 @@ import ReplyController from '@/actions/Modules/Forum/Http/Controllers/ReplyContr
 import replies from '@/routes/replies';
 import { ref } from 'vue';
 import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
+import LockThreads from '@/components/Threads/LockThreads.vue';
+import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
 
 const props = defineProps<{
     thread: any;
@@ -136,6 +138,10 @@ const goBack = () => {
                                 :channelSlug="thread.channel.slug"
                                 :threadId="thread.id"
                                 :isSubscribedTo="thread.isSubscribedTo"
+                            />
+                            <ThreadDropdown
+                                :thread="thread"
+                                :auth="auth"
                             />
                         </div>
                     </div>

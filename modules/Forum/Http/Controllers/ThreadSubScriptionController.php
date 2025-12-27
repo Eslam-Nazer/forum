@@ -19,9 +19,9 @@ class ThreadSubScriptionController extends Controller
         ];
     }
 
-    public function store(string $channelSlug, string $threadId, SubscribeThreadUseCase $case, Request $request): RedirectResponse
+    public function store(string $channelSlug, string $slug, SubscribeThreadUseCase $case, Request $request): RedirectResponse
     {
-        $dto = new FindThreadDto($channelSlug, $threadId);
+        $dto = new FindThreadDto($channelSlug, $slug);
         $case->execute($dto);
 
         return redirect()
