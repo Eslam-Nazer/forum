@@ -134,11 +134,11 @@ const goBack = () => {
                                     </AlertDialogFooter>
                                 </AlertDialogContent>
                             </AlertDialog>
-                            <SubscribeButton
-                                :channelSlug="thread.channel.slug"
-                                :threadId="thread.id"
-                                :isSubscribedTo="thread.isSubscribedTo"
-                            />
+<!--                            <SubscribeButton-->
+<!--                                :channelSlug="thread.channel.slug"-->
+<!--                                :threadId="thread.id"-->
+<!--                                :isSubscribedTo="thread.isSubscribedTo"-->
+<!--                            />-->
                             <ThreadDropdown
                                 :thread="thread"
                                 :auth="auth"

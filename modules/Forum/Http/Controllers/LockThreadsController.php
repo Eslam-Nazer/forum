@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Modules\Forum\Application\UseCases\LockThread\DeleteUseCase;
 use Modules\Forum\Application\UseCases\LockThread\StoreUseCase;
 
 class LockThreadsController extends Controller implements HasMiddleware
@@ -30,5 +31,9 @@ class LockThreadsController extends Controller implements HasMiddleware
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy(string $slug, DeleteUseCase $case): RedirectResponse
+    {
+        $case->execute($slug);
+        return back()->with('messages', ['info' => 'Thread is unlocked.']);
+    }
 }

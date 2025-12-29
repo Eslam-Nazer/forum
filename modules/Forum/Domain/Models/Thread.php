@@ -238,6 +238,15 @@ class Thread extends Model
     }
 
     /**
+     * Unlock threads which can users adding replies
+     * @return void
+     */
+    public function unlock(): void
+    {
+        $this->update(['locked' => false]);
+    }
+
+    /**
      * Prepare path to thread
      * @return string
      */
