@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \Modules\Forum\Http\Controllers\LockThreadsController::store
 * @see modules/Forum/Http/Controllers/LockThreadsController.php:25
@@ -157,9 +157,9 @@ destroyForm.delete = (args: { slug: string | number } | [slug: string | number ]
 
 destroy.form = destroyForm
 
-const lockThreads = {
+const lock = {
     store: Object.assign(store, store),
     destroy: Object.assign(destroy, destroy),
 }
 
-export default lockThreads
+export default lock

@@ -155,9 +155,9 @@ destroyForm.delete = (args: { type: string | number, id: string | number } | [ty
 
 destroy.form = destroyForm
 
-const favorite = {
+const favorites = {
     store: Object.assign(store, store),
     destroy: Object.assign(destroy, destroy),
 }
 
-export default favorite
+export default favorites

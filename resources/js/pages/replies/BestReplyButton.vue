@@ -3,7 +3,7 @@
 import { cn } from '@/lib/utils';
 import { MessageCircleHeart } from 'lucide-vue-next';
 import TextLink from '@/components/TextLink.vue';
-import BestReply from '@/routes/best-reply';
+import best from '@/routes/replies/best';
 
 const props = withDefaults(defineProps<{
     reply: any
@@ -12,8 +12,8 @@ const props = withDefaults(defineProps<{
     isThreadOwner: false
 });
 
-let storeBestReply = BestReply.store({ id: props.reply.id });
-let deleteBestReply = BestReply.destroy({ id: props.reply.id });
+let storeBestReply = best.store({ id: props.reply.id });
+let deleteBestReply = best.destroy({ id: props.reply.id });
 </script>
 
 <template>

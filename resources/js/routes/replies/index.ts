@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import best from './best'
 /**
 * @see \Modules\Forum\Http\Controllers\ReplyController::store
 * @see modules/Forum/Http/Controllers/ReplyController.php:35
@@ -245,6 +246,7 @@ const replies = {
     store: Object.assign(store, store),
     update: Object.assign(update, update),
     destroy: Object.assign(destroy, destroy),
+    best: Object.assign(best, best),
 }
 
 export default replies

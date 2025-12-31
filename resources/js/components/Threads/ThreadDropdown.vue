@@ -6,14 +6,26 @@ import {
     DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { EllipsisVertical, Lock, LockOpen, BellPlusIcon, Trash2Icon } from 'lucide-vue-next';
 import { BellAlertIcon } from '@heroicons/vue/20/solid';
 import { Auth, Thread } from '@/types';
-import { computed, markRaw } from 'vue';
+import { computed } from 'vue';
 import TextLink from '@/components/TextLink.vue';
 import subscribe from '@/routes/threads/subscribe';
-import LockThreads from '@/routes/lock-threads';
+import lock from '@/routes/threads/lock';
+import threads from '@/routes/threads';
 
 const props = defineProps<{
     thread: Thread;
@@ -36,7 +48,7 @@ const tabIndexValue = computed(() => -1);
                 <DropdownMenuItem v-if="thread.locked" asChild>
                     <TextLink
                         class="w-full !no-underline"
-                        :href="LockThreads.destroy({slug: thread.slug})"
+                        :href="lock.destroy({slug: thread.slug})"
                         :tabindex="tabIndexValue"
                     >
                         <LockOpen />
@@ -46,7 +58,7 @@ const tabIndexValue = computed(() => -1);
                 <DropdownMenuItem v-else asChild>
                     <TextLink
                         class="w-full !no-underline"
-                        :href="LockThreads.store({slug: thread.slug})"
+                        :href="lock.store({slug: thread.slug})"
                         :tabindex="tabIndexValue"
                     >
                         <Lock />
@@ -81,9 +93,48 @@ const tabIndexValue = computed(() => -1);
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem class="bg-red-800" v-if="auth.user.id === thread.user_id">
-                    <Trash2Icon />
-                    Delete Thread
+
+                <DropdownMenuItem v-if="thread.can.delete" asChild>
+                    <AlertDialog>
+                        <AlertDialogTrigger>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                class="cursor-pointer m-0.5"
+                            >
+                                <Trash2Icon />
+                                Delete Thread
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                    Are you sure to delete thread?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    When you confirm this action, this
+                                    thread will be deleted
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>
+                                    Cancel
+                                </AlertDialogCancel>
+                                <AlertDialogAction
+                                    class="text-white bg-red-900 hover:bg-red-700"
+                                    asChild
+                                >
+                                    <TextLink
+                                        :href="threads.destroy({channel: thread.channel.slug, slug: thread.slug})"
+                                        class="!no-underline"
+                                    >
+                                        Delete
+                                    </TextLink>
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
                 </DropdownMenuItem>
             </DropdownMenuGroup>
         </DropdownMenuContent>

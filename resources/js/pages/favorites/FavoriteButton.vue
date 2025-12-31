@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import TextLink from '@/components/TextLink.vue';
-import favorite from '@/routes/favorite';
 import { HeartIcon } from '@heroicons/vue/20/solid';
 import { computed } from 'vue';
+import favorites from '@/routes/favorites';
 
 const props = defineProps<{
     model: any;
@@ -14,9 +14,9 @@ const attributes = computed(() => ({
     id: props.model.id
 }));
 
-const create = computed(() => favorite.store(attributes.value));
+const create = computed(() => favorites.store(attributes.value));
 
-const destroy = computed(() => favorite.destroy(attributes.value));
+const destroy = computed(() => favorites.destroy(attributes.value));
 </script>
 
 <template>

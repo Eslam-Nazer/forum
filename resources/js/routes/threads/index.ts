@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
+import lock from './lock'
 import subscribe from './subscribe'
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
@@ -84,7 +85,7 @@ index.form = indexForm
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -93,13 +94,13 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 create.definition = {
     methods: ["get","head"],
-    url: '/threads/create',
+    url: '/threads/t/create',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
@@ -108,7 +109,7 @@ create.url = (options?: RouteQueryOptions) => {
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -118,7 +119,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
@@ -128,7 +129,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -138,7 +139,7 @@ const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -148,7 +149,7 @@ createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url({
@@ -503,6 +504,7 @@ destroyForm.delete = (args: { channel: string | number, slug: string | number } 
 destroy.form = destroyForm
 
 const threads = {
+    lock: Object.assign(lock, lock),
     subscribe: Object.assign(subscribe, subscribe),
     index: Object.assign(index, index),
     create: Object.assign(create, create),

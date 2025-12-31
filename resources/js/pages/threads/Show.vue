@@ -95,50 +95,6 @@ const goBack = () => {
                             </h2>
                         </div>
                         <div :class="cn('flex gap-2')">
-                            <AlertDialog>
-                                <AlertDialogTrigger>
-                                    <Button
-                                        v-if="thread.can.delete"
-                                        type="button"
-                                        variant="destructive"
-                                        :class="cn('cursor-pointer')"
-                                    >
-                                        Delete Thread
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>
-                                            Are you sure to delete thread?
-                                        </AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            When you confirm this action, this
-                                            thread will be deleted
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                            Cancel
-                                        </AlertDialogCancel>
-                                        <AlertDialogAction
-                                            :class="
-                                                cn(
-                                                    'text-white',
-                                                    'bg-red-900 hover:bg-red-800',
-                                                )
-                                            "
-                                            @click="deleteThread"
-                                        >
-                                            Delete
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-<!--                            <SubscribeButton-->
-<!--                                :channelSlug="thread.channel.slug"-->
-<!--                                :threadId="thread.id"-->
-<!--                                :isSubscribedTo="thread.isSubscribedTo"-->
-<!--                            />-->
                             <ThreadDropdown
                                 :thread="thread"
                                 :auth="auth"
@@ -161,12 +117,16 @@ const goBack = () => {
                     :reply="reply"
                     :isThreadOwner="auth.user.id === thread.creator.id"
                 />
+                <div class="text-center" v-if="thread.locked">
+                    Thread is locked. Can't add any replies now.
+                </div>
                 <Form
                     :action="replies.store({threadSlug: thread.slug}).url"
                     method="post"
                     #default="{errors}"
                     @success="body = ''"
                     :options="{preserveScroll: true}"
+                    v-else
                 >
                     <Textarea name="body" v-model="body" @keydown.enter="$event.target.form.requestSubmit()" />
                     <InputError :message="errors.body" />

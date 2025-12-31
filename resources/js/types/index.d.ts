@@ -57,6 +57,7 @@ interface Thread {
     last_page: number;
     has_updates_for: boolean;
     visits_count?: number;
+    can?: array;
 }
 
 interface Trending {
