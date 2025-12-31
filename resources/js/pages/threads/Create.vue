@@ -33,12 +33,6 @@ const props =defineProps<{
     channels: Channel[];
     messages?: Record<'success' | 'error' | 'warning' | 'info', string>
 }>();
-
-const form = useForm({
-    title: '',
-    body: '',
-    channel_id: '',
-});
 </script>
 
 <template>
@@ -49,7 +43,7 @@ const form = useForm({
                 <h2 class="text-3xl">Create Thread</h2>
                 <Form
                     v-bind="ThreadController.store.form()"
-                    resetOnError
+                    resetOnSuccess
                     #default="{errors , processing, clearErrors}"
                 >
                     <div class="w-full max-w-xl">
@@ -62,7 +56,7 @@ const form = useForm({
                             :message="errors.title"
                         />
 
-                        <Select name="channel_id" v-model="form.channel_id">
+                        <Select name="channel_id">
                             <SelectTrigger class="mt-5 w-full">
                                 <SelectValue placeholder="Select a channel" />
                             </SelectTrigger>

@@ -13,7 +13,8 @@ class UnsubscribeThreadUseCase
 
     public function execute(FindThreadDto $dto): void
     {
-        $thread = $this->repository->handle($dto->id, $dto->channelSlug);
+        $thread = $this->repository->handle($dto->slug, $dto->channelSlug);
+        abort_if(!$thread, 404);
         $thread->unsubscribe();
     }
 }

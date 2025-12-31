@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
@@ -21,7 +22,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 
 /**
  * @property Carbon|null $created_at
- * @property Attribute|null $is_subscribed_to
+ * @property boolean|null $is_subscribed
  * @property string|null $id
  * @property string|null $title
  * @property string|null $body
@@ -33,6 +34,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
  * @property boolean $locked
  * @property string|int $best_reply_id
  * @property int $replies_count
+ * @property string|int $user_id
  */
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
@@ -64,7 +66,7 @@ class Thread extends Model
     /**
      * @var string[]
      */
-    protected $appends = ['is_favorite', 'is_subscribed_to', 'has_updates_for', 'path_to', 'can'];
+    protected $appends = ['is_favorite', 'is_subscribed', 'has_updates_for', 'path_to', 'can'];
 
     /**
      * The attributes that are mass assignable.
@@ -80,6 +82,17 @@ class Thread extends Model
         'replies_count',
         'locked',
     ];
+
+    /**
+     * Casts the thread attributes
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'locked' => 'bool',
+        ];
+    }
 
     /**
      * @return ThreadFactory
@@ -102,11 +115,11 @@ class Thread extends Model
     }
 
     /**
-     * Summary of isSubscribedTo
+     * Summary of isSubscribed
      * @param string|int|null $userid
      * @return Attribute
      */
-    public function isSubscribedTo(string|int|null $userid = null): Attribute
+    public function isSubscribed(string|int|null $userid = null): Attribute
     {
         return Attribute::make(
             get: fn() => $this->subscriptions()
@@ -222,6 +235,15 @@ class Thread extends Model
     public function lock(): void
     {
         $this->update(['locked' => true]);
+    }
+
+    /**
+     * Unlock threads which can users adding replies
+     * @return void
+     */
+    public function unlock(): void
+    {
+        $this->update(['locked' => false]);
     }
 
     /**

@@ -4,7 +4,6 @@ import type { HTMLAttributes } from "vue"
 import { reactiveOmit } from "@vueuse/core"
 import {
   AlertDialogDescription,
-
 } from "reka-ui"
 import { cn } from "@/lib/utils"
 
@@ -15,9 +14,8 @@ const delegatedProps = reactiveOmit(props, "class")
 
 <template>
   <AlertDialogDescription
-    data-slot="alert-dialog-description"
     v-bind="delegatedProps"
-    :class="cn('text-muted-foreground text-sm', props.class)"
+    :class="cn('text-sm text-muted-foreground', props.class)"
   >
     <slot />
   </AlertDialogDescription>

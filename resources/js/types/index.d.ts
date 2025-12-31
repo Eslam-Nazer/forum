@@ -41,6 +41,8 @@ interface Thread {
     id: string;
     title: string;
     body: string;
+    user_id: number;
+    locked: boolean;
     slug: string;
     created_at: string;
     channel: Channel;
@@ -49,11 +51,13 @@ interface Thread {
         name: string;
     };
     is_favorite: boolean;
+    is_subscribed: bolean;
     replies_count: number;
     favorites_count: number;
     last_page: number;
     has_updates_for: boolean;
     visits_count?: number;
+    can?: array;
 }
 
 interface Trending {

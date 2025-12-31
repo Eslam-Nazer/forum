@@ -34,7 +34,8 @@ class User extends Authenticatable
         'password',
         'avatar_path',
         'confirmed',
-        'confirmation_token'
+        'confirmation_token',
+        'is_admin',
     ];
 
     /**

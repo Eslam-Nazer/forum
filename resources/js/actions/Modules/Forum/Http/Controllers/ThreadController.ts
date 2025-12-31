@@ -190,7 +190,7 @@ export const index = {
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -199,13 +199,13 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 create.definition = {
     methods: ["get","head"],
-    url: '/threads/create',
+    url: '/threads/t/create',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
@@ -214,7 +214,7 @@ create.url = (options?: RouteQueryOptions) => {
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -224,7 +224,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
@@ -234,7 +234,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -244,7 +244,7 @@ const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url(options),
@@ -254,7 +254,7 @@ createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::create
 * @see modules/Forum/Http/Controllers/ThreadController.php:61
-* @route '/threads/create'
+* @route '/threads/t/create'
 */
 createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: create.url({

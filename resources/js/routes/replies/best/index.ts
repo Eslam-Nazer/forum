@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \Modules\Forum\Http\Controllers\BestReplyController::store
 * @see modules/Forum/Http/Controllers/BestReplyController.php:17
@@ -157,9 +157,9 @@ destroyForm.delete = (args: { id: string | number } | [id: string | number ] | s
 
 destroy.form = destroyForm
 
-const bestReply = {
+const best = {
     store: Object.assign(store, store),
     destroy: Object.assign(destroy, destroy),
 }
 
-export default bestReply
+export default best

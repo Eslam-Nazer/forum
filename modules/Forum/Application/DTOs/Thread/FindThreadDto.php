@@ -6,6 +6,6 @@ class FindThreadDto
 {
     public function __construct(
         public string $channelSlug,
-        public string $id,
+        public string $slug,
     ) {}
 }
