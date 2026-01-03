@@ -15,6 +15,7 @@ class MentionUserTest extends TestCase
 
     public function test_mentioned_users_in_a_reply_are_notified(): void
     {
+        Bus::fake();
         $john = create(User::class, ['name' => 'JohnDoe']);
 
         $this->actingAs($john)->withoutExceptionHandling();

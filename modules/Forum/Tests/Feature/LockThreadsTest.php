@@ -34,7 +34,7 @@ class LockThreadsTest extends TestCase
         $thread = create(Thread::class);
 
         $this->post(
-            route('lock-threads.store', ['slug' => $thread->slug])
+            route('threads.lock.store', ['slug' => $thread->slug])
         )->assertStatus(403);
 
         $this->assertFalse($thread->fresh()->locked);
@@ -46,7 +46,7 @@ class LockThreadsTest extends TestCase
         $thread = create(Thread::class);
 
         $this->post(
-            route('lock-threads.store', ['slug' => $thread->slug])
+            route('threads.lock.store', ['slug' => $thread->slug])
         )->assertStatus(302);
 
         $this->signIn();
@@ -54,7 +54,26 @@ class LockThreadsTest extends TestCase
         $thread = create(Thread::class, ['user_id' => auth()->id()]);
 
         $this->post(
-            route('lock-threads.store', ['slug' => $thread->slug])
+            route('threads.lock.store', ['slug' => $thread->slug])
         )->assertStatus(302);
+    }
+
+    public function test_authorize_user_may_unlock_a_thread(): void
+    {
+        $this->signIn(User::factory()->admin()->create());
+        $thread = create(Thread::class);
+
+        $thread->lock();
+        $this->delete(route('threads.lock.destroy', ['slug' => $thread->slug]));
+
+        $this->assertFalse($thread->fresh()->locked);
+
+        $this->signIn();
+        $thread = create(Thread::class, ['user_id' => auth()->id()]);
+
+        $thread->lock();
+        $this->delete(route('threads.lock.destroy', ['slug' => $thread->slug]));
+
+        $this->assertFalse($thread->fresh()->locked);
     }
 }

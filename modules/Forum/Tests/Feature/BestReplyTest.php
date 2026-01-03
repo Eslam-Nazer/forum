@@ -22,7 +22,7 @@ class BestReplyTest extends TestCase
 
         $best = $replies[1];
 
-        $this->post(route('best-reply.store', ['id' => $best->id]), $best->toArray());
+        $this->post(route('replies.best.store', ['id' => $best->id]), $best->toArray());
 
         $this->assertTrue($best->fresh()->isBest);
     }
@@ -38,7 +38,7 @@ class BestReplyTest extends TestCase
 
         $best = $replies[1];
 
-        $this->post(route('best-reply.store', ['id' => $best->id]), $best->toArray())
+        $this->post(route('replies.best.store', ['id' => $best->id]), $best->toArray())
         ->assertStatus(403);
 
         $this->assertFalse($best->fresh()->isBest);
@@ -65,12 +65,12 @@ class BestReplyTest extends TestCase
         $thread = create(Thread::class, ['user_id' => auth()->id()]);
         $reply = create(Reply::class, ['user_id' => auth()->id(), 'thread_id' => $thread->id]);
 
-        $this->post(route('best-reply.store', ['id' => $reply->id]))
+        $this->post(route('replies.best.store', ['id' => $reply->id]))
         ->assertStatus(302);
 
         $this->assertNotNull($thread->fresh()->best_reply_id);
 
-        $this->delete(route('best-reply.destroy', ['id' => $reply->id]))
+        $this->delete(route('replies.best.destroy', ['id' => $reply->id]))
         ->assertStatus(302);
 
         $this->assertNull($thread->best_reply_id);
