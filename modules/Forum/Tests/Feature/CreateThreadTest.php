@@ -9,11 +9,27 @@ use Illuminate\Testing\TestResponse;
 use Modules\Forum\Domain\Models\Channel;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
+use Modules\Forum\Http\Rules\RecaptchaRule;
 use Tests\TestCase;
 
 class CreateThreadTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->recaptcha_token = ['recaptcha_token' => 'token'];
+
+        app()->singleton(RecaptchaRule::class, function () {
+            return \Mockery::mock(RecaptchaRule::class, static function ($mock) {
+                $mock->shouldReceive('validate')->andReturn(true);
+            });
+
+
+        });
+    }
 
     public function test_a_user_can_show_create_thread_page(): void
     {
@@ -40,7 +56,10 @@ class CreateThreadTest extends TestCase
         $this->signIn();
         $thread = make(Thread::class, ['user_id' => auth()->id()]);
 
-        $response = $this->post(route('threads.store'), $thread->toArray());
+        $response = $this->post(
+            route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
 
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->title)
@@ -80,7 +99,7 @@ class CreateThreadTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    public function test_a_thread_requires_title_and_body(): void
+    public function test_a_thread_requires_a_title(): void
     {
         $this->signIn();
 
@@ -88,11 +107,28 @@ class CreateThreadTest extends TestCase
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertSessionHasErrors('title');
+    }
+
+    public function test_a_thread_requires_body(): void
+    {
+        $this->signIn();
 
         $thread = make(Thread::class, ['body' => null]);
 
         $this->post(route('threads.store'), $thread->toArray())
             ->assertSessionHasErrors('body');
+    }
+
+    public function test_a_thread_requires_recaptcha_verification(): void
+    {
+        $this->signIn();
+
+        $thread = make(Thread::class, $this->recaptcha_token);
+
+        app()->offsetUnset(RecaptchaRule::class);
+
+        $this->post(route('threads.store'), $thread->toArray())
+            ->assertSessionHasErrors('recaptcha_token');
     }
 
     public function test_a_thread_requires_a_valid_channel_id(): void
@@ -118,11 +154,17 @@ class CreateThreadTest extends TestCase
 
         $this->assertEquals('foo-title', $thread->fresh()->slug);
 
-        $response = $this->postJson(route('threads.store'), $thread->toArray());
+        $response = $this->postJson(
+            route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
 
         $this->assertEquals('foo-title-2', $response->json('slug'));
 
-        $response = $this->postJson(route('threads.store'), $thread->toArray());
+        $response = $this->postJson(
+            route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
 
         $this->assertEquals('foo-title-3', $response->json('slug'));
     }
@@ -133,11 +175,16 @@ class CreateThreadTest extends TestCase
 
         $thread = create(Thread::class, ['title' => 'Some Title 24']);
 
-        $this->post(route('threads.store'), $thread->toArray());
+        $this->post(
+            route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
 
         $this->assertTrue(Thread::query()->where('slug', 'some-title-24-2')->exists());
 
-        $this->post(route('threads.store'), $thread->toArray());
+        $this->post(route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
 
         $this->assertTrue(Thread::query()->where('slug', 'some-title-24-3')->exists());
     }
