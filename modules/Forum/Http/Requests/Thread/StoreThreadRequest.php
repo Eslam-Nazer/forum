@@ -11,13 +11,13 @@ class StoreThreadRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      */
-    public function rules(): array
+    public function rules(RecaptchaRule $recaptchaRule): array
     {
         return [
             'channel_id' => ['required', 'integer', 'exists:channels,id'],
             'title' => ['required', 'string', new SpamFree()],
             'body' => ['required', 'string', new SpamFree()],
-            'recaptcha_token' => ['required', new RecaptchaRule()],
+            'recaptcha_token' => ['required', $recaptchaRule],
         ];
     }
 
