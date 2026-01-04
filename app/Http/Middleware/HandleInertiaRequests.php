@@ -50,6 +50,9 @@ class HandleInertiaRequests extends Middleware
                 ->select('id', 'name', 'slug')
                 ->get(),
             'messages' => fn() => $request->session()->get('messages'),
+            'recaptcha' => [
+                'site_key' => config('services.recaptcha.site_key'),
+            ]
         ];
     }
 }

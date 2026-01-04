@@ -22,7 +22,7 @@ use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Domain\Models\Reply;
-use Modules\Forum\Http\Requests\Thread\CreateThreadRequest;
+use Modules\Forum\Http\Requests\Thread\StoreThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -66,7 +66,7 @@ class ThreadController extends Controller implements HasMiddleware
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateThreadRequest $request, StoreThreadUseCase $case): RedirectResponse|HttpResponse
+    public function store(StoreThreadRequest $request, StoreThreadUseCase $case): RedirectResponse|HttpResponse
     {
         $data = new StoreThreadDto(
             userId: Auth::id(),

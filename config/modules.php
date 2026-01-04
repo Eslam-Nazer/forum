@@ -149,7 +149,7 @@ return [
             'repository' => ['path' => 'Infrastructure/Repositories', 'generate' => false], // changed
             'resource' => ['path' => 'Http/Transformers', 'generate' => false], // changed
             'route-provider' => ['path' => 'Providers', 'generate' => true], // changed
-            'rules' => ['path' => 'app/Rules', 'generate' => false],
+            'rules' => ['path' => 'Http/Rules', 'generate' => false],
             'services' => ['path' => 'Domain/Services', 'generate' => false], // changed
             'domain-repository' => ['path' => 'Domain/Repositories', 'generate' => false], // new
             'scopes' => ['path' => 'app/Models/Scopes', 'generate' => false],
