@@ -24,11 +24,8 @@ import SubscribeButton from '../threadsupscriptions/SubscribeButton.vue';
 import UserAvatar from '@/components/Users/UserAvatar.vue';
 import TextLink from '@/components/TextLink.vue';
 import Profile from '@/routes/profile';
-import ReplyController from '@/actions/Modules/Forum/Http/Controllers/ReplyController';
 import replies from '@/routes/replies';
 import { ref } from 'vue';
-import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
-import LockThreads from '@/components/Threads/LockThreads.vue';
 import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
 
 const props = defineProps<{

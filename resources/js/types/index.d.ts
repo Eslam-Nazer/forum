@@ -37,7 +37,7 @@ export interface User {
     avatar_path: string;
 }
 
-interface Thread {
+export interface Thread {
     id: string;
     title: string;
     body: string;
@@ -60,7 +60,13 @@ interface Thread {
     can?: array;
 }
 
-interface Trending {
+export interface Channel {
+    id: string;
+    name: string;
+    slug: string;
+}
+
+export interface Trending {
     title: string;
     slug: string;
     path: string;

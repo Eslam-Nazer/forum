@@ -4,8 +4,9 @@ namespace Modules\Forum\Http\Requests\Thread;
 
 use App\Rules\SpamFree;
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Forum\Http\Rules\RecaptchaRule;
 
-class CreateThreadRequest extends FormRequest
+class StoreThreadRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,6 +17,7 @@ class CreateThreadRequest extends FormRequest
             'channel_id' => ['required', 'integer', 'exists:channels,id'],
             'title' => ['required', 'string', new SpamFree()],
             'body' => ['required', 'string', new SpamFree()],
+            'recaptcha_token' => ['required', new RecaptchaRule()],
         ];
     }
 
