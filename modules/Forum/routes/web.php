@@ -29,13 +29,17 @@ Route::prefix('threads')
             });
 
         // Threads
-        Route::get('/', [ThreadController::class, 'index'])->name('index');
-        Route::get('t/create', [ThreadController::class, 'create'])->name('create');
-        Route::post('/', [ThreadController::class, 'store'])->name('store');
-        Route::get('/{channel}/{slug}', [ThreadController::class, 'show'])->name('show');
-        Route::get('/{channel?}', [ThreadController::class, 'index'])->name('channel');
-        Route::delete('/{channel}/{slug}', [ThreadController::class, 'destroy'])->name('destroy');
+        Route::controller(ThreadController::class)
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{channel}/{slug}', 'show')->name('show');
+                Route::patch('/{channel}/{slug}', 'update')->name('update');
+                Route::get('/{channel?}', 'index')->name('channel');
+                Route::delete('/{channel}/{slug}', 'destroy')->name('destroy');
 
+            });
     });
 
 // Replies
