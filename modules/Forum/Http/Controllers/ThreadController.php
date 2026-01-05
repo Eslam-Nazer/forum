@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 use JsonException;
+use Modules\Forum\Application\DTOs\Thread\FindThreadDto;
 use Modules\Forum\Application\DTOs\Thread\ThreadsFilteredDto;
 use Modules\Forum\Application\DTOs\Thread\StoreThreadDto;
 use Modules\Forum\Application\DTOs\Thread\DeleteThreadDto;
@@ -21,8 +22,10 @@ use Modules\Forum\Application\UseCases\Thread\ThreadsUseCase;
 use Modules\Forum\Application\UseCases\Thread\StoreThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
+use Modules\Forum\Application\UseCases\Thread\UpdateThreadUseCase;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Http\Requests\Thread\StoreThreadRequest;
+use Modules\Forum\Http\Requests\Thread\UpdateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
 use Illuminate\Http\Response as HttpResponse;
 
@@ -94,6 +97,13 @@ class ThreadController extends Controller implements HasMiddleware
         return Inertia::render('threads/Show', [
             'thread' => $thread,
         ]);
+    }
+
+    public function update(string $channel, string $slug, UpdateThreadRequest $request, UpdateThreadUseCase $case): RedirectResponse
+    {
+        $thread = $case->execute(new FindThreadDto(channelSlug: $channel, slug: $slug), $request);
+
+        return redirect()->route('threads.update', [$thread->channel->slug, $thread->slug]);
     }
 
     public function destroy(string $channel, string $slug, DeleteThreadUseCase $case): RedirectResponse
