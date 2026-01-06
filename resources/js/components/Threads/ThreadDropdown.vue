@@ -18,7 +18,7 @@ import {
     AlertDialogTrigger
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { EllipsisVertical, Lock, LockOpen, BellPlusIcon, Trash2Icon } from 'lucide-vue-next';
+import { EllipsisVertical, Lock, LockOpen, BellPlusIcon, Trash2Icon, SquarePenIcon } from 'lucide-vue-next';
 import { BellAlertIcon } from '@heroicons/vue/20/solid';
 import { Auth, Thread } from '@/types';
 import { computed } from 'vue';
@@ -90,10 +90,23 @@ const tabIndexValue = computed(() => -1);
                         Subscribe
                     </TextLink>
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                    v-if="thread.user_id === auth.user.id"
+                    asChild
+                >
+                    <TextLink
+                        :href="threads.edit({channel: thread.channel.slug, slug: thread.slug})"
+                        :tabindex="tabIndexValue"
+                        class="w-full !no-underline"
+                    >
+                        <SquarePenIcon />
+                        Edit
+                    </TextLink>
+                </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
 
+            <DropdownMenuGroup>
                 <DropdownMenuItem v-if="thread.can.delete" asChild>
                     <AlertDialog>
                         <AlertDialogTrigger>

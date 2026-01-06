@@ -35,10 +35,10 @@ Route::prefix('threads')
                 Route::get('/create', 'create')->name('create');
                 Route::post('/', 'store')->name('store');
                 Route::get('/{channel}/{slug}', 'show')->name('show');
+                Route::get('/{channel}/{slug}/edit', 'edit')->name('edit');
                 Route::patch('/{channel}/{slug}', 'update')->name('update');
                 Route::get('/{channel?}', 'index')->name('channel');
                 Route::delete('/{channel}/{slug}', 'destroy')->name('destroy');
-
             });
     });
 

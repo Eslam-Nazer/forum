@@ -28,9 +28,21 @@ export function useThreadForm(thread?: Thread) {
         });
     };
 
+    const update = async (url: string) => {
+        form.recaptcha_token = await executeRecaptcha('update_thread');
+
+        return form.patch(url, {
+            preserveScroll: true,
+            onFinish: () => {
+                form.recaptcha_token = '';
+            }
+        });
+    };
+
     return {
         form,
         store,
+        update,
         isRecaptchaLoaded: isLoaded
     };
 }

@@ -47,7 +47,7 @@ export interface Thread {
     created_at: string;
     channel: Channel;
     creator: {
-        id: string;
+        id: number;
         name: string;
     };
     is_favorite: boolean;
