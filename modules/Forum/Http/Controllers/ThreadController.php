@@ -24,6 +24,7 @@ use Modules\Forum\Application\UseCases\Thread\DeleteThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\ShowThreadUseCase;
 use Modules\Forum\Application\UseCases\Thread\UpdateThreadUseCase;
 use Modules\Forum\Domain\Models\Reply;
+use Modules\Forum\Domain\Repositories\Thread\FindThreadRepositoryInterface;
 use Modules\Forum\Http\Requests\Thread\StoreThreadRequest;
 use Modules\Forum\Http\Requests\Thread\UpdateThreadRequest;
 use Modules\Forum\Infrastructure\Cache\Trending;
@@ -99,11 +100,20 @@ class ThreadController extends Controller implements HasMiddleware
         ]);
     }
 
+    public function edit(string $channel, string $slug, FindThreadRepositoryInterface $repository): View|Response
+    {
+        $thread = $repository->handle(slug: $slug, channel: $channel);
+        return Inertia::render('threads/Edit', [
+            'thread' => $thread,
+        ]);
+    }
+
     public function update(string $channel, string $slug, UpdateThreadRequest $request, UpdateThreadUseCase $case): RedirectResponse
     {
         $thread = $case->execute(new FindThreadDto(channelSlug: $channel, slug: $slug), $request);
 
-        return redirect()->route('threads.update', [$thread->channel->slug, $thread->slug]);
+        return redirect()->route('threads.update', [$thread->channel->slug, $thread->slug])
+            ->with('messages', ['success' => 'Thread updated successfully.']);
     }
 
     public function destroy(string $channel, string $slug, DeleteThreadUseCase $case): RedirectResponse
