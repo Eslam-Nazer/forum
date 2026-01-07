@@ -7,8 +7,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -39,7 +39,7 @@ use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory, RecordsActivity, Favoritable;
+    use HasFactory, RecordsActivity, Favoritable, Searchable;
 
     protected static function booted(): void
     {
@@ -172,7 +172,7 @@ class Thread extends Model
     public function hasUpdatesFor(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this))
+            get: fn() => auth()->check() && $this->updated_at > cache(auth()->user()->visitedThreadCacheKey($this))
         );
     }
 
