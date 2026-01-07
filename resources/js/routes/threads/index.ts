@@ -603,7 +603,7 @@ channel.form = channelForm
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:118
+* @see modules/Forum/Http/Controllers/ThreadController.php:119
 * @route '/threads/{channel}/{slug}'
 */
 export const destroy = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -618,7 +618,7 @@ destroy.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:118
+* @see modules/Forum/Http/Controllers/ThreadController.php:119
 * @route '/threads/{channel}/{slug}'
 */
 destroy.url = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions) => {
@@ -644,7 +644,7 @@ destroy.url = (args: { channel: string | number, slug: string | number } | [chan
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:118
+* @see modules/Forum/Http/Controllers/ThreadController.php:119
 * @route '/threads/{channel}/{slug}'
 */
 destroy.delete = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -654,7 +654,7 @@ destroy.delete = (args: { channel: string | number, slug: string | number } | [c
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:118
+* @see modules/Forum/Http/Controllers/ThreadController.php:119
 * @route '/threads/{channel}/{slug}'
 */
 const destroyForm = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -669,7 +669,7 @@ const destroyForm = (args: { channel: string | number, slug: string | number } |
 
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::destroy
-* @see modules/Forum/Http/Controllers/ThreadController.php:118
+* @see modules/Forum/Http/Controllers/ThreadController.php:119
 * @route '/threads/{channel}/{slug}'
 */
 destroyForm.delete = (args: { channel: string | number, slug: string | number } | [channel: string | number, slug: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

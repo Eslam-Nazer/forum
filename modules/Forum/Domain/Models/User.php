@@ -93,7 +93,7 @@ class User extends Authenticatable
      */
     public function read(Model $thread): void
     {
-        cache()->forever($this->visitedThreadCacheKey($thread), now());
+        cache()->forever($this?->visitedThreadCacheKey($thread), now());
     }
 
     /**
