@@ -1,6 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults, validateParameters } from './../../wayfinder'
 import lock from './lock'
 import subscribe from './subscribe'
+import search from './search'
 /**
 * @see \Modules\Forum\Http\Controllers\ThreadController::index
 * @see modules/Forum/Http/Controllers/ThreadController.php:46
@@ -687,6 +688,7 @@ destroy.form = destroyForm
 const threads = {
     lock: Object.assign(lock, lock),
     subscribe: Object.assign(subscribe, subscribe),
+    search: Object.assign(search, search),
     index: Object.assign(index, index),
     create: Object.assign(create, create),
     store: Object.assign(store, store),

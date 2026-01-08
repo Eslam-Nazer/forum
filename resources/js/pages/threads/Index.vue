@@ -10,9 +10,9 @@ import SelectValue from '@/components/ui/select/SelectValue.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
-import { type BreadcrumbItem, Thread, Trending } from '@/types';
+import { type BreadcrumbItem, Channel, Thread, Trending } from '@/types';
 import { FireIcon } from '@heroicons/vue/20/solid';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import { MessageCircleOff } from 'lucide-vue-next';
 import { markRaw, Ref, ref } from 'vue';
@@ -22,6 +22,9 @@ import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Badge } from '@/components/ui/badge';
 import Flash from '@/pages/accessories/alerts/Flash.vue';
 import Profile from '@/routes/profile';
+import { Input } from '@/components/ui/input';
+import search from '@/routes/threads/search';
+import { useSearch } from '@/composables/useSearch';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -29,12 +32,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: threads.index().url
     }
 ];
-
-interface Channel {
-    id: string;
-    name: string;
-    slug: string;
-}
 
 const props = defineProps<{
     channels: Channel[];
@@ -63,12 +60,19 @@ function onChangeChannel(slug?: Ref<string | null>): void {
         router.visit(threads.index().url);
     }
 }
+
+const { form, submit: submitSearch, canSubmit: canSearch } = useSearch({
+    q: ''
+},{
+    url: search.show().url
+})
 </script>
 
 <template>
     <Head title="Threads" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
+
         <template #header-actions>
             <Button
                 :class="cn('!no-underline')"
@@ -133,6 +137,21 @@ function onChangeChannel(slug?: Ref<string | null>): void {
                             </SelectContent>
                         </Select>
                     </div>
+                </div>
+
+                <div>
+                    <form
+                        class="flex w-full items-center space-x-3 my-3"
+                        @submit.prevent="submitSearch"
+                    >
+                        <Input
+                            name="q"
+                            v-model="form.q"
+                            required
+                            placeholder="Search for something..."
+                        />
+                        <Button :disabled="!canSearch" type="submit">Search</Button>
+                    </form>
                 </div>
 
                 <Card

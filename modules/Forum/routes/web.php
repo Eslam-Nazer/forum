@@ -7,6 +7,7 @@ use Modules\Forum\Http\Controllers\FavoriteController;
 use Modules\Forum\Http\Controllers\LockThreadsController;
 use Modules\Forum\Http\Controllers\RegisterConfirmationController;
 use Modules\Forum\Http\Controllers\ReplyController;
+use Modules\Forum\Http\Controllers\SearchController;
 use Modules\Forum\Http\Controllers\ThreadController;
 use Modules\Forum\Http\Controllers\ThreadSubScriptionController;
 
@@ -26,6 +27,12 @@ Route::prefix('threads')
             ->group(function () {
                 Route::post('/{channel}/{slug}/subscriptions', 'store')->name('store');
                 Route::delete('/{channel}/{slug}/subscriptions', 'destroy')->name('destroy');
+            });
+
+        Route::controller(SearchController::class)
+            ->name('search.')
+            ->group(function () {
+                Route::get('/search', 'show')->name('show');
             });
 
         // Threads
