@@ -31,5 +31,6 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="BROADCAST_DRIVER" value="log"/>
+        <env name="SCOUT_DRIVER" value="null"/>
     </php>
 </phpunit>
