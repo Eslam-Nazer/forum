@@ -114,6 +114,7 @@ return [
 
     'algolia' => [
         'id' => env('ALGOLIA_APP_ID', ''),
+        'apiKey' => env('ALGOLIA_API_KEY', ''),
         'secret' => env('ALGOLIA_SECRET', ''),
         'index-settings' => [
             // 'users' => [
