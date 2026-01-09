@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../../wayfinder'
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 export const show = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 show.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ show.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \Modules\Forum\Http\Controllers\SearchController::show
-* @see modules/Forum/Http/Controllers/SearchController.php:19
+* @see modules/Forum/Http/Controllers/SearchController.php:20
 * @route '/threads/search'
 */
 showForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

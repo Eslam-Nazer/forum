@@ -120,6 +120,11 @@ return [
             //     'searchableAttributes' => ['id', 'name', 'email'],
             //     'attributesForFaceting'=> ['filterOnly(email)'],
             // ],
+            'threads' => [
+                'searchableAttributes' => ['title', 'body'],
+                'attributesForFaceting' => ['channel.name'],
+                'customRanking' => ['desc(replies_count)', 'desc(visits_count)'],
+            ]
         ],
     ],
 
