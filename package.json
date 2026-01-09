@@ -40,6 +40,7 @@
         "@tiptap/suggestion": "^3.10.7",
         "@tiptap/vue-3": "^3.10.7",
         "@vueuse/core": "^12.8.2",
+        "algoliasearch": "^5.46.2",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "dayjs": "^1.11.18",
@@ -50,6 +51,7 @@
         "tailwindcss": "^4.1.1",
         "tw-animate-css": "^1.2.5",
         "vue": "^3.5.13",
+        "vue-instantsearch": "^4.22.8",
         "vue-virtual-scroller": "^2.0.0-beta.8"
     },
     "optionalDependencies": {

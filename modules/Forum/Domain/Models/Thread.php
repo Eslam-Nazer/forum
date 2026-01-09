@@ -95,6 +95,15 @@ class Thread extends Model
     }
 
     /**
+     * Alias for searchable model
+     * @return string
+     */
+    public function searchableAs(): string
+    {
+        return 'threads';
+    }
+
+    /**
      * @return ThreadFactory
      */
     protected static function newFactory(): ThreadFactory
