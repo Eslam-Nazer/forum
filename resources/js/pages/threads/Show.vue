@@ -27,6 +27,7 @@ import Profile from '@/routes/profile';
 import replies from '@/routes/replies';
 import { ref } from 'vue';
 import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
+import AlgoliaInstant from '@/pages/accessories/Search/AlgoliaInstant.vue';
 
 const props = defineProps<{
     thread: any;

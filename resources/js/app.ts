@@ -8,6 +8,7 @@ import { createApp, h } from 'vue';
 import VueVirtualScroller from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
 import { initializeTheme } from './composables/useAppearance';
+import InstantSearch from "vue-instantsearch/vue3/es";
 
 configureEcho({
     broadcaster: 'reverb',
@@ -31,6 +32,7 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
+            .use(InstantSearch)
             .use(VueVirtualScroller)
             .mount(el);
     },
