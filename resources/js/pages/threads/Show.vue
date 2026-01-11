@@ -28,6 +28,7 @@ import replies from '@/routes/replies';
 import { ref } from 'vue';
 import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
 import AlgoliaInstant from '@/pages/accessories/Search/AlgoliaInstant.vue';
+import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
 
 const props = defineProps<{
     thread: any;
@@ -130,6 +131,8 @@ const goBack = () => {
                     <InputError :message="errors.body" />
                     <Button type="submit" class="mt-3 cursor-pointer">reply</Button>
                 </Form>
+
+                <wysiwyg />
             </Card>
         </div>
         <Flash
