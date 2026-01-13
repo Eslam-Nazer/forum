@@ -9,7 +9,7 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[14rem] outline-none'
+            class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[14rem] overflow-auto outline-none prose prose-slate dark:prose-invert max-w-none'
         }
     }
 });
@@ -67,6 +67,51 @@ const editor = useEditor({
             >
                 List
             </button>
+            <button
+                @click="editor.chain().focus().toggleOrderedList().run()"
+                :disabled="!editor.can().chain().focus().toggleOrderedList().run()"
+                :class="{ 'bg-gray-200 dark:bg-gray-700': editor.isActive('orderList') }"
+                class="p-1 rounded"
+            >
+                OrderList
+            </button>
+            <button
+                @click="editor.chain().focus().toggleCodeBlock().run()"
+                :disabled="!editor.can().chain().focus().toggleCodeBlock().run()"
+                :class="{ 'bg-gray-200 dark:bg-gray-700': editor.isActive('codeBlock') }"
+                class="p-1 rounded"
+            >
+                CodeBlock
+            </button>
+            <button
+                @click="editor.chain().focus().toggleBlockquote().run()"
+                :disabled="!editor.can().chain().focus().toggleBlockquote().run()"
+                :class="{ 'bg-gray-200 dark:bg-gray-700': editor.isActive('blockquote') }"
+                class="p-1 rounded"
+            >
+                Blockquote
+            </button>
+            <button
+                @click="editor.chain().focus().setHorizontalRule().run()"
+                :disabled="!editor.can().chain().focus().setHorizontalRule().run()"
+                class="p-1"
+            >
+                HR
+            </button>
+            <button
+                @click="editor.chain().focus().undo().run()"
+                :disabled="!editor.can().chain().focus().undo().run()"
+                class="p-1 disabled:text-gray-400"
+            >
+                Undo
+            </button>
+            <button
+                @click="editor.chain().focus().redo().run()"
+                :disabled="!editor.can().chain().focus().redo().run()"
+                class="p-1 disabled:text-gray-400"
+            >
+                Redo
+            </button>
         </section>
         <EditorContent :editor="editor" />
     </div>
@@ -75,28 +120,7 @@ const editor = useEditor({
 <style scoped>
 @reference "tailwindcss";
 
-:deep(.tiptap > :first-child) {
-    @apply mt-0
-}
-
-:deep(.tiptap h1) {
-    @apply text-xl mt-14 mb-6 leading-tight
-}
-
-:deep(.tiptap h2) {
-    @apply text-lg mt-10 mb-4 leading-tight
-}
-
-:deep(.tiptap ul),
-:deep(.tiptap ol) {
-    @apply list-disc list-outside pl-6 my-5;
-}
-
-:deep(.tiptap ol) {
-    @apply list-decimal;
-}
-
-:deep(.tiptap li p) {
-    @apply my-1;
+:deep(.tiptap pre) {
+    @apply dark:bg-gray-100 dark:text-gray-900 bg-gray-700 text-gray-100
 }
 </style>
