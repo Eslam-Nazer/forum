@@ -15,7 +15,6 @@ import {
     Undo,
     Redo
 } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
 import ToolbarButton from '@/components/Wysiwyg/ToolbarButton.vue';
 
 const editor = useEditor({

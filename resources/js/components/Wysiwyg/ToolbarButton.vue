@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Code } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-import { ChainedCommands, Editor } from '@tiptap/vue-3';
+import { Editor } from '@tiptap/vue-3';
 import { computed } from 'vue';
 
 const props = withDefaults(defineProps<{
@@ -21,8 +20,6 @@ const canExecute = computed(() => {
     const chain = props.editor.can().chain().focus() as any;
     return chain[props.command](props.args).run();
 });
-
-console.log(isActive.value);
 </script>
 
 <template>
