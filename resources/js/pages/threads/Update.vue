@@ -44,11 +44,11 @@ function submit() {
 </script>
 
 <template>
-    <Head title="Create Thread" />
+    <Head title="Update Thread" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mx-auto w-full max-w-4xl">
             <Card class="mt-5 pl-6">
-                <h2 class="text-3xl">Create Thread</h2>
+                <h2 class="text-3xl">Update Thread</h2>
                 <form @submit.prevent="submit">
                     <div class="w-full max-w-xl">
                         <Label for="title" class="text-lg font-bold"

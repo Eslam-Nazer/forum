@@ -16,14 +16,14 @@ import { useForm } from '@inertiajs/vue3';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { ref } from 'vue';
-import FavoriteButton from '../favorites/FavoriteButton.vue';
+import FavoriteButton from '@/pages/favorites/FavoriteButton.vue';
 import { cn } from '@/lib/utils';
-import { MessageCircleHeart } from 'lucide-vue-next';
-import BestReplyButton from '@/pages/replies/BestReplyButton.vue';
+import ToggleBestButton from '@/components/Replies/ToggleBestButton.vue';
 import replies from '@/routes/replies';
+import { Reply } from '@/types';
 
 const props = withDefaults(defineProps<{
-    reply: any;
+    reply: Reply;
     isThreadOwner?: boolean;
 }>(), {
     isThreadOwner: false
@@ -79,7 +79,7 @@ function destroy() {
                 </span>
             </h2>
             <div class="flex items-center justify-center">
-                <BestReplyButton :reply="reply" :isThreadOwner="isThreadOwner" />
+                <ToggleBestButton :reply="reply" :isThreadOwner="isThreadOwner" />
                 <FavoriteButton :model="reply" :type="'replies'" />
             </div>
         </div>
