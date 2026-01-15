@@ -1,37 +1,26 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
-import AlertDialog from '@/components/ui/alert-dialog/AlertDialog.vue';
-import AlertDialogAction from '@/components/ui/alert-dialog/AlertDialogAction.vue';
-import AlertDialogCancel from '@/components/ui/alert-dialog/AlertDialogCancel.vue';
-import AlertDialogContent from '@/components/ui/alert-dialog/AlertDialogContent.vue';
-import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue';
-import AlertDialogFooter from '@/components/ui/alert-dialog/AlertDialogFooter.vue';
-import AlertDialogHeader from '@/components/ui/alert-dialog/AlertDialogHeader.vue';
-import AlertDialogTitle from '@/components/ui/alert-dialog/AlertDialogTitle.vue';
-import AlertDialogTrigger from '@/components/ui/alert-dialog/AlertDialogTrigger.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Card from '@/components/ui/card/Card.vue';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
-import { Auth, type BreadcrumbItem } from '@/types';
+import { Auth, type BreadcrumbItem, Thread } from '@/types';
 import { Head, router, useForm, Form } from '@inertiajs/vue3';
 import { MoveLeftIcon } from 'lucide-vue-next';
 import Flash from '../accessories/alerts/Flash.vue';
-import Reply from '../replies/Reply.vue';
-import SubscribeButton from '../threadsupscriptions/SubscribeButton.vue';
+import ShowReply from '@/components/Replies/Show.vue';
 import UserAvatar from '@/components/Users/UserAvatar.vue';
 import TextLink from '@/components/TextLink.vue';
 import Profile from '@/routes/profile';
 import replies from '@/routes/replies';
 import { ref } from 'vue';
 import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
-import AlgoliaInstant from '@/pages/accessories/Search/AlgoliaInstant.vue';
 import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
 
 const props = defineProps<{
-    thread: any;
+    thread: Thread;
     messages?: Record<'success' | 'error' | 'warning' | 'info', string>;
     auth: Auth
 }>();
@@ -110,7 +99,7 @@ const goBack = () => {
             </Card>
             <Card class="p-6">
                 <h2 class="text-lg">Replies:</h2>
-                <Reply
+                <ShowReply
                     v-for="reply in thread.replies"
                     :key="reply.id"
                     :reply="reply"
@@ -132,7 +121,7 @@ const goBack = () => {
                     <Button type="submit" class="mt-3 cursor-pointer">reply</Button>
                 </Form>
 
-                <wysiwyg />
+                <wysiwyg v-model="body" />
             </Card>
         </div>
         <Flash

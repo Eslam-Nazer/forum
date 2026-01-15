@@ -46,10 +46,8 @@ export interface Thread {
     slug: string;
     created_at: string;
     channel: Channel;
-    creator: {
-        id: number;
-        name: string;
-    };
+    replies: Reply[];
+    creator: User;
     is_favorite: boolean;
     is_subscribed: bolean;
     replies_count: number;
@@ -70,6 +68,22 @@ export interface Trending {
     title: string;
     slug: string;
     path: string;
+}
+
+export interface Reply {
+    id: number;
+    user_id: number;
+    thread: number;
+    body: string;
+    owner: User;
+    can: {
+        update: boolean;
+        delete: boolean;
+    };
+    pathTo: string;
+    is_best: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
 
