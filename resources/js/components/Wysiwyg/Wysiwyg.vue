@@ -17,8 +17,17 @@ import {
 } from 'lucide-vue-next';
 import ToolbarButton from '@/components/Wysiwyg/ToolbarButton.vue';
 
+const props = defineProps<{
+    modelValue: string,
+}>();
+
+const emit = defineEmits(['update:modelValue']);
+
 const editor = useEditor({
-    content: '<p>I\'m running Tiptap with Vue.js. 🎉</p>',
+    content: props.modelValue,
+    onUpdate: ({ editor }) => {
+        emit('update:modelValue', editor.getHTML());
+    },
     extensions: [
         StarterKit
     ],
@@ -32,55 +41,61 @@ const editor = useEditor({
 
 <template>
     <div class="container mx-auto my-8">
-        <section v-if="editor"
-                 class="felx items-center flex-wrap gap-x-4 border-t border-r border-l border-gray-400 p-4">
-            <ToolbarButton :editor="editor" type="bold" command="toggleBold">
-                <Bold />
-            </ToolbarButton>
+        <section
+            v-if="editor"
+            class="flex items-center justify-between border-t border-r border-l border-gray-400 p-4"
+        >
+            <div class="space-x-2">
+                <ToolbarButton :editor="editor" type="bold" command="toggleBold">
+                    <Bold />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="italic" command="toggleItalic">
-                <Italic />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="italic" command="toggleItalic">
+                    <Italic />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="underline" command="toggleUnderline">
-                <Underline />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="underline" command="toggleUnderline">
+                    <Underline />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="heading" command="toggleHeading" :args="{level: 1}">
-                <Heading1 />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="heading" command="toggleHeading" :args="{level: 1}">
+                    <Heading1 />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="heading" command="toggleHeading" :args="{level: 2}">
-                <Heading2 />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="heading" command="toggleHeading" :args="{level: 2}">
+                    <Heading2 />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="bulletList" command="toggleBulletList">
-                <List />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="bulletList" command="toggleBulletList">
+                    <List />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="orderList" command="toggleOrderedList">
-                <ListOrdered />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="orderList" command="toggleOrderedList">
+                    <ListOrdered />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="codeBlock" command="toggleCodeBlock">
-                <Code />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="codeBlock" command="toggleCodeBlock">
+                    <Code />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" type="blockquote" command="toggleBlockquote">
-                <Quote />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" type="blockquote" command="toggleBlockquote">
+                    <Quote />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" command="setHorizontalRule">
-                <SquareMinus />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" command="setHorizontalRule">
+                    <SquareMinus />
+                </ToolbarButton>
+            </div>
 
-            <ToolbarButton :editor="editor" command="undo">
-                <Undo />
-            </ToolbarButton>
+            <div class="space-x-3">
+                <ToolbarButton :editor="editor" command="undo">
+                    <Undo />
+                </ToolbarButton>
 
-            <ToolbarButton :editor="editor" command="redo">
-                <Redo />
-            </ToolbarButton>
+                <ToolbarButton :editor="editor" command="redo">
+                    <Redo />
+                </ToolbarButton>
+            </div>
         </section>
         <EditorContent :editor="editor" />
     </div>
