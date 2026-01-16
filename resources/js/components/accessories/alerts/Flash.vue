@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Alert from '@/components/ui/alert/Alert.vue';
-import AlertDescription from '@/components/ui/alert/AlertDescription.vue';
-import AlertTitle from '@/components/ui/alert/AlertTitle.vue';
-import Button from '@/components/ui/button/Button.vue';
+import Alert from '../../ui/alert/Alert.vue';
+import AlertDescription from '../../ui/alert/AlertDescription.vue';
+import AlertTitle from '../../ui/alert/AlertTitle.vue';
+import Button from '../../ui/button/Button.vue';
 import { cn } from '@/lib/utils';
 import {
     AlertCircle,

@@ -13,7 +13,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import threads from '@/routes/threads';
 import { BreadcrumbItem, Channel, Thread } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import Flash from '@/pages/accessories/alerts/Flash.vue';
+import Flash from '@/components/accessories/alerts/Flash.vue';
 import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
 import { useThreadForm } from '@/composables/useThreadForm';
 

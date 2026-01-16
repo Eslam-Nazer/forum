@@ -1,23 +1,20 @@
 <script setup lang="ts">
-import InputError from '@/components/InputError.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Card from '@/components/ui/card/Card.vue';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import threads from '@/routes/threads';
 import { Auth, type BreadcrumbItem, Thread } from '@/types';
 import { Head, router, useForm, Form } from '@inertiajs/vue3';
 import { MoveLeftIcon } from 'lucide-vue-next';
-import Flash from '../accessories/alerts/Flash.vue';
+import Flash from '@/components/accessories/alerts/Flash.vue';
 import ShowReply from '@/components/Replies/Show.vue';
 import UserAvatar from '@/components/Users/UserAvatar.vue';
 import TextLink from '@/components/TextLink.vue';
 import Profile from '@/routes/profile';
-import replies from '@/routes/replies';
 import { ref } from 'vue';
 import ThreadDropdown from '@/components/Threads/ThreadDropdown.vue';
-import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
+import CreateReply from '@/components/Replies/Create.vue';
 
 const props = defineProps<{
     thread: Thread;
@@ -108,20 +105,8 @@ const goBack = () => {
                 <div class="text-center" v-if="thread.locked">
                     Thread is locked. Can't add any replies now.
                 </div>
-                <Form
-                    :action="replies.store({threadSlug: thread.slug}).url"
-                    method="post"
-                    #default="{errors}"
-                    @success="body = ''"
-                    :options="{preserveScroll: true}"
-                    v-else
-                >
-                    <Textarea name="body" v-model="body" @keydown.enter="$event.target.form.requestSubmit()" />
-                    <InputError :message="errors.body" />
-                    <Button type="submit" class="mt-3 cursor-pointer">reply</Button>
-                </Form>
 
-                <wysiwyg v-model="body" />
+                <CreateReply v-else :threadSlug="thread.slug" />
             </Card>
         </div>
         <Flash
