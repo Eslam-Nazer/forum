@@ -4,3 +4,7 @@ export interface ThreadForm {
     body: string;
     recaptcha_token: string;
 }
+
+export interface ReplyForm {
+    body: string;
+}

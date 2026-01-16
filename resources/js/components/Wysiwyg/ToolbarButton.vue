@@ -28,6 +28,7 @@ const canExecute = computed(() => {
         size="icon"
         @click="(editor.chain().focus() as any)[command](args).run()"
         :disabled="!canExecute"
+        type="button"
     >
         <slot />
     </Button>

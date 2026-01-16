@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import TextLink from '@/components/TextLink.vue';
-import Pagination from '@/components/ui/pagination/Pagination.vue';
-import PaginationContent from '@/components/ui/pagination/PaginationContent.vue';
-import PaginationItem from '@/components/ui/pagination/PaginationItem.vue';
-import PaginationNext from '@/components/ui/pagination/PaginationNext.vue';
-import PaginationPrevious from '@/components/ui/pagination/PaginationPrevious.vue';
+import Pagination from '../../ui/pagination/Pagination.vue';
+import PaginationContent from '../../ui/pagination/PaginationContent.vue';
+import PaginationItem from '../../ui/pagination/PaginationItem.vue';
+import PaginationNext from '../../ui/pagination/PaginationNext.vue';
+import PaginationPrevious from '../../ui/pagination/PaginationPrevious.vue';
 import { cn } from '@/lib/utils';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
 import { markRaw } from 'vue';

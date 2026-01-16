@@ -33,17 +33,17 @@ const editor = useEditor({
     ],
     editorProps: {
         attributes: {
-            class: 'border border-gray-400 p-4 min-h-[12rem] max-h-[14rem] overflow-auto outline-none prose prose-slate dark:prose-invert max-w-none'
+            class: 'p-4 min-h-[12rem] max-h-[14rem] overflow-auto outline-none prose prose-slate dark:prose-invert max-w-none'
         }
     }
 });
 </script>
 
 <template>
-    <div class="container mx-auto my-8">
+    <div class="container mx-auto my-8 rounded-lg border">
         <section
             v-if="editor"
-            class="flex items-center justify-between border-t border-r border-l border-gray-400 p-4"
+            class="flex items-center justify-between p-4 border-b"
         >
             <div class="space-x-2">
                 <ToolbarButton :editor="editor" type="bold" command="toggleBold">
