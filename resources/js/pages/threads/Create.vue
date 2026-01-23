@@ -16,6 +16,7 @@ import { Head, useForm, Form } from '@inertiajs/vue3';
 import Flash from '@/components/accessories/alerts/Flash.vue';
 import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
 import { useThreadForm } from '@/composables/useThreadForm';
+import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -82,13 +83,9 @@ const submit = async () => {
                         >
                             Body
                         </Label>
-                        <textarea
-                            v-model="form.body"
-                            id="body"
-                            rows="4"
-                            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-gray-500 focus:ring-gray-500 dark:border-[#262626] dark:bg-black dark:text-white dark:placeholder-gray-400 dark:focus:border-gray-500 dark:focus:ring-gray-500"
-                            placeholder="Write your thoughts here..."
-                        ></textarea>
+
+                        <wysiwyg v-model="form.body" />
+
                         <InputError
                             class="!text-md"
                             :message="form.errors.body"

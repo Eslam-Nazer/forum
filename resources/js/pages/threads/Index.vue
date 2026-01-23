@@ -63,9 +63,9 @@ function onChangeChannel(slug?: Ref<string | null>): void {
 
 const { form, submit: submitSearch, canSubmit: canSearch } = useSearch({
     q: ''
-},{
+}, {
     url: search.show().url
-})
+});
 </script>
 
 <template>
@@ -191,9 +191,9 @@ const { form, submit: submitSearch, canSubmit: canSearch } = useSearch({
                                 <FavoriteButton :model="thread" :type="'threads'" />
                             </div>
                         </div>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            {{ thread.body }}
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400" v-html="thread.body">
                         </p>
+
                         <TextLink
                             :href="
                         threads.show({
