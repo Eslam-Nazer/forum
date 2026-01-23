@@ -89,8 +89,9 @@ const goBack = () => {
                     <hr
                         class="my-8 h-px border-0 bg-gray-200 dark:bg-gray-500"
                     />
-                    <div class="text-xl">
-                        <p>content: {{ thread.body }}</p>
+                    <div class="text-xl flex">
+                        <p class="mr-2">Content:</p>
+                        <div v-html="thread.body"></div>
                     </div>
                 </div>
             </Card>

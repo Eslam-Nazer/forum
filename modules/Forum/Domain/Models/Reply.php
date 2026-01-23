@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Forum\Database\Factories\ReplyFactory;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
+use Stevebauman\Purify\Casts\PurifyHtmlOnGet;
+use Stevebauman\Purify\Facades\Purify;
 
 /**
  * @property string|int $user_id
@@ -64,6 +65,16 @@ class Reply extends Model
     }
 
     /**
+     * @return array|string[]
+     */
+    public function casts(): array
+    {
+        return [
+            'body' => PurifyHtmlOnGet::class,
+        ];
+    }
+
+    /**
      * Return path function as attribute
      *
      * @return Attribute
@@ -84,6 +95,7 @@ class Reply extends Model
     {
         return Attribute::make(
             set: static function ($body) {
+                $body = Purify::clean($body);
                 return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
             }
         );

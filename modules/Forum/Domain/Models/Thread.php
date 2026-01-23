@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Infrastructure\Cache\Visits;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
+use Stevebauman\Purify\Casts\PurifyHtmlOnGet;
+use Stevebauman\Purify\Facades\Purify;
 
 /**
  * @property Carbon|null $created_at
@@ -91,6 +93,7 @@ class Thread extends Model
     {
         return [
             'locked' => 'bool',
+            'body' => PurifyHtmlOnGet::class,
         ];
     }
 
@@ -109,6 +112,13 @@ class Thread extends Model
     protected static function newFactory(): ThreadFactory
     {
         return ThreadFactory::new();
+    }
+
+    public function body(): Attribute
+    {
+        return Attribute::make(
+            set: static fn(string $body) => Purify::clean($body),
+        );
     }
 
     /**
