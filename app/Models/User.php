@@ -52,16 +52,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the options for generating the slug.
-     */
-    public function getSlugOptions(): SlugOptions
-    {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
-    }
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -73,6 +63,18 @@ class User extends Authenticatable
             'password' => 'hashed',
             'confirmed' => 'boolean',
         ];
+    }
+
+    /**
+     * Get the options for generating the slug.
+     * @return SlugOptions
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
     }
 
     /**
