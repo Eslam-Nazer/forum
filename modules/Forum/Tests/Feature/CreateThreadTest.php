@@ -26,8 +26,6 @@ class CreateThreadTest extends TestCase
             return \Mockery::mock(RecaptchaRule::class, static function ($mock) {
                 $mock->shouldReceive('validate')->andReturn(true);
             });
-
-
         });
     }
 
@@ -152,7 +150,14 @@ class CreateThreadTest extends TestCase
 
         $thread = create(Thread::class, ['title' => 'Foo title']);
 
-        $this->assertEquals('foo-title', $thread->fresh()->slug);
+        $this->assertEquals('foo-title', $thread->slug);
+
+        $response = $this->postJson(
+            route('threads.store'),
+            $thread->toArray() + $this->recaptcha_token
+        );
+
+        $this->assertEquals('foo-title-1', $response->json('slug'));
 
         $response = $this->postJson(
             route('threads.store'),
@@ -160,13 +165,6 @@ class CreateThreadTest extends TestCase
         );
 
         $this->assertEquals('foo-title-2', $response->json('slug'));
-
-        $response = $this->postJson(
-            route('threads.store'),
-            $thread->toArray() + $this->recaptcha_token
-        );
-
-        $this->assertEquals('foo-title-3', $response->json('slug'));
     }
 
     public function test_a_thread_with_a_title_thad_ends_in_a_number_should_generate_the_proper_slug(): void
@@ -180,13 +178,13 @@ class CreateThreadTest extends TestCase
             $thread->toArray() + $this->recaptcha_token
         );
 
-        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-2')->exists());
+        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-1')->exists());
 
         $this->post(route('threads.store'),
             $thread->toArray() + $this->recaptcha_token
         );
 
-        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-3')->exists());
+        $this->assertTrue(Thread::query()->where('slug', 'some-title-24-2')->exists());
     }
 
     public function test_guests_cannot_remove_threads(): void

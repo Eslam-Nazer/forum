@@ -19,6 +19,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Forum\Infrastructure\Cache\Visits;
 use Modules\Forum\Infrastructure\Policies\Thread\ThreadPolicy;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Stevebauman\Purify\Casts\PurifyHtmlOnGet;
 use Stevebauman\Purify\Facades\Purify;
 
@@ -41,7 +43,7 @@ use Stevebauman\Purify\Facades\Purify;
 #[UsePolicy(ThreadPolicy::class)]
 class Thread extends Model
 {
-    use HasFactory, RecordsActivity, Favoritable, Searchable;
+    use HasFactory, RecordsActivity, Favoritable, Searchable, HasSlug;
 
     protected static function booted(): void
     {
@@ -53,10 +55,6 @@ class Thread extends Model
             $thread->replies->each(function (Reply $reply) {
                 $reply->delete();
             });
-        });
-
-        static::created(static function (self $thread): void {
-            $thread->update(['slug' => Str::slug($thread->title)]);
         });
     }
 
@@ -107,6 +105,18 @@ class Thread extends Model
     }
 
     /**
+     * Get the options for generating the slug.
+     * @return SlugOptions
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
+            ->doNotGenerateSlugsOnUpdate();
+    }
+
+    /**
      * @return ThreadFactory
      */
     protected static function newFactory(): ThreadFactory
@@ -117,7 +127,7 @@ class Thread extends Model
     public function body(): Attribute
     {
         return Attribute::make(
-            set: static fn(string $body) => Purify::clean($body),
+            set: static fn($value) => Purify::clean($value),
         );
     }
 
@@ -154,22 +164,6 @@ class Thread extends Model
     public function visitsCount(): Attribute
     {
         return Attribute::get(fn(): int => $this->visits()->count());
-    }
-
-    /**
-     * Prepare threads slug and with consideration it is unique
-     * @return Attribute
-     */
-    protected function slug(): Attribute
-    {
-        return Attribute::make(set: function ($value) {
-            $slug = Str::slug($value);
-
-            if (static::query()->whereSlug($slug)->exists()) {
-                $slug = "{$slug}-" . $this->id;
-            }
-            return $slug;
-        });
     }
 
     /**
