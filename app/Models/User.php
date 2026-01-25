@@ -14,6 +14,8 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Modules\Forum\Domain\Models\Activity;
 use Modules\Forum\Domain\Models\Reply;
 use Modules\Forum\Domain\Models\Thread;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use function Termwind\render;
 
 /**
@@ -21,7 +23,7 @@ use function Termwind\render;
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -36,6 +38,7 @@ class User extends Authenticatable
         'confirmed',
         'confirmation_token',
         'is_admin',
+        'slug',
     ];
 
     /**
@@ -47,6 +50,16 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
 
     /**
      * Get the attributes that should be cast.
