@@ -15,7 +15,6 @@ class StoreThreadRepository implements StoreThreadRepositoryInterface
             'body' => $dto->body,
             'user_id' => $dto->userId,
             'channel_id' => $dto->channelId,
-            'slug' => $dto->title,
         ]);
     }
 }

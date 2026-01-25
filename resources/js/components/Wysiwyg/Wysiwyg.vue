@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEditor, EditorContent } from '@tiptap/vue-3';
+import { useEditor, EditorContent, VueRenderer, DOMOutputSpecArray } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import {
     Bold,
@@ -16,6 +16,10 @@ import {
     Redo
 } from 'lucide-vue-next';
 import ToolbarButton from '@/components/Wysiwyg/ToolbarButton.vue';
+import Mention, { MentionNodeAttrs, MentionOptions } from '@tiptap/extension-mention';
+import tippy, { Instance as TippyInstance } from 'tippy.js';
+import MentionList from '@/components/Wysiwyg/MentionList.vue';
+import { SuggestionOptions } from '@tiptap/suggestion';
 
 const props = defineProps<{
     modelValue: string,
@@ -29,7 +33,85 @@ const editor = useEditor({
         emit('update:modelValue', editor.getHTML());
     },
     extensions: [
-        StarterKit
+        StarterKit,
+        Mention.configure({
+            HTMLAttributes: {
+                class: 'mention'
+            },
+            renderHTML: (props: {
+                options: MentionOptions<any, MentionNodeAttrs>;
+                node: Node;
+                suggestion: SuggestionOptions<any, any> | null;
+            }) => {
+                return [
+                    'a',
+                    {
+                        // Add HTML attributes here
+                        class: 'mention-link',
+                        href: `/profile/${props.node.attrs.id}`, // Example: link to user profile
+                        'data-id': props.node.attrs.id
+                    },
+                    `${props.options.suggestion.char}${props.node.attrs.label ?? props.node.attrs.id}`
+                ];
+            },
+            suggestion: {
+                items: ({ query }) => {
+                    return [
+                        'Lea Thompson', 'Cyndi Lauper', 'Tom Cruise'
+                    ].filter(item => item.toLowerCase().startsWith(query.toLowerCase())).slice(0, 5);
+                },
+                char: '@',
+                render: () => {
+                    let component: VueRenderer;
+                    let popup: TippyInstance[];
+
+                    return {
+                        onStart: props => {
+                            component = new VueRenderer(MentionList, {
+                                props,
+                                editor: props.editor
+                            });
+
+                            if (!props.clientRect) return;
+
+                            popup = tippy('body', {
+                                getReferenceClientRect: props.clientRect as any,
+                                appendTo: () => document.body,
+                                content: component.element,
+                                showOnCreate: true,
+                                interactive: true,
+                                trigger: 'manual',
+                                placement: 'bottom-start'
+                            });
+                        },
+
+                        onUpdate: props => {
+                            component.updateProps(props);
+
+                            if (!props.clientRect) return;
+
+                            popup[0].setProps({
+                                getReferenceClientRect: props.clientRect as any
+                            });
+                        },
+
+                        onKeyDown: props => {
+                            if (props.event.key === 'Escape') {
+                                popup[0].hide();
+                                return true;
+                            }
+                            // Calls the onKeyDown we exposed in MentionList.vue
+                            return (component.ref as any)?.onKeyDown(props);
+                        },
+
+                        onExit: () => {
+                            popup[0].destroy();
+                            component.destroy();
+                        }
+                    };
+                }
+            }
+        })
     ],
     editorProps: {
         attributes: {
