@@ -10,9 +10,8 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Forum\Domain\Models\Reply;
-use Modules\Forum\Domain\Models\Thread;
 
-class ThreadHasNewReply
+class MentionUserEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

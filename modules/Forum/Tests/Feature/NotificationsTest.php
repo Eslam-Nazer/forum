@@ -3,6 +3,7 @@
 namespace Modules\Forum\Tests\Feature;
 
 use Illuminate\Support\Facades\Bus;
+use Modules\Forum\Domain\Models\Reply;
 use Tests\TestCase;
 use App\Models\User;
 use Database\Factories\DatabaseNotificationFactory;
@@ -71,6 +72,25 @@ class NotificationsTest extends TestCase
             $this->delete("settings/profiles/notifications/{$user->unreadNotifications->first()->id}");
 
             $this->assertCount(0, $user->fresh()->unreadNotifications);
+        });
+    }
+
+    public function test_a_user_can_mention_another_user_and_send_notification()
+    {
+        Bus::fake();
+        $thread = create(Thread::class);
+        $mUser = create(User::class, ['name' => 'testing user']);
+        $mUser2 = create(User::class, ['name' => 'testing user 2']);
+
+        tap(auth()->user(), function ($user) use ($thread, $mUser, $mUser2) {
+
+            $this->post(route('replies.store', ['threadSlug' => $thread->slug,]), [
+                'body' => "<a href='{$mUser->slug}/profile'>@" . $mUser->name . '</a>'.
+                    ' ' . "<a href='{$mUser2->slug}/profile'>@" . $mUser2->name . '</a>'
+            ])
+            ->assertStatus(302);
+
+            $this->assertCount(1, $mUser->fresh()->notifications);
         });
     }
 }

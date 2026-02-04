@@ -8,9 +8,9 @@ use Modules\Forum\Domain\Repositories\User\FindUserRepositoryInterface;
 
 class FindUserRepository implements FindUserRepositoryInterface
 {
-    public function handle(string $name): Builder
+    public function handle(string $slug): Builder
     {
         return User::query()
-            ->where('name', '=',$name);
+            ->whereSlug($slug);
     }
 }

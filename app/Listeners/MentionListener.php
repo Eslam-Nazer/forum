@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ThreadHasNewReply;
+use App\Events\MentionUserEvent;
 use App\Models\User;
 use App\Notifications\YouWereMentioned;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,10 +13,10 @@ class MentionListener
     /**
      * Handle the event.
      */
-    public function handle(ThreadHasNewReply $event): void
+    public function handle(MentionUserEvent $event): void
     {
         User::query()
-            ->whereIn('name', $event->reply->mentionedUsers())
+            ->whereIn('slug', $event->reply->mentionedUsers())
             ->get()
             ->each
             ->notify(new YouWereMentioned($event->reply));

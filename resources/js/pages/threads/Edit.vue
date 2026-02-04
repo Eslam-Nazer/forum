@@ -16,7 +16,7 @@ import { Head } from '@inertiajs/vue3';
 import Flash from '@/components/accessories/alerts/Flash.vue';
 import ThreadController from '@/actions/Modules/Forum/Http/Controllers/ThreadController';
 import { useThreadForm } from '@/composables/useThreadForm';
-import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
+import TiptapEditor from '@/components/Wysiwyg/TiptapEditor.vue';
 
 
 const props = defineProps<{
@@ -87,7 +87,7 @@ const submit = async () => {
                             Body
                         </Label>
 
-                        <wysiwyg v-model="form.body" />
+                        <tiptap-editor v-model="form.body" />
 
                         <InputError
                             class="!text-md"

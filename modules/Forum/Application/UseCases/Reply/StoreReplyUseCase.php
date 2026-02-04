@@ -2,6 +2,7 @@
 
 namespace Modules\Forum\Application\UseCases\Reply;
 
+use App\Events\MentionUserEvent;
 use App\Events\ThreadHasNewReply;
 use Modules\Forum\Application\DTOs\Reply\StoreReplyDto;
 use Modules\Forum\Domain\Models\Thread;
@@ -25,12 +26,18 @@ class StoreReplyUseCase
     {
         $thread = $this->findThreadRepository->handle(slug: $dto->threadSlug);
 
-        abort_if(! $thread, 404);
+        abort_if(!$thread, 404);
         abort_if($thread->locked, 422);
 
         $reply = $this->storeReplyRepository->handle($thread, $dto->userId, $dto->body);
 
-        event(new ThreadHasNewReply($reply));
+        if ($thread->subscriptions()->exists()) {
+            event(new ThreadHasNewReply($reply));
+        }
+
+        if (filled($reply->mentionedUsers())) {
+            event(new MentionUserEvent($reply));
+        }
 
         return $reply->thread;
     }
