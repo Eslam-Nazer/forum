@@ -15,13 +15,13 @@ class FindUserUseCase
     ) {}
 
     /**
-     * @param string $name
+     * @param string $slug
      * @return Model
      */
-    public function execute(string $name): Model
+    public function execute(string $slug): Model
     {
         return $this->repository
-            ->handle($name)
+            ->handle($slug)
             ->with(['threads', 'replies'])
             ->firstOrFail();
     }

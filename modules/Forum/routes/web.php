@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Forum\Http\Controllers\Api\V1\AvatarController;
+use Modules\Forum\Http\Controllers\Api\V1\MentionsController;
 use Modules\Forum\Http\Controllers\BestReplyController;
 use Modules\Forum\Http\Controllers\FavoriteController;
 use Modules\Forum\Http\Controllers\LockThreadsController;
@@ -85,6 +86,13 @@ Route::post('/api/users/{user}/avatar', [AvatarController::class, 'store'])->nam
 
 // Confirmation registration user
 Route::get('/register/confirm', [RegisterConfirmationController::class, 'index'])->name('register.confirm');
+
+Route::prefix('api/v1/mentions')
+    ->name('mentions.')
+    ->controller(MentionsController::class)
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
 
 require __DIR__ . '/users.php';
 require __DIR__ . '/settings.php';

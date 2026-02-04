@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEditor, EditorContent, VueRenderer, DOMOutputSpecArray } from '@tiptap/vue-3';
+import { useEditor, EditorContent, VueRenderer } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import {
     Bold,
@@ -19,13 +19,43 @@ import ToolbarButton from '@/components/Wysiwyg/ToolbarButton.vue';
 import Mention, { MentionNodeAttrs, MentionOptions } from '@tiptap/extension-mention';
 import tippy, { Instance as TippyInstance } from 'tippy.js';
 import MentionList from '@/components/Wysiwyg/MentionList.vue';
-import { SuggestionOptions } from '@tiptap/suggestion';
+import { onMounted, Ref, ref, watch } from 'vue';
+import axios from 'axios';
+import mentions from '@/routes/mentions';
+import { User } from '@/types';
 
-const props = defineProps<{
+interface editorProps {
     modelValue: string,
-}>();
+}
 
-const emit = defineEmits(['update:modelValue']);
+interface editorEmits {
+    (e: 'update:modelValue', value: string): void;
+}
+
+const props = defineProps<editorProps>();
+const emit = defineEmits<editorEmits>();
+const users: Ref<User[]> = ref([]);
+
+const loadUsers = async (): Promise<void> => {
+    try {
+        const response = await axios.get<User[]>(mentions.index().url);
+        users.value = response.data;
+    } catch (error) {
+        console.error('Failed to load users for mentions:', error);
+
+        if (axios.isAxiosError(error)) {
+            console.error('Axios error details:', {
+                message: error.message,
+                status: error.response?.status,
+                url: error.config?.url
+            });
+        } else {
+            console.error('Unexpected error type:', error instanceof Error ? error.message : String(error));
+        }
+    }
+};
+
+onMounted(loadUsers);
 
 const editor = useEditor({
     content: props.modelValue,
@@ -38,35 +68,32 @@ const editor = useEditor({
             HTMLAttributes: {
                 class: 'mention'
             },
-            renderHTML: (props: {
-                options: MentionOptions<any, MentionNodeAttrs>;
-                node: Node;
-                suggestion: SuggestionOptions<any, any> | null;
-            }) => {
+            renderHTML: ({ options, node }) => {
                 return [
                     'a',
                     {
-                        // Add HTML attributes here
                         class: 'mention-link',
-                        href: `/profile/${props.node.attrs.id}`, // Example: link to user profile
-                        'data-id': props.node.attrs.id
+                        href: `/${node.attrs.id}/profile`,
+                        'data-id': node.attrs.id
                     },
-                    `${props.options.suggestion.char}${props.node.attrs.label ?? props.node.attrs.id}`
+                    `${options.suggestion.char}${node.attrs.label}`
                 ];
             },
             suggestion: {
-                items: ({ query }) => {
-                    return [
-                        'Lea Thompson', 'Cyndi Lauper', 'Tom Cruise'
-                    ].filter(item => item.toLowerCase().startsWith(query.toLowerCase())).slice(0, 5);
+                items: ({ query }): User[] => {
+                    return users.value
+                        .filter((user: User) =>
+                            user.name.toLowerCase().startsWith(query.toLowerCase())
+                        )
+                        .slice(0, 10);
                 },
                 char: '@',
                 render: () => {
                     let component: VueRenderer;
-                    let popup: TippyInstance[];
+                    let popup: TippyInstance;
 
                     return {
-                        onStart: props => {
+                        onStart: (props): void => {
                             component = new VueRenderer(MentionList, {
                                 props,
                                 editor: props.editor
@@ -74,7 +101,7 @@ const editor = useEditor({
 
                             if (!props.clientRect) return;
 
-                            popup = tippy('body', {
+                            popup = tippy(document.body as Element | HTMLElement, {
                                 getReferenceClientRect: props.clientRect as any,
                                 appendTo: () => document.body,
                                 content: component.element,
@@ -85,27 +112,26 @@ const editor = useEditor({
                             });
                         },
 
-                        onUpdate: props => {
+                        onUpdate: (props): void => {
                             component.updateProps(props);
 
                             if (!props.clientRect) return;
 
-                            popup[0].setProps({
+                            popup.setProps({
                                 getReferenceClientRect: props.clientRect as any
                             });
                         },
 
-                        onKeyDown: props => {
+                        onKeyDown: (props): boolean => {
                             if (props.event.key === 'Escape') {
-                                popup[0].hide();
+                                popup.hide();
                                 return true;
                             }
-                            // Calls the onKeyDown we exposed in MentionList.vue
                             return (component.ref as any)?.onKeyDown(props);
                         },
 
-                        onExit: () => {
-                            popup[0].destroy();
+                        onExit: (): void => {
+                            popup.destroy();
                             component.destroy();
                         }
                     };
@@ -117,6 +143,13 @@ const editor = useEditor({
         attributes: {
             class: 'p-4 min-h-[12rem] max-h-[14rem] overflow-auto outline-none prose prose-slate dark:prose-invert max-w-none'
         }
+    }
+});
+
+// Watch for external changes to modelValue and update editor content
+watch(() => props.modelValue, (newValue) => {
+    if (editor.value && editor.value.getHTML() !== newValue) {
+        editor.value.commands.setContent(newValue);
     }
 });
 </script>

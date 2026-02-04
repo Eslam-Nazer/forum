@@ -11,7 +11,9 @@ export function useReplyForm(reply?: Reply) {
     const store = (url: string) => {
         return form.post(url, {
             preserveScroll: true,
-            onSuccess: () => form.reset()
+            onSuccess: () => {
+                form.body = '';
+            }
         });
     };
 

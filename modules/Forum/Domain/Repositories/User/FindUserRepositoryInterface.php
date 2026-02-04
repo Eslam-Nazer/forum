@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface FindUserRepositoryInterface
 {
-    public function handle(string $name): Builder;
+    public function handle(string $slug): Builder;
 }

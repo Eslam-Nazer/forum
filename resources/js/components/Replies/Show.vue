@@ -11,7 +11,7 @@ import replies from '@/routes/replies';
 import { Reply } from '@/types';
 import AlertConfirmation from '@/components/accessories/AlertConfimation/AlertConfirmation.vue';
 import { useReplyForm } from '@/composables/useReplyForm';
-import Wysiwyg from '@/components/Wysiwyg/Wysiwyg.vue';
+import TiptapEditor from '@/components/Wysiwyg/TiptapEditor.vue';
 import InputError from '@/components/InputError.vue';
 
 const props = withDefaults(defineProps<{
@@ -63,7 +63,7 @@ const destroy = () => {
 
         <div>
             <div v-if="isEditing" class="my-4">
-                <wysiwyg v-model="form.body" />
+                <tiptap-editor v-model="form.body" />
                 <InputError :message="form.errors.body" />
 
                 <div class="space-x-2">

@@ -23,6 +23,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $userQuery = \App\Models\User::query();
+        if (!$userQuery->exists()) {
+            $userQuery->forceCreate([
+                'name' => 'Eslam Nazer',
+                'email' => 'eslam@mail.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'remember_token' => Str::random(10),
+                'confirmation_token' => null,
+                'confirmed' => true,
+            ]);
+        }
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -40,15 +53,15 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }
 
     public function unconfirmed(): static
     {
-        return $this->state(fn (array $attributes) => [
-           'confirmed' => false,
+        return $this->state(fn(array $attributes) => [
+            'confirmed' => false,
         ]);
     }
 

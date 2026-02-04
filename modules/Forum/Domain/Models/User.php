@@ -56,7 +56,7 @@ class User extends Authenticatable
      */
     protected function avatarPath(): Attribute
     {
-        return Attribute::get(fn($avatar_path) => asset('storage/' . $avatar_path));
+        return Attribute::get(fn($avatar_path) => $avatar_path ? asset('storage/' . $avatar_path) : '');
     }
 
     /**

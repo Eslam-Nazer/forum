@@ -26,9 +26,9 @@ class UserController extends Controller implements HasMiddleware
      * @param FindUserUseCase $case
      * @return Response
      */
-    public function show(string $name, FindUserUseCase $case): Response
+    public function show(string $slug, FindUserUseCase $case): Response
     {
-        $user = $case->execute($name);
+        $user = $case->execute($slug);
 
         return Inertia::render('Users/Show', [
             'user' => $user,

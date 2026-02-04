@@ -13,7 +13,7 @@ use Modules\Forum\Database\Factories\ReplyFactory;
 use Modules\Forum\Domain\Traits\Favoritable;
 use Modules\Forum\Domain\Traits\RecordsActivity;
 use Modules\Forum\Infrastructure\Policies\Reply\ReplyPolicy;
-use Stevebauman\Purify\Casts\PurifyHtmlOnGet;
+use Stevebauman\Purify\Casts\PurifyHtmlOnSet;
 use Stevebauman\Purify\Facades\Purify;
 
 /**
@@ -70,7 +70,7 @@ class Reply extends Model
     public function casts(): array
     {
         return [
-            'body' => PurifyHtmlOnGet::class,
+            'body' => PurifyHtmlOnSet::class,
         ];
     }
 
@@ -87,28 +87,13 @@ class Reply extends Model
     }
 
     /**
-     * Prepare body attribute to store mentions users as anchor tag
-     *
-     * @return Attribute
-     */
-    protected function body(): Attribute
-    {
-        return Attribute::make(
-            set: static function ($body) {
-                $body = Purify::clean($body);
-                return preg_replace('/@([\w\-]+)/', '<a class="text-blue-400" href="/$1/profile">$0</a>', $body);
-            }
-        );
-    }
-
-    /**
      * Check this reply is the thread owner make it the best or not
      *
      * @return Attribute
      */
     public function isBest(): Attribute
     {
-        return Attribute::get(fn() => $this->thread->best_reply_id === $this->id);
+        return Attribute::get(fn() => $this->thread?->best_reply_id !== null && $this->thread?->best_reply_id === $this->id);
     }
 
     /**
@@ -157,10 +142,13 @@ class Reply extends Model
     /**
      * Return reply path
      *
-     * @return string
+     * @return string|null
      */
-    public function path(): string
+    public function path(): string|null
     {
+        if ($this->id === null) {
+            return null;
+        }
         return $this->thread()
                 ->without('replies')
                 ->first()
@@ -184,7 +172,7 @@ class Reply extends Model
      */
     public function mentionedUsers(): array
     {
-        preg_match_all('/\@([\w\-]+)/', $this->body, $matches);
+        preg_match_all('/<a href="\/*([^\/]+)\/profile">@([^<]+)<\/a>/', $this->body, $matches);
 
         return $matches[1];
     }

@@ -1,10 +1,13 @@
 <script setup lang="ts">
 
 import { ref } from 'vue';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface Props {
-    items: string[],
-    command: (props: { id: number | string }) => void
+    items: any,
+    command: (props: { id: number | string, label: string }) => void
 }
 
 const props = defineProps<Props>();
@@ -14,7 +17,7 @@ const selectItem = (index: number) => {
     const item: any = props.items[index];
 
     if (item) {
-        props.command({ id: item });
+        props.command({ id: item.slug, label: item.name });
     }
 };
 
@@ -41,38 +44,32 @@ defineExpose({
 </script>
 
 <template>
-    <div class="mention-list-dropdown ">
-        <button
-            v-for="(item, index) in items"
-            :key="index"
-            :class="{ 'is-selected': index === selectIndex }"
-            @click="selectItem(index)"
-        >
-            {{ item }}
-        </button>
-    </div>
+    <ScrollArea class="rounded-md border w-52 h-40 px-3">
+        <div class="">
+            <h4 class="m-3 text-center leading-none font-medium">
+                Users
+            </h4>
+            <Separator class="mb-2 font-semibold" />
+
+            <template
+                v-for="(item, index) in items"
+                :key="index"
+            >
+
+                <Button
+                    :variant="index === selectIndex ? 'default' : 'ghost'"
+                    class="ml-2"
+                    @click="selectItem(index)"
+                >
+<!--                    <UserAvatar :user="item" size="sm" class="my-2" />-->
+                    {{ item.name.slice(0, 18) }}
+                </Button>
+
+                <Separator class="my-2 last:hidden" />
+            </template>
+        </div>
+    </ScrollArea>
 </template>
 
 <style scoped>
-.mention-list-dropdown {
-    background: gray;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.is-selected {
-    background: #c9c3c3;
-}
-
-button {
-    text-align: left;
-    padding: 0.5rem 1rem;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-}
 </style>
